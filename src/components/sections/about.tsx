@@ -81,16 +81,19 @@ export function About() {
             className="relative h-[300px] rounded-lg overflow-hidden bg-secondary/50"
           >
             {!imageError ? (
-              <Image
-                src="/profile.JPG"
-                alt="Jonas Zacho Poulsen"
-                fill
-                className="object-contain object-center p-4"
-                priority
-                sizes="(max-width: 768px) 100vw, 50vw"
-                quality={100}
-                onError={() => setImageError(true)}
-              />
+              <div className="relative w-full h-full">
+                <Image
+                  src="/profile.JPG"
+                  alt="Jonas Zacho Poulsen"
+                  fill
+                  className="object-contain object-center p-4"
+                  priority
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  quality={100}
+                  onError={() => setImageError(true)}
+                  unoptimized
+                />
+              </div>
             ) : (
               <div className="absolute inset-0 flex items-center justify-center">
                 <span className="text-6xl">👨‍💻</span>
