@@ -82,7 +82,7 @@ export function About() {
           >
             {!imageError ? (
               <Image
-                src="/profile.jpg"
+                src="/profile.JPG"
                 alt="Jonas Zacho Poulsen"
                 fill
                 className="object-contain object-center p-4"
