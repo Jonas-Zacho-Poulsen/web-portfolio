@@ -73,7 +73,7 @@ const fallbackProjects: Repository[] = [
     topics: ["next.js", "typescript", "tailwindcss", "framer-motion"],
     stargazers_count: 0,
     language: "TypeScript",
-    screenshots: ["Portfolio Website", "Dark Mode View"],
+    screenshots: ["Portfolio Website"],
     demo_url: "https://jonas-zacho.com",
     status: "completed",
     tech_stack: [
@@ -96,7 +96,7 @@ const fallbackProjects: Repository[] = [
     topics: ["react", "openai", "websocket", "typescript"],
     stargazers_count: 0,
     language: "TypeScript",
-    screenshots: ["AI Chat App", "Chat Interface"],
+    screenshots: ["AI Chat App"],
     demo_url: "https://ai-chat.jonas-zacho.com",
     status: "in-progress",
     tech_stack: [
@@ -119,7 +119,7 @@ const fallbackProjects: Repository[] = [
     topics: ["next.js", "trpc", "prisma", "stripe"],
     stargazers_count: 0,
     language: "TypeScript",
-    screenshots: ["E-commerce Platform", "Product Catalog"],
+    screenshots: ["E-commerce Platform"],
     demo_url: "https://shop.jonas-zacho.com",
     status: "planned",
     tech_stack: [
@@ -138,16 +138,18 @@ const fallbackProjects: Repository[] = [
 
 function ProjectCard({ project }: { project: Repository }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const screenshots = project.screenshots || [project.name]
+  const status = project.status || "planned"
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => 
-      prev === project.screenshots.length - 1 ? 0 : prev + 1
+      prev === screenshots.length - 1 ? 0 : prev + 1
     )
   }
 
   const previousImage = () => {
     setCurrentImageIndex((prev) => 
-      prev === 0 ? project.screenshots.length - 1 : prev - 1
+      prev === 0 ? screenshots.length - 1 : prev - 1
     )
   }
 
@@ -159,10 +161,10 @@ function ProjectCard({ project }: { project: Repository }) {
       {/* Project Screenshots */}
       <div className="relative h-48 bg-background/50">
         <ProjectPreview 
-          title={project.screenshots[currentImageIndex]}
-          subtitle={project.status === "completed" ? "Live Project" : project.status}
+          title={screenshots[currentImageIndex] || project.name}
+          subtitle={status === "completed" ? "Live Project" : status}
         />
-        {project.screenshots.length > 1 && (
+        {screenshots.length > 1 && (
           <div className="absolute inset-0 flex items-center justify-between p-2">
             <motion.button
               whileHover={{ scale: 1.1 }}
@@ -191,11 +193,11 @@ function ProjectCard({ project }: { project: Repository }) {
             {project.name}
           </h3>
           <span className={`px-2 py-1 text-xs rounded-full ${
-            project.status === "completed" ? "bg-green-500/10 text-green-500" :
-            project.status === "in-progress" ? "bg-yellow-500/10 text-yellow-500" :
+            status === "completed" ? "bg-green-500/10 text-green-500" :
+            status === "in-progress" ? "bg-yellow-500/10 text-yellow-500" :
             "bg-blue-500/10 text-blue-500"
           }`}>
-            {project.status.replace("-", " ")}
+            {(status || "planned").replace("-", " ")}
           </span>
         </div>
 
@@ -294,7 +296,13 @@ export function Projects() {
                 issues: githubProject.open_issues_count,
                 watchers: githubProject.watchers_count
               }
-            } : githubProject
+            } : {
+              ...githubProject,
+              screenshots: [githubProject.name],
+              status: "planned" as const,
+              tech_stack: [],
+              topics: githubProject.topics || []
+            }
           })
           setProjects(enhancedProjects)
         }

@@ -6,6 +6,7 @@ import Image from "next/image"
 interface Skill {
   name: string
   icon: string
+  proficiency: number
 }
 
 interface SkillCategory {
@@ -47,41 +48,41 @@ const skills: SkillCategory[] = [
   {
     category: "Frontend",
     items: [
-      { name: "React", icon: skillIcons["React"] },
-      { name: "Next.js", icon: skillIcons["Next.js"] },
-      { name: "TypeScript", icon: skillIcons["TypeScript"] },
-      { name: "Tailwind CSS", icon: skillIcons["Tailwind CSS"] },
-      { name: "Framer Motion", icon: skillIcons["Framer Motion"] }
+      { name: "React", icon: skillIcons["React"], proficiency: 95 },
+      { name: "Next.js", icon: skillIcons["Next.js"], proficiency: 90 },
+      { name: "TypeScript", icon: skillIcons["TypeScript"], proficiency: 85 },
+      { name: "Tailwind CSS", icon: skillIcons["Tailwind CSS"], proficiency: 90 },
+      { name: "Framer Motion", icon: skillIcons["Framer Motion"], proficiency: 80 }
     ]
   },
   {
     category: "Backend",
     items: [
-      { name: "Node.js", icon: skillIcons["Node.js"] },
-      { name: "tRPC", icon: skillIcons["tRPC"] },
-      { name: "Prisma", icon: skillIcons["Prisma"] },
-      { name: "PostgreSQL", icon: skillIcons["PostgreSQL"] },
-      { name: "Redis", icon: skillIcons["Redis"] }
+      { name: "Node.js", icon: skillIcons["Node.js"], proficiency: 85 },
+      { name: "tRPC", icon: skillIcons["tRPC"], proficiency: 80 },
+      { name: "Prisma", icon: skillIcons["Prisma"], proficiency: 85 },
+      { name: "PostgreSQL", icon: skillIcons["PostgreSQL"], proficiency: 80 },
+      { name: "Redis", icon: skillIcons["Redis"], proficiency: 75 }
     ]
   },
   {
     category: "DevOps",
     items: [
-      { name: "Docker", icon: skillIcons["Docker"] },
-      { name: "GitHub Actions", icon: skillIcons["GitHub Actions"] },
-      { name: "Vercel", icon: skillIcons["Vercel"] },
-      { name: "AWS", icon: skillIcons["AWS"] },
-      { name: "CI/CD", icon: skillIcons["CI/CD"] }
+      { name: "Docker", icon: skillIcons["Docker"], proficiency: 80 },
+      { name: "GitHub Actions", icon: skillIcons["GitHub Actions"], proficiency: 85 },
+      { name: "Vercel", icon: skillIcons["Vercel"], proficiency: 90 },
+      { name: "AWS", icon: skillIcons["AWS"], proficiency: 75 },
+      { name: "CI/CD", icon: skillIcons["CI/CD"], proficiency: 80 }
     ]
   },
   {
     category: "Tools",
     items: [
-      { name: "Git", icon: skillIcons["Git"] },
-      { name: "VS Code", icon: skillIcons["VS Code"] },
-      { name: "Postman", icon: skillIcons["Postman"] },
-      { name: "Figma", icon: skillIcons["Figma"] },
-      { name: "Jest", icon: skillIcons["Jest"] }
+      { name: "Git", icon: skillIcons["Git"], proficiency: 90 },
+      { name: "VS Code", icon: skillIcons["VS Code"], proficiency: 95 },
+      { name: "Postman", icon: skillIcons["Postman"], proficiency: 85 },
+      { name: "Figma", icon: skillIcons["Figma"], proficiency: 80 },
+      { name: "Jest", icon: skillIcons["Jest"], proficiency: 85 }
     ]
   }
 ]
@@ -99,6 +100,42 @@ const container = {
 const item = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0 }
+}
+
+function SkillItem({ skill }: { skill: Skill }) {
+  return (
+    <motion.li
+      whileHover={{ x: 5 }}
+      className="group"
+    >
+      <div className="flex items-center space-x-3 mb-1">
+        <div className="relative w-6 h-6 flex-shrink-0 transition-transform group-hover:scale-110">
+          <Image
+            src={skill.icon}
+            alt={skill.name}
+            fill
+            className="object-contain"
+          />
+        </div>
+        <span className="text-sm text-muted-foreground">{skill.name}</span>
+        <span className="text-xs text-primary ml-auto">{skill.proficiency}%</span>
+      </div>
+      <motion.div
+        className="h-1 bg-secondary/50 rounded-full overflow-hidden"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+      >
+        <motion.div
+          className="h-full bg-primary"
+          initial={{ width: 0 }}
+          whileInView={{ width: `${skill.proficiency}%` }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease: "easeOut" }}
+        />
+      </motion.div>
+    </motion.li>
+  )
 }
 
 export function Skills() {
@@ -124,23 +161,9 @@ export function Skills() {
               <h3 className="text-xl font-semibold mb-4 text-primary">
                 {skillSet.category}
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-4">
                 {skillSet.items.map((skill) => (
-                  <motion.li
-                    key={skill.name}
-                    whileHover={{ x: 5 }}
-                    className="flex items-center space-x-3 text-muted-foreground group"
-                  >
-                    <div className="relative w-6 h-6 flex-shrink-0 transition-transform group-hover:scale-110">
-                      <Image
-                        src={skill.icon}
-                        alt={skill.name}
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-                    <span className="text-sm">{skill.name}</span>
-                  </motion.li>
+                  <SkillItem key={skill.name} skill={skill} />
                 ))}
               </ul>
             </motion.div>

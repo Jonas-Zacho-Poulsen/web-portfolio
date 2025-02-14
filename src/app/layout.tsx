@@ -1,5 +1,6 @@
 import { ThemeProvider } from "@/components/theme-provider"
 import { Inter } from "next/font/google"
+import { BackgroundAnimation } from "@/components/background-animation"
 import "./globals.css"
 import type { Metadata } from 'next'
 
@@ -20,10 +21,11 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
+          <BackgroundAnimation />
           {children}
         </ThemeProvider>
       </body>
