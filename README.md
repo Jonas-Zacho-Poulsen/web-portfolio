@@ -4,6 +4,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC)](https://tailwindcss.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black)](https://web-portfolio-niglouvxv-jonas-zacho-poulsens-projects.vercel.app)
 
 A modern, responsive portfolio website showcasing my projects and skills. Built with the latest web technologies and best practices.
 
@@ -61,6 +62,38 @@ pnpm dev
 ```
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## 🚀 Deployment
+
+This project is deployed on Vercel. The production environment is automatically updated when changes are pushed to the `main` branch.
+
+### Manual Deployment
+
+1. Install Vercel CLI:
+```bash
+npm i -g vercel
+```
+
+2. Deploy to Vercel:
+```bash
+vercel
+```
+
+3. Deploy to production:
+```bash
+vercel --prod
+```
+
+### Environment Variables
+
+Make sure to set up the following environment variables in your Vercel project settings:
+
+- `NEXT_PUBLIC_SITE_URL`: Your production URL
+- `NEXT_PUBLIC_GITHUB_USERNAME`: Your GitHub username
+- `GITHUB_TOKEN` (optional): For higher GitHub API rate limits
+- `NEXT_PUBLIC_GA_ID` (optional): Google Analytics ID
+- `NEXT_PUBLIC_UMAMI_WEBSITE_ID` (optional): Umami analytics ID
+- `NEXT_PUBLIC_UMAMI_URL` (optional): Umami analytics URL
 
 ## 📁 Project Structure
 
