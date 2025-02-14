@@ -1,0 +1,3 @@
+npx create-next-app@latest portfolio-2025 --typescript --tailwind --eslint --app --src
+cd portfolio-2025
+npm install @prisma/client @clerk/nextjs @tanstack/react-query framer-motion next-themes @trpc/client @trpc/server @trpc/react-query @upstash/redis contentlayer @shadcn/ui 
