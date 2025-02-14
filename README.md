@@ -1,28 +1,49 @@
 # Personal Portfolio Website
 
-A modern, responsive portfolio website built with Next.js 14, TypeScript, and Tailwind CSS.
+[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC)](https://tailwindcss.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Features
+A modern, responsive portfolio website showcasing my projects and skills. Built with the latest web technologies and best practices.
 
-- 🎨 Modern and clean design
-- 🌙 Dark/Light mode support
-- 📱 Fully responsive
-- ⚡ Fast and optimized performance
-- 🤖 AI Chat Assistant for recruiters
-- 🎯 Interactive project showcase
-- 💻 Comprehensive skills section with icons
-- 📫 Contact form integration
+## 🌟 Features
 
-## Tech Stack
+- ⚡ **Next.js 14** with App Router and Server Components
+- 🎨 **Modern Design**
+  - Responsive layout
+  - Dark/Light mode with system preference sync
+  - Smooth animations with Framer Motion
+  - Interactive particle background
+- 🤖 **AI Chat Assistant**
+  - Context-aware responses
+  - Predefined topics with dynamic suggestions
+  - Smooth animations and typing indicators
+- 🎯 **Dynamic Project Showcase**
+  - GitHub integration
+  - Live project status
+  - Tech stack visualization
+  - Project screenshots carousel
+- 💻 **Technical Features**
+  - TypeScript for type safety
+  - Tailwind CSS for styling
+  - SEO optimization
+  - Performance optimized
+  - Responsive images
+  - Modern animations
 
-- Next.js 14
-- TypeScript
-- Tailwind CSS
-- Framer Motion
-- React
-- Node.js
+## 🛠️ Tech Stack
 
-## Getting Started
+- **Framework**: Next.js 14
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Animation**: Framer Motion
+- **State Management**: React Hooks
+- **Version Control**: Git
+- **Deployment**: Vercel
+- **Package Manager**: pnpm
+
+## 🚀 Getting Started
 
 1. Clone the repository:
 ```bash
@@ -31,28 +52,56 @@ git clone https://github.com/Jonas-Zacho-Poulsen/web-portfolio.git
 
 2. Install dependencies:
 ```bash
-npm install
+pnpm install
 ```
 
 3. Run the development server:
 ```bash
-npm run dev
+pnpm dev
 ```
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Project Structure
+## 📁 Project Structure
 
-- `/src/components` - Reusable UI components
-- `/src/components/sections` - Main page sections
-- `/public` - Static assets
-- `/src/app` - Next.js app router pages
+```
+├── src/
+│   ├── app/             # Next.js App Router pages
+│   ├── components/      # Reusable UI components
+│   │   ├── sections/    # Main page sections
+│   │   └── ui/         # Shared UI components
+│   └── lib/            # Utilities and helpers
+├── public/             # Static assets
+└── ...config files
+```
 
-## Contact
+## 🔧 Development
+
+- **Code Style**: ESLint + Prettier
+- **Git Workflow**: Feature branches and pull requests
+- **Testing**: Jest + React Testing Library (planned)
+- **CI/CD**: GitHub Actions + Vercel (planned)
+
+## 📱 Responsive Design
+
+- Mobile-first approach
+- Breakpoints for all devices
+- Optimized images
+- Touch-friendly interactions
+
+## 🎨 Design System
+
+- Custom color scheme
+- Consistent spacing
+- Typography scale
+- Dark/Light themes
+- Smooth transitions
+
+## 📫 Contact
 
 - Email: jonaszachopoulsen@live.dk
 - GitHub: [@Jonas-Zacho-Poulsen](https://github.com/Jonas-Zacho-Poulsen)
 
-## License
+## 📄 License
 
 This project is open source and available under the [MIT License](LICENSE). 
