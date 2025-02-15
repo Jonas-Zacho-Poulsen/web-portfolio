@@ -1,14 +1,8 @@
 {
   "version": 2,
+  "framework": "nextjs",
   "buildCommand": "pnpm build",
   "installCommand": "pnpm install",
-  "framework": "nextjs",
-  "builds": [
-    {
-      "src": "next.config.mjs",
-      "use": "@vercel/next"
-    }
-  ],
   "git": {
     "deploymentEnabled": {
       "main": true
