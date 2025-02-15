@@ -28,7 +28,7 @@ const socials = [
   },
   {
     name: "Phone",
-    value: "+45 5022 7300",
+    value: "+45 50 22 73 00",
     icon: PhoneIcon,
     href: "tel:+4550227300"
   },
@@ -48,16 +48,41 @@ export function Contact() {
   })
   const [sending, setSending] = useState(false)
   const [sent, setSent] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setSending(true)
-    // Here you would typically send the form data to your backend
-    // For now, we'll just simulate a delay
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    setSending(false)
-    setSent(true)
-    setFormData({ name: "", email: "", message: "" })
+    setError(null)
+    setSent(false)
+    
+    try {
+      console.log('Submitting form with data:', formData)
+      
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json()
+      console.log('Response from server:', data)
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send message')
+      }
+
+      setSent(true)
+      setFormData({ name: "", email: "", message: "" })
+    } catch (err) {
+      console.error('Form submission error:', err)
+      setError(err instanceof Error ? err.message : 'Failed to send message. Please try again later.')
+      setSent(false)
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -139,6 +164,13 @@ export function Contact() {
                   className="w-full px-4 py-2 rounded-lg bg-secondary/50 border border-border focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 />
               </div>
+              
+              {error && (
+                <div className="text-red-500 text-sm">
+                  {error}
+                </div>
+              )}
+              
               <motion.button
                 type="submit"
                 disabled={sending || sent}

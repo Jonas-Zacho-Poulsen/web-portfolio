@@ -14,27 +14,27 @@ interface Message {
 const predefinedResponses = {
   experience: `Jonas is a Full Stack Developer with expertise in modern web technologies. He has experience building scalable applications using Next.js, TypeScript, and various cloud services.`,
   
-  skills: `Jonas's key technical skills include:
+  skills: `Jonas' key technical skills include:
 - Frontend: React, Next.js, TypeScript, Tailwind CSS
 - Backend: Node.js, tRPC, Prisma, PostgreSQL
 - DevOps: Docker, GitHub Actions, AWS
 - Tools: Git, VS Code, Figma`,
   
-  projects: `Some of Jonas's notable projects include:
+  projects: `Some of Jonas' notable projects include:
 1. Portfolio Website (Next.js 14, TypeScript, Tailwind)
 2. AI Chat Application (React, OpenAI, WebSocket)
 3. E-commerce Platform (Next.js, tRPC, Prisma)
 
 Each project demonstrates his ability to build modern, scalable applications.`,
   
-  contact: `You can reach Jonas through:
-- Email: jonaszachopoulsen@live.dk
-- Phone: +45 50 22 73 00
-- GitHub: github.com/Jonas-Zacho-Poulsen
+  contact: `Get in Touch with Jonas:
+📧 Email: jonaszachopoulsen@live.dk
+📞 Phone: +45 50 22 73 00
+🐙 GitHub: github.com/Jonas-Zacho-Poulsen
 
-You can also download his CV from the website for more detailed information.`,
+🔽 Download CV for more details.`,
 
-  default: "I'm an AI assistant that can help you learn more about Jonas's experience, skills, and projects. Feel free to ask me anything!"
+  default: "I'm an AI assistant that can help you learn more about Jonas' experience, skills, and projects. Feel free to ask me anything!"
 }
 
 const suggestedQuestions = {
@@ -44,7 +44,7 @@ const suggestedQuestions = {
     "How can I contact Jonas?"
   ],
   skills: [
-    "What's Jonas's work experience?",
+    "What's Jonas' work experience?",
     "Tell me about his projects",
     "What's the best way to reach him?"
   ],
@@ -54,12 +54,12 @@ const suggestedQuestions = {
     "How can I get in touch?"
   ],
   contact: [
-    "What's Jonas's experience?",
+    "What's Jonas' experience?",
     "What technologies does he work with?",
     "Tell me about his projects"
   ],
   default: [
-    "What's Jonas's background?",
+    "What's Jonas' background?",
     "What are his technical skills?",
     "Tell me about his projects",
     "How can I contact him?"

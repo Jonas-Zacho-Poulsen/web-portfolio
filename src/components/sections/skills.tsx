@@ -16,32 +16,32 @@ interface SkillCategory {
 
 const skillIcons = {
   // Frontend
-  "React": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
-  "Next.js": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg",
-  "TypeScript": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
-  "Tailwind CSS": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg",
-  "Framer Motion": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
+  "React": "https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg",
+  "Next.js": "https://raw.githubusercontent.com/devicons/devicon/master/icons/nextjs/nextjs-original.svg",
+  "TypeScript": "https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg",
+  "Tailwind CSS": "https://raw.githubusercontent.com/devicons/devicon/master/icons/tailwindcss/tailwindcss-plain.svg",
+  "Framer Motion": "https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg",
   
   // Backend
-  "Node.js": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg",
-  "tRPC": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
-  "Prisma": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg",
-  "PostgreSQL": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg",
-  "Redis": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg",
+  "Node.js": "https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg",
+  "tRPC": "https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg",
+  "Prisma": "https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg",
+  "PostgreSQL": "https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg",
+  "Redis": "https://raw.githubusercontent.com/devicons/devicon/master/icons/redis/redis-original.svg",
   
   // DevOps
-  "Docker": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg",
-  "GitHub Actions": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg",
-  "Vercel": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg",
-  "AWS": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg",
-  "CI/CD": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg",
+  "Docker": "https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg",
+  "GitHub Actions": "https://raw.githubusercontent.com/devicons/devicon/master/icons/github/github-original.svg",
+  "Vercel": "https://raw.githubusercontent.com/devicons/devicon/master/icons/nextjs/nextjs-original.svg",
+  "AWS": "https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original.svg",
+  "CI/CD": "https://raw.githubusercontent.com/devicons/devicon/master/icons/git/git-original.svg",
   
   // Tools
-  "Git": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg",
-  "VS Code": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg",
-  "Postman": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/chrome/chrome-original.svg",
-  "Figma": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg",
-  "Jest": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jest/jest-plain.svg"
+  "Git": "https://raw.githubusercontent.com/devicons/devicon/master/icons/git/git-original.svg",
+  "VS Code": "https://raw.githubusercontent.com/devicons/devicon/master/icons/vscode/vscode-original.svg",
+  "Postman": "https://raw.githubusercontent.com/devicons/devicon/master/icons/chrome/chrome-original.svg",
+  "Figma": "https://raw.githubusercontent.com/devicons/devicon/master/icons/figma/figma-original.svg",
+  "Jest": "https://raw.githubusercontent.com/devicons/devicon/master/icons/jest/jest-plain.svg"
 }
 
 const skills: SkillCategory[] = [

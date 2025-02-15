@@ -54,11 +54,29 @@ const techStackIcons = {
   aws: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg"
 }
 
-function ProjectPreview({ title, subtitle }: { title: string; subtitle?: string }) {
+function ProjectPreview({ title, subtitle, imageUrl }: { title: string; subtitle?: string; imageUrl?: string }) {
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center bg-primary/10 text-primary">
-      <h4 className="text-xl font-semibold">{title}</h4>
-      {subtitle && <p className="text-sm mt-2 text-primary/70">{subtitle}</p>}
+    <div className="w-full h-full flex flex-col items-center justify-center bg-primary/10 text-primary relative overflow-hidden">
+      {imageUrl ? (
+        <div className="absolute inset-0">
+          <Image
+            src={imageUrl}
+            alt={title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+          <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center p-4">
+            <h4 className="text-xl font-semibold text-white">{title}</h4>
+            {subtitle && <p className="text-sm mt-2 text-white/70">{subtitle}</p>}
+          </div>
+        </div>
+      ) : (
+        <>
+          <h4 className="text-xl font-semibold">{title}</h4>
+          {subtitle && <p className="text-sm mt-2 text-primary/70">{subtitle}</p>}
+        </>
+      )}
     </div>
   )
 }
@@ -73,8 +91,8 @@ const fallbackProjects: Repository[] = [
     topics: ["next.js", "typescript", "tailwindcss", "framer-motion"],
     stargazers_count: 0,
     language: "TypeScript",
-    screenshots: ["Portfolio Website"],
-    demo_url: "https://jonas-zacho.com",
+    screenshots: ["https://i.imgur.com/27rWIav.jpeg"],
+    demo_url: "https://cursor-portfolio-9xtp49961-jonas-zacho-poulsens-projects.vercel.app",
     status: "completed",
     tech_stack: [
       { name: "Next.js", icon: techStackIcons["next.js"] },
@@ -161,8 +179,9 @@ function ProjectCard({ project }: { project: Repository }) {
       {/* Project Screenshots */}
       <div className="relative h-48 bg-background/50">
         <ProjectPreview 
-          title={screenshots[currentImageIndex] || project.name}
+          title={project.name}
           subtitle={status === "completed" ? "Live Project" : status}
+          imageUrl={typeof screenshots[currentImageIndex] === 'string' ? screenshots[currentImageIndex] : undefined}
         />
         {screenshots.length > 1 && (
           <div className="absolute inset-0 flex items-center justify-between p-2">
