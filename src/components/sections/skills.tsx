@@ -25,11 +25,13 @@ const skillIcons = {
   "HTML5": "https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg",
   
   // Frameworks & Libraries
-  ".NET Core": "https://raw.githubusercontent.com/devicons/devicon/master/icons/dotnetcore/dotnetcore-original.svg",
+  "React": "https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg",
+  ".NET": "https://raw.githubusercontent.com/devicons/devicon/master/icons/dotnetcore/dotnetcore-original.svg",
   "ASP.NET": "https://raw.githubusercontent.com/devicons/devicon/master/icons/dot-net/dot-net-original.svg",
   "Next.js": "https://raw.githubusercontent.com/devicons/devicon/master/icons/nextjs/nextjs-original.svg",
   "Node.js": "https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg",
   "Tailwind CSS": "https://raw.githubusercontent.com/devicons/devicon/master/icons/tailwindcss/tailwindcss-plain.svg",
+  "Framer Motion": "https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg",
   
   // Tools & Platforms
   "Azure": "https://raw.githubusercontent.com/devicons/devicon/master/icons/azure/azure-original.svg",
@@ -37,9 +39,11 @@ const skillIcons = {
   "GitLab": "https://raw.githubusercontent.com/devicons/devicon/master/icons/gitlab/gitlab-original.svg",
   "Docker": "https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg",
   "PostgreSQL": "https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg",
+  "Redis": "https://raw.githubusercontent.com/devicons/devicon/master/icons/redis/redis-original.svg",
   "Linux": "https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg",
   "Visual Studio": "https://raw.githubusercontent.com/devicons/devicon/master/icons/visualstudio/visualstudio-plain.svg",
   "VS Code": "https://raw.githubusercontent.com/devicons/devicon/master/icons/vscode/vscode-original.svg",
+  "Vercel": "https://raw.githubusercontent.com/devicons/devicon/master/icons/nextjs/nextjs-original.svg",
   
   // Project Management & Collaboration
   "Jira": "https://raw.githubusercontent.com/devicons/devicon/master/icons/jira/jira-original.svg",
@@ -63,11 +67,13 @@ const skills: SkillCategory[] = [
   {
     category: "Frameworks & Libraries",
     items: [
-      { name: ".NET Core", icon: skillIcons[".NET Core"], proficiency: 95 },
+      { name: "React", icon: skillIcons["React"], proficiency: 90 },
+      { name: ".NET", icon: skillIcons[".NET"], proficiency: 95 },
       { name: "ASP.NET", icon: skillIcons["ASP.NET"], proficiency: 90 },
       { name: "Next.js", icon: skillIcons["Next.js"], proficiency: 85 },
       { name: "Node.js", icon: skillIcons["Node.js"], proficiency: 85 },
-      { name: "Tailwind CSS", icon: skillIcons["Tailwind CSS"], proficiency: 85 }
+      { name: "Tailwind CSS", icon: skillIcons["Tailwind CSS"], proficiency: 85 },
+      { name: "Framer Motion", icon: skillIcons["Framer Motion"], proficiency: 80 }
     ]
   },
   {
@@ -77,8 +83,10 @@ const skills: SkillCategory[] = [
       { name: "Git", icon: skillIcons["Git"], proficiency: 90 },
       { name: "Docker", icon: skillIcons["Docker"], proficiency: 85 },
       { name: "PostgreSQL", icon: skillIcons["PostgreSQL"], proficiency: 85 },
+      { name: "Redis", icon: skillIcons["Redis"], proficiency: 80 },
       { name: "Linux", icon: skillIcons["Linux"], proficiency: 80 },
-      { name: "Visual Studio", icon: skillIcons["Visual Studio"], proficiency: 90 }
+      { name: "Visual Studio", icon: skillIcons["Visual Studio"], proficiency: 90 },
+      { name: "Vercel", icon: skillIcons["Vercel"], proficiency: 85 }
     ]
   },
   {

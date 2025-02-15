@@ -139,7 +139,7 @@ const fallbackProjects: Repository[] = [
     language: "TypeScript",
     screenshots: [],
     demo_url: "https://shop.jonas-zacho.com",
-    status: "planned",
+    status: "completed",
     tech_stack: [
       { name: "Next.js", icon: techStackIcons["next.js"] },
       { name: "TypeScript", icon: techStackIcons.typescript },
@@ -318,7 +318,7 @@ export function Projects() {
             } : {
               ...githubProject,
               screenshots: [githubProject.name],
-              status: "planned" as const,
+              status: "completed" as const,
               tech_stack: [],
               topics: githubProject.topics || []
             }
