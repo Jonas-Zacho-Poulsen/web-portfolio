@@ -57,7 +57,7 @@ const techStackIcons = {
 function ProjectPreview({ title, subtitle, imageUrl }: { title: string; subtitle?: string; imageUrl?: string }) {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center bg-primary/10 text-primary relative overflow-hidden">
-      {imageUrl ? (
+      {imageUrl && imageUrl.startsWith("/") ? (
         <div className="absolute inset-0">
           <Image
             src={imageUrl}
@@ -114,7 +114,7 @@ const fallbackProjects: Repository[] = [
     topics: ["react", "openai", "websocket", "typescript"],
     stargazers_count: 0,
     language: "TypeScript",
-    screenshots: ["AI Chat App"],
+    screenshots: [],
     demo_url: "https://ai-chat.jonas-zacho.com",
     status: "in-progress",
     tech_stack: [
@@ -137,7 +137,7 @@ const fallbackProjects: Repository[] = [
     topics: ["next.js", "trpc", "prisma", "stripe"],
     stargazers_count: 0,
     language: "TypeScript",
-    screenshots: ["E-commerce Platform"],
+    screenshots: [],
     demo_url: "https://shop.jonas-zacho.com",
     status: "planned",
     tech_stack: [
