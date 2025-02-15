@@ -59,10 +59,10 @@ export function Hero() {
             <EmailIcon />
           </motion.a>
           <motion.a
-            href="tel:+4550227300"
+            href="tel:+45-50-22-73-00"
             whileHover={{ scale: 1.1 }}
             className="text-muted-foreground hover:text-primary transition-colors"
-            title="Call me"
+            title="Call me: +45 50 22 73 00"
           >
             <PhoneIcon />
           </motion.a>

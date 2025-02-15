@@ -83,7 +83,7 @@ export function About() {
             {!imageError ? (
               <div className="relative w-full h-full">
                 <Image
-                  src="/profile.JPG"
+                  src="https://i.imgur.com/27rWIav.jpeg"
                   alt="Jonas Zacho Poulsen"
                   fill
                   className="object-contain object-center p-4"

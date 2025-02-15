@@ -29,7 +29,7 @@ Each project demonstrates his ability to build modern, scalable applications.`,
   
   contact: `You can reach Jonas through:
 - Email: jonaszachopoulsen@live.dk
-- Phone: +45 5022 7300
+- Phone: +45 50 22 73 00
 - GitHub: github.com/Jonas-Zacho-Poulsen
 
 You can also download his CV from the website for more detailed information.`,
