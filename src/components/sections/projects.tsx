@@ -91,7 +91,7 @@ const fallbackProjects: Repository[] = [
     topics: ["next.js", "typescript", "tailwindcss", "framer-motion"],
     stargazers_count: 0,
     language: "TypeScript",
-    screenshots: ["https://i.imgur.com/27rWIav.jpeg"],
+    screenshots: ["/portfolio-screenshot.png"],
     demo_url: "https://cursor-portfolio-9xtp49961-jonas-zacho-poulsens-projects.vercel.app",
     status: "completed",
     tech_stack: [

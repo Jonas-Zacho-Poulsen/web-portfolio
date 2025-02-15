@@ -15,74 +15,80 @@ interface SkillCategory {
 }
 
 const skillIcons = {
-  // Frontend
-  "React": "https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg",
-  "Next.js": "https://raw.githubusercontent.com/devicons/devicon/master/icons/nextjs/nextjs-original.svg",
+  // Programming Languages
+  "C#": "https://raw.githubusercontent.com/devicons/devicon/master/icons/csharp/csharp-original.svg",
+  "Java": "https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg",
+  "JavaScript": "https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg",
   "TypeScript": "https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg",
-  "Tailwind CSS": "https://raw.githubusercontent.com/devicons/devicon/master/icons/tailwindcss/tailwindcss-plain.svg",
-  "Framer Motion": "https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg",
+  "Python": "https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg",
+  "SQL": "https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original.svg",
+  "HTML5": "https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg",
   
-  // Backend
+  // Frameworks & Libraries
+  ".NET Core": "https://raw.githubusercontent.com/devicons/devicon/master/icons/dotnetcore/dotnetcore-original.svg",
+  "ASP.NET": "https://raw.githubusercontent.com/devicons/devicon/master/icons/dot-net/dot-net-original.svg",
+  "Next.js": "https://raw.githubusercontent.com/devicons/devicon/master/icons/nextjs/nextjs-original.svg",
   "Node.js": "https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg",
-  "tRPC": "https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg",
-  "Prisma": "https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg",
-  "PostgreSQL": "https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg",
-  "Redis": "https://raw.githubusercontent.com/devicons/devicon/master/icons/redis/redis-original.svg",
+  "Tailwind CSS": "https://raw.githubusercontent.com/devicons/devicon/master/icons/tailwindcss/tailwindcss-plain.svg",
   
-  // DevOps
-  "Docker": "https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg",
-  "GitHub Actions": "https://raw.githubusercontent.com/devicons/devicon/master/icons/github/github-original.svg",
-  "Vercel": "https://raw.githubusercontent.com/devicons/devicon/master/icons/nextjs/nextjs-original.svg",
-  "AWS": "https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original.svg",
-  "CI/CD": "https://raw.githubusercontent.com/devicons/devicon/master/icons/git/git-original.svg",
-  
-  // Tools
+  // Tools & Platforms
+  "Azure": "https://raw.githubusercontent.com/devicons/devicon/master/icons/azure/azure-original.svg",
   "Git": "https://raw.githubusercontent.com/devicons/devicon/master/icons/git/git-original.svg",
+  "GitLab": "https://raw.githubusercontent.com/devicons/devicon/master/icons/gitlab/gitlab-original.svg",
+  "Docker": "https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg",
+  "PostgreSQL": "https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg",
+  "Linux": "https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg",
+  "Visual Studio": "https://raw.githubusercontent.com/devicons/devicon/master/icons/visualstudio/visualstudio-plain.svg",
   "VS Code": "https://raw.githubusercontent.com/devicons/devicon/master/icons/vscode/vscode-original.svg",
-  "Postman": "https://raw.githubusercontent.com/devicons/devicon/master/icons/chrome/chrome-original.svg",
-  "Figma": "https://raw.githubusercontent.com/devicons/devicon/master/icons/figma/figma-original.svg",
-  "Jest": "https://raw.githubusercontent.com/devicons/devicon/master/icons/jest/jest-plain.svg"
+  
+  // Project Management & Collaboration
+  "Jira": "https://raw.githubusercontent.com/devicons/devicon/master/icons/jira/jira-original.svg",
+  "Confluence": "https://raw.githubusercontent.com/devicons/devicon/master/icons/confluence/confluence-original.svg",
+  "Trello": "https://raw.githubusercontent.com/devicons/devicon/master/icons/trello/trello-plain.svg"
 }
 
 const skills: SkillCategory[] = [
   {
-    category: "Frontend",
+    category: "Programming Languages",
     items: [
-      { name: "React", icon: skillIcons["React"], proficiency: 95 },
-      { name: "Next.js", icon: skillIcons["Next.js"], proficiency: 90 },
-      { name: "TypeScript", icon: skillIcons["TypeScript"], proficiency: 85 },
-      { name: "Tailwind CSS", icon: skillIcons["Tailwind CSS"], proficiency: 90 },
-      { name: "Framer Motion", icon: skillIcons["Framer Motion"], proficiency: 80 }
+      { name: "C#", icon: skillIcons["C#"], proficiency: 95 },
+      { name: "JavaScript", icon: skillIcons["JavaScript"], proficiency: 90 },
+      { name: "TypeScript", icon: skillIcons["TypeScript"], proficiency: 90 },
+      { name: "Python", icon: skillIcons["Python"], proficiency: 85 },
+      { name: "Java", icon: skillIcons["Java"], proficiency: 85 },
+      { name: "SQL", icon: skillIcons["SQL"], proficiency: 85 },
+      { name: "HTML5", icon: skillIcons["HTML5"], proficiency: 90 }
     ]
   },
   {
-    category: "Backend",
+    category: "Frameworks & Libraries",
     items: [
+      { name: ".NET Core", icon: skillIcons[".NET Core"], proficiency: 95 },
+      { name: "ASP.NET", icon: skillIcons["ASP.NET"], proficiency: 90 },
+      { name: "Next.js", icon: skillIcons["Next.js"], proficiency: 85 },
       { name: "Node.js", icon: skillIcons["Node.js"], proficiency: 85 },
-      { name: "tRPC", icon: skillIcons["tRPC"], proficiency: 80 },
-      { name: "Prisma", icon: skillIcons["Prisma"], proficiency: 85 },
-      { name: "PostgreSQL", icon: skillIcons["PostgreSQL"], proficiency: 80 },
-      { name: "Redis", icon: skillIcons["Redis"], proficiency: 75 }
+      { name: "Tailwind CSS", icon: skillIcons["Tailwind CSS"], proficiency: 85 }
     ]
   },
   {
-    category: "DevOps",
+    category: "Tools & Platforms",
     items: [
-      { name: "Docker", icon: skillIcons["Docker"], proficiency: 80 },
-      { name: "GitHub Actions", icon: skillIcons["GitHub Actions"], proficiency: 85 },
-      { name: "Vercel", icon: skillIcons["Vercel"], proficiency: 90 },
-      { name: "AWS", icon: skillIcons["AWS"], proficiency: 75 },
-      { name: "CI/CD", icon: skillIcons["CI/CD"], proficiency: 80 }
-    ]
-  },
-  {
-    category: "Tools",
-    items: [
+      { name: "Azure", icon: skillIcons["Azure"], proficiency: 90 },
       { name: "Git", icon: skillIcons["Git"], proficiency: 90 },
-      { name: "VS Code", icon: skillIcons["VS Code"], proficiency: 95 },
-      { name: "Postman", icon: skillIcons["Postman"], proficiency: 85 },
-      { name: "Figma", icon: skillIcons["Figma"], proficiency: 80 },
-      { name: "Jest", icon: skillIcons["Jest"], proficiency: 85 }
+      { name: "Docker", icon: skillIcons["Docker"], proficiency: 85 },
+      { name: "PostgreSQL", icon: skillIcons["PostgreSQL"], proficiency: 85 },
+      { name: "Linux", icon: skillIcons["Linux"], proficiency: 80 },
+      { name: "Visual Studio", icon: skillIcons["Visual Studio"], proficiency: 90 }
+    ]
+  },
+  {
+    category: "Methodologies & Practices",
+    items: [
+      { name: "Agile", icon: skillIcons["Jira"], proficiency: 90 },
+      { name: "Scrum", icon: skillIcons["Jira"], proficiency: 90 },
+      { name: "Test Automation", icon: skillIcons["Visual Studio"], proficiency: 85 },
+      { name: "CI/CD", icon: skillIcons["GitLab"], proficiency: 85 },
+      { name: "REST APIs", icon: skillIcons["Node.js"], proficiency: 90 }
     ]
   }
 ]
