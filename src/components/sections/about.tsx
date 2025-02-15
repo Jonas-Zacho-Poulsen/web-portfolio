@@ -78,24 +78,20 @@ export function About() {
 
           <motion.div
             variants={item}
-            className="relative h-[300px] rounded-lg overflow-hidden bg-secondary/50"
+            className="relative h-[300px] rounded-lg overflow-hidden bg-secondary/50 flex items-center justify-center"
           >
             {!imageError ? (
-              <div className="relative w-full h-full">
-                <Image
-                  src="https://i.imgur.com/27rWIav.jpeg"
-                  alt="Jonas Zacho Poulsen"
-                  fill
-                  className="object-contain object-center p-4"
-                  priority
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  quality={100}
-                  onError={() => setImageError(true)}
-                  unoptimized
-                />
-              </div>
+              <Image
+                src="https://i.imgur.com/27rWIav.jpeg"
+                alt="Jonas Zacho Poulsen"
+                width={400}
+                height={400}
+                className="object-contain p-4 rounded-lg"
+                priority
+                onError={() => setImageError(true)}
+              />
             ) : (
-              <div className="absolute inset-0 flex items-center justify-center">
+              <div className="flex items-center justify-center">
                 <span className="text-6xl">👨‍💻</span>
               </div>
             )}
