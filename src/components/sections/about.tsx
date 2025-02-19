@@ -39,14 +39,14 @@ export function About() {
           <motion.div variants={item} className="space-y-6 flex flex-col justify-between">
             <div className="space-y-6">
               <p className="text-lg text-muted-foreground">
-                I'm a passionate Full Stack Developer with expertise in modern web technologies.
-                My journey in software development has been driven by a desire to create
-                elegant solutions to complex problems.
+              I’m passionate about solving real-world problems and making a difference.
+              I enjoy working on meaningful projects, learning, and collaborating with great people. 
+              My goal is to grow, contribute, and create solutions that matter.
               </p>
               <p className="text-lg text-muted-foreground">
                 With a strong foundation in both frontend and backend development,
-                I specialize in building scalable applications using cutting-edge
-                technologies like Next.js, TypeScript, and various cloud services.
+                I specialize in building scalable applications using technologies
+                like .NET, Python, Next.js, TypeScript, and various cloud services.
               </p>
             </div>
             <div className="flex flex-wrap gap-4">

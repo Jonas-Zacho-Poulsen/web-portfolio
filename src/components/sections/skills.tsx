@@ -57,10 +57,11 @@ const skills: SkillCategory[] = [
       { name: "C#", icon: skillIcons["C#"], proficiency: 95 },
       { name: "JavaScript", icon: skillIcons["JavaScript"], proficiency: 90 },
       { name: "TypeScript", icon: skillIcons["TypeScript"], proficiency: 90 },
-      { name: "Python", icon: skillIcons["Python"], proficiency: 85 },
+      { name: "Python", icon: skillIcons["Python"], proficiency: 90 },
       { name: "Java", icon: skillIcons["Java"], proficiency: 85 },
-      { name: "SQL", icon: skillIcons["SQL"], proficiency: 85 },
-      { name: "HTML5", icon: skillIcons["HTML5"], proficiency: 90 }
+      { name: "SQL", icon: skillIcons["SQL"], proficiency: 90 },
+      { name: "HTML5", icon: skillIcons["HTML5"], proficiency: 90 },
+      { name: "CSS3", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original.svg", proficiency: 85 }
     ]
   },
   {
@@ -72,18 +73,23 @@ const skills: SkillCategory[] = [
       { name: "Next.js", icon: skillIcons["Next.js"], proficiency: 85 },
       { name: "Node.js", icon: skillIcons["Node.js"], proficiency: 85 },
       { name: "Tailwind CSS", icon: skillIcons["Tailwind CSS"], proficiency: 85 },
-      { name: "Framer Motion", icon: skillIcons["Framer Motion"], proficiency: 80 }
+      { name: "Framer Motion", icon: skillIcons["Framer Motion"], proficiency: 80 },
+      { name: "Express.js", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original.svg", proficiency: 80 }
+
     ]
   },
   {
     category: "Tools & Platforms",
     items: [
       { name: "Azure", icon: skillIcons["Azure"], proficiency: 90 },
-      { name: "Git", icon: skillIcons["Git"], proficiency: 90 },
-      { name: "Docker", icon: skillIcons["Docker"], proficiency: 85 },
+      { name: "Git", icon: skillIcons["Git"], proficiency: 95 },
+      { name: "Docker", icon: skillIcons["Docker"], proficiency: 80 },
       { name: "PostgreSQL", icon: skillIcons["PostgreSQL"], proficiency: 85 },
-      { name: "Redis", icon: skillIcons["Redis"], proficiency: 80 },
-      { name: "Linux", icon: skillIcons["Linux"], proficiency: 80 },
+      { name: "Jira", icon: skillIcons["Jira"], proficiency: 90 },
+      // { name: "Confluence", icon: skillIcons["Confluence"], proficiency: 85 },
+      // { name: "Trello", icon: skillIcons["Trello"], proficiency: 90 },
+      // { name: "Redis", icon: skillIcons["Redis"], proficiency: 80 },
+      { name: "Linux", icon: skillIcons["Linux"], proficiency: 85 },
       { name: "Visual Studio", icon: skillIcons["Visual Studio"], proficiency: 90 },
       { name: "Vercel", icon: skillIcons["Vercel"], proficiency: 85 }
     ]
@@ -95,7 +101,8 @@ const skills: SkillCategory[] = [
       { name: "Scrum", icon: skillIcons["Jira"], proficiency: 90 },
       { name: "Test Automation", icon: skillIcons["Visual Studio"], proficiency: 85 },
       { name: "CI/CD", icon: skillIcons["GitLab"], proficiency: 85 },
-      { name: "REST APIs", icon: skillIcons["Node.js"], proficiency: 90 }
+      { name: "REST APIs", icon: skillIcons["Node.js"], proficiency: 90 },
+      { name: "Prompt Engineering", icon: "https://www.svgrepo.com/show/306500/openai.svg", proficiency: 90 }
     ]
   }
 ].map(category => ({
