@@ -1,7 +1,6 @@
 "use client"
 
 import { motion } from "framer-motion"
-import Image from "next/image"
 
 interface Skill {
   name: string
@@ -99,7 +98,10 @@ const skills: SkillCategory[] = [
       { name: "REST APIs", icon: skillIcons["Node.js"], proficiency: 90 }
     ]
   }
-]
+].map(category => ({
+  ...category,
+  items: [...category.items].sort((a, b) => b.proficiency - a.proficiency)
+}))
 
 const container = {
   hidden: { opacity: 0 },
@@ -124,11 +126,10 @@ function SkillItem({ skill }: { skill: Skill }) {
     >
       <div className="flex items-center space-x-3 mb-1">
         <div className="relative w-6 h-6 flex-shrink-0 transition-transform group-hover:scale-110">
-          <Image
+          <img
             src={skill.icon}
             alt={skill.name}
-            fill
-            className="object-contain"
+            className="w-full h-full object-contain"
           />
         </div>
         <span className="text-sm text-muted-foreground">{skill.name}</span>
@@ -186,4 +187,4 @@ export function Skills() {
       </motion.div>
     </section>
   )
-} 
+}

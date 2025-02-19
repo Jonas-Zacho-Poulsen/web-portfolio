@@ -90,7 +90,7 @@ export function AIChat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
-      text: "Hi! I'm Jonas's AI assistant. How can I help you learn more about his experience?",
+      text: "Hi! I'm Jonas' AI assistant. How can I help you learn more about his experience?",
       sender: "ai",
       timestamp: new Date(),
       topic: "default"
@@ -243,7 +243,7 @@ export function AIChat() {
                   type="text"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="Ask about Jonas's experience..."
+                  placeholder="Ask about Jonas' experience..."
                   className="flex-1 px-4 py-2 rounded-lg bg-secondary/50 border border-border focus:outline-none focus:border-primary"
                 />
                 <motion.button
