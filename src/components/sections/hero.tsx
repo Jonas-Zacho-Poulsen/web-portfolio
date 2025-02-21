@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { EmailIcon, PhoneIcon, GithubIcon } from "@/components/icons"
+import { EmailIcon, PhoneIcon, GithubIcon, LinkedInIcon } from "@/components/icons"
 
 export function Hero() {
   return (
@@ -76,8 +76,18 @@ export function Hero() {
           >
             <GithubIcon />
           </motion.a>
+          <motion.a
+            href="https://www.linkedin.com/in/j-poulsen-/"
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.1 }}
+            className="text-muted-foreground hover:text-primary transition-colors"
+            title="Connect on LinkedIn"
+          >
+            <LinkedInIcon />
+          </motion.a>
         </div>
       </motion.div>
     </section>
   )
-} 
+}

@@ -1,6 +1,6 @@
 "use client"
 
-import { motion, useScroll } from "framer-motion"
+import { motion, useScroll, AnimatePresence } from "framer-motion"
 import { useEffect, useState } from "react"
 
 const navItems = [
@@ -13,6 +13,7 @@ const navItems = [
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { scrollY } = useScroll()
 
   useEffect(() => {
@@ -20,6 +21,12 @@ export function Navigation() {
       setIsScrolled(latest > 50)
     })
   }, [scrollY])
+
+  const handleNavClick = (href: string) => {
+    const element = document.querySelector(href)
+    element?.scrollIntoView({ behavior: "smooth" })
+    setIsMobileMenuOpen(false)
+  }
 
   return (
     <motion.nav
@@ -48,8 +55,7 @@ export function Navigation() {
                   className="px-3 py-2 rounded-md text-sm font-medium text-foreground/80 hover:text-foreground hover:bg-primary/10"
                   onClick={(e) => {
                     e.preventDefault()
-                    const element = document.querySelector(item.href)
-                    element?.scrollIntoView({ behavior: "smooth" })
+                    handleNavClick(item.href)
                   }}
                 >
                   {item.name}
@@ -62,10 +68,10 @@ export function Navigation() {
           <div className="sm:hidden">
             <motion.button
               whileTap={{ scale: 0.95 }}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-foreground/80 hover:text-foreground hover:bg-primary/10"
             >
               <span className="sr-only">Open main menu</span>
-              {/* Icon */}
               <svg
                 className="block h-6 w-6"
                 xmlns="http://www.w3.org/2000/svg"
@@ -77,13 +83,45 @@ export function Navigation() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
+                  d={isMobileMenuOpen 
+                    ? "M6 18L18 6M6 6l12 12" 
+                    : "M4 6h16M4 12h16M4 18h16"}
                 />
               </svg>
             </motion.button>
           </div>
         </div>
+
+        {/* Mobile menu */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.2 }}
+              className="sm:hidden"
+            >
+              <div className="px-2 pt-2 pb-3 space-y-1">
+                {navItems.map((item) => (
+                  <motion.a
+                    key={item.name}
+                    href={item.href}
+                    whileHover={{ x: 4 }}
+                    className="block px-3 py-2 rounded-md text-base font-medium text-foreground/80 hover:text-foreground hover:bg-primary/10"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      handleNavClick(item.href)
+                    }}
+                  >
+                    {item.name}
+                  </motion.a>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </motion.nav>
   )
-} 
+}

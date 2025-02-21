@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion"
 import { useState } from "react"
-import { EmailIcon, PhoneIcon, GithubIcon } from "@/components/icons"
+import { EmailIcon, PhoneIcon, GithubIcon, LinkedInIcon } from "@/components/icons"
 
 const container = {
   hidden: { opacity: 0 },
@@ -37,6 +37,12 @@ const socials = [
     value: "Jonas-Zacho-Poulsen",
     icon: GithubIcon,
     href: "https://github.com/Jonas-Zacho-Poulsen"
+  },
+  {
+    name: "LinkedIn",
+    value: "j-poulsen",
+    icon: LinkedInIcon,
+    href: "https://www.linkedin.com/in/j-poulsen-/"
   }
 ]
 
@@ -107,8 +113,8 @@ export function Contact() {
                 <motion.a
                   key={social.name}
                   href={social.href}
-                  target={social.name === "GitHub" ? "_blank" : undefined}
-                  rel={social.name === "GitHub" ? "noopener noreferrer" : undefined}
+                  target={social.name === "GitHub" || social.name === "LinkedIn" ? "_blank" : undefined}
+                  rel={social.name === "GitHub" || social.name === "LinkedIn" ? "noopener noreferrer" : undefined}
                   whileHover={{ x: 5 }}
                   className="flex items-center space-x-4 p-4 rounded-lg bg-secondary/50 backdrop-blur-sm hover:bg-secondary/70 transition-colors"
                 >
@@ -190,4 +196,4 @@ export function Contact() {
       </motion.div>
     </section>
   )
-} 
+}
