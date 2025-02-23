@@ -20,8 +20,7 @@ export function Hero() {
           Full Stack Developer
         </h2>
         <p className="text-xl sm:text-2xl text-muted-foreground max-w-2xl mx-auto">
-          Building modern web applications with cutting-edge technologies
-        </p>
+        Passionate about solving real-world problems and making a difference. </p>
         
         <div className="flex flex-wrap gap-4 justify-center">
           <motion.a
