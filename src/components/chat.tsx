@@ -12,20 +12,18 @@ interface Message {
 }
 
 const predefinedResponses = {
-  experience: `Jonas is a Full Stack Developer with expertise in modern web technologies. He has experience building scalable applications using Next.js, TypeScript, and various cloud services.`,
+  experience: `Jonas is a Full Stack Developer with experience in building and maintainng scalable applications
+   using .NET, Python, Next.js, TypeScript, and various cloud services.`,
   
-  skills: `Jonas' key technical skills include:
-- Frontend: React, Next.js, TypeScript, Tailwind CSS
-- Backend: Node.js, tRPC, Prisma, PostgreSQL
-- DevOps: Docker, GitHub Actions, AWS
-- Tools: Git, VS Code, Figma`,
+   skills: `Jonas' key technical skills include:
+   - Frontend: React, Next.js, Tailwind CSS
+   - Backend: .NET, Python, Node.js, TypeScript, PostgreSQL
+   - Cloud & DevOps: Docker, GitHub Actions, Azure
+   - Tools: Git, VS Code, Jira`,
   
   projects: `Some of Jonas' notable projects include:
 1. Portfolio Website (Next.js 14, TypeScript, Tailwind)
-2. AI Chat Application (React, OpenAI, WebSocket)
-3. E-commerce Platform (Next.js, tRPC, Prisma)
-
-Each project demonstrates his ability to build modern, scalable applications.`,
+2. Chat Application (React, OpenAI, WebSocket)`,
   
   contact: `Get in Touch with Jonas:
 📧 Email: jonaszachopoulsen@live.dk
@@ -34,7 +32,7 @@ Each project demonstrates his ability to build modern, scalable applications.`,
 
 🔽 Download CV for more details.`,
 
-  default: "I'm an AI assistant that can help you learn more about Jonas' experience, skills, and projects. Feel free to ask me anything!"
+  default: "I'm an assistant that can help you learn more about Jonas' experience, skills, and projects. Feel free to ask me anything!"
 }
 
 const suggestedQuestions = {
@@ -85,12 +83,12 @@ function findBestResponse(message: string): { text: string; topic: Message["topi
   return { text: predefinedResponses.default, topic: "default" }
 }
 
-export function AIChat() {
+export function Chat() {
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
-      text: "Hi! I'm Jonas' AI assistant. How can I help you learn more about his experience?",
+      text: "Hi! I'm Jonas' assistant. How can I help you learn more about his experience?",
       sender: "ai",
       timestamp: new Date(),
       topic: "default"
@@ -126,14 +124,14 @@ export function AIChat() {
     // Simulate AI thinking time
     setTimeout(() => {
       const response = findBestResponse(userMessage.text)
-      const aiResponse: Message = {
+      const Response: Message = {
         id: (Date.now() + 1).toString(),
         text: response.text,
         sender: "ai",
         timestamp: new Date(),
         topic: response.topic
       }
-      setMessages(prev => [...prev, aiResponse])
+      setMessages(prev => [...prev, Response])
       setIsTyping(false)
     }, 1000)
   }
@@ -152,21 +150,21 @@ export function AIChat() {
     // Simulate AI thinking time
     setTimeout(() => {
       const response = findBestResponse(question)
-      const aiResponse: Message = {
+      const Response: Message = {
         id: (Date.now() + 1).toString(),
         text: response.text,
         sender: "ai",
         timestamp: new Date(),
         topic: response.topic
       }
-      setMessages(prev => [...prev, aiResponse])
+      setMessages(prev => [...prev, Response])
       setIsTyping(false)
     }, 1000)
   }
 
   // Get the last AI message's topic to determine which suggested questions to show
-  const lastAiMessage = [...messages].reverse().find(m => m.sender === "ai")
-  const currentTopic = lastAiMessage?.topic || "default"
+  const lastMessage = [...messages].reverse().find(m => m.sender === "ai")
+  const currentTopic = lastMessage?.topic || "default"
   const currentSuggestions = suggestedQuestions[currentTopic]
 
   return (
@@ -180,7 +178,7 @@ export function AIChat() {
             className="mb-4 w-80 sm:w-96 h-[500px] bg-background border border-border rounded-lg shadow-lg flex flex-col"
           >
             <div className="p-4 border-b border-border">
-              <h3 className="text-lg font-semibold">AI Assistant</h3>
+              <h3 className="text-lg font-semibold">Assistant</h3>
             </div>
             
             <div className="flex-1 overflow-y-auto p-4 space-y-4">

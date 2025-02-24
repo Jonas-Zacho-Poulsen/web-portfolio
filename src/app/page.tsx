@@ -3,7 +3,7 @@ import { About } from "@/components/sections/about"
 import { Skills } from "@/components/sections/skills"
 import { Projects } from "@/components/sections/projects"
 import { Contact } from "@/components/sections/contact"
-import { AIChat } from "@/components/ai-chat"
+import { Chat } from "@/components/chat"
 import { Navigation } from "@/components/navigation"
 
 export default function Home() {
@@ -27,7 +27,7 @@ export default function Home() {
           <Contact />
         </section>
       </div>
-      <AIChat />
+      <Chat />
     </main>
   )
 } 

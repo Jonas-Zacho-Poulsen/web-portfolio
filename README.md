@@ -15,8 +15,7 @@ A modern, responsive portfolio website showcasing my projects and skills. Built 
   - Responsive layout
   - Dark/Light mode with system preference sync
   - Smooth animations with Framer Motion
-  - Interactive particle background
-- 🤖 **AI Chat Assistant**
+- 🤖 **Chat Assistant**
   - Context-aware responses
   - Predefined topics with dynamic suggestions
   - Smooth animations and typing indicators
@@ -24,7 +23,6 @@ A modern, responsive portfolio website showcasing my projects and skills. Built 
   - GitHub integration
   - Live project status
   - Tech stack visualization
-  - Project screenshots carousel
 - 💻 **Technical Features**
   - TypeScript for type safety
   - Tailwind CSS for styling
