@@ -1,6 +1,6 @@
 "use client"
 
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, useDragControls } from "framer-motion"
 import { useState, useRef, useEffect } from "react"
 
 interface Message {
@@ -12,14 +12,14 @@ interface Message {
 }
 
 const predefinedResponses = {
-  experience: `Jonas is a Full Stack Developer with experience in building and maintainng scalable applications
+  experience: `Jonas is a Full Stack Developer with experience in building and maintaining scalable applications
    using .NET, Python, Next.js, TypeScript, and various cloud services.`,
   
-   skills: `Jonas' key technical skills include:
-   - Frontend: React, Next.js, Tailwind CSS
-   - Backend: .NET, Python, Node.js, TypeScript, PostgreSQL
-   - Cloud & DevOps: Docker, GitHub Actions, Azure
-   - Tools: Git, VS Code, Jira`,
+  skills: `Jonas' key technical skills include:
+- Frontend: React, Next.js, Tailwind CSS
+- Backend: .NET, Python, Node.js, TypeScript, PostgreSQL
+- Cloud & DevOps: Docker, GitHub Actions, Azure
+- Tools: Git, VS Code, Jira`,
   
   projects: `Some of Jonas' notable projects include:
 1. Portfolio Website (Next.js 14, TypeScript, Tailwind)
@@ -97,6 +97,11 @@ export function Chat() {
   const [inputValue, setInputValue] = useState("")
   const [isTyping, setIsTyping] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const dragControls = useDragControls()
+  const [chatSize, setChatSize] = useState({ width: 384, height: 500 }) // Default size (w-96 = 384px)
+  const [isResizing, setIsResizing] = useState(false)
+  const resizeStartPos = useRef({ x: 0, y: 0 })
+  const resizeStartSize = useRef({ width: 0, height: 0 })
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -162,6 +167,48 @@ export function Chat() {
     }, 1000)
   }
 
+  // Resize handlers
+  const startResize = (e: React.PointerEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Capture the pointer to ensure all pointer events go to this element
+    (e.target as Element).setPointerCapture(e.pointerId);
+    
+    setIsResizing(true);
+    resizeStartPos.current = { x: e.clientX, y: e.clientY };
+    resizeStartSize.current = { ...chatSize };
+    
+    // We'll handle the resize in the pointer events on the element itself
+    // rather than adding document-level event listeners
+  }
+  
+  const handleResize = (e: React.PointerEvent) => {
+    if (!isResizing) return;
+    
+    const deltaX = e.clientX - resizeStartPos.current.x;
+    const deltaY = e.clientY - resizeStartPos.current.y;
+    
+    setChatSize({
+      width: Math.max(300, resizeStartSize.current.width + deltaX),
+      height: Math.max(400, resizeStartSize.current.height + deltaY)
+    });
+  }
+  
+  const stopResize = (e: React.PointerEvent) => {
+    if (!isResizing) return;
+    
+    // Release the pointer capture
+    (e.target as Element).releasePointerCapture(e.pointerId);
+    
+    setIsResizing(false);
+  }
+
+  // Function to start drag
+  const startDrag = (e: React.PointerEvent) => {
+    dragControls.start(e)
+  }
+
   // Get the last AI message's topic to determine which suggested questions to show
   const lastMessage = [...messages].reverse().find(m => m.sender === "ai")
   const currentTopic = lastMessage?.topic || "default"
@@ -175,10 +222,31 @@ export function Chat() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
-            className="mb-4 w-80 sm:w-96 h-[500px] bg-background border border-border rounded-lg shadow-lg flex flex-col"
+            drag
+            dragControls={dragControls}
+            dragMomentum={false}
+            dragListener={!isResizing} // Disable drag when resizing
+            style={{ 
+              width: chatSize.width, 
+              height: chatSize.height,
+              position: 'relative'
+            }}
+            className="mb-4 bg-background border border-border rounded-lg shadow-lg flex flex-col"
           >
-            <div className="p-4 border-b border-border">
+            <div 
+              className="p-4 border-b border-border cursor-move flex justify-between items-center"
+              onPointerDown={startDrag}
+            >
               <h3 className="text-lg font-semibold">Assistant</h3>
+              <button 
+                onClick={() => setIsOpen(false)}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
             </div>
             
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -254,6 +322,22 @@ export function Chat() {
                 </motion.button>
               </div>
             </form>
+
+            {/* Resize handle */}
+            <div 
+              className="absolute bottom-0 right-0 w-8 h-8 cursor-se-resize z-50" 
+              onPointerDown={startResize}
+              onPointerMove={handleResize}
+              onPointerUp={stopResize}
+              onPointerCancel={stopResize}
+              style={{
+                touchAction: 'none',
+              }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" opacity="0.7" className="absolute bottom-1 right-1">
+                <path d="M22 22H16V16H22V22ZM22 13H19V16H16V19H13V22H22V13Z" />
+              </svg>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

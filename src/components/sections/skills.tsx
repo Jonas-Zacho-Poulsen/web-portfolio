@@ -15,22 +15,22 @@ interface SkillCategory {
 
 const skillIcons = {
   // Programming Languages
-  "C#": "https://raw.githubusercontent.com/devicons/devicon/master/icons/csharp/csharp-original.svg",
-  "Java": "https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg",
-  "JavaScript": "https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg",
-  "TypeScript": "https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg",
-  "Python": "https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg",
-  "SQL": "https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original.svg",
-  "HTML5": "https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg",
+  "C#": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg",
+  "Java": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg",
+  "JavaScript": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
+  "TypeScript": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
+  "Python": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
+  "SQL": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg",
+  "HTML5": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
   
   // Frameworks & Libraries
-  "React": "https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg",
-  ".NET": "https://raw.githubusercontent.com/devicons/devicon/master/icons/dotnetcore/dotnetcore-original.svg",
-  "ASP.NET": "https://raw.githubusercontent.com/devicons/devicon/master/icons/dot-net/dot-net-original.svg",
-  "Next.js": "https://raw.githubusercontent.com/devicons/devicon/master/icons/nextjs/nextjs-original.svg",
-  "Node.js": "https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg",
-  "Tailwind CSS": "https://raw.githubusercontent.com/devicons/devicon/master/icons/tailwindcss/tailwindcss-plain.svg",
-  "Framer Motion": "https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg",
+  "React": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
+  ".NET": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dotnetcore/dotnetcore-original.svg",
+  "ASP.NET": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dot-net/dot-net-original.svg",
+  "Next.js": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg",
+  "Node.js": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg",
+  "Tailwind CSS": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg",
+  "Framer Motion": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
   
   // Tools & Platforms
   "Azure": "https://raw.githubusercontent.com/devicons/devicon/master/icons/azure/azure-original.svg",
@@ -126,13 +126,22 @@ const item = {
 }
 
 function SkillItem({ skill }: { skill: Skill }) {
+  // List of icons that need a light background in dark mode
+  const needsLightBg = [
+    "https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original.svg",
+    "https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original.svg",
+    "https://www.svgrepo.com/show/306500/openai.svg"
+  ];
+  
+  const needsBackground = needsLightBg.includes(skill.icon);
+  
   return (
     <motion.li
       whileHover={{ x: 5 }}
       className="group"
     >
       <div className="flex items-center space-x-3 mb-1">
-        <div className="relative w-6 h-6 flex-shrink-0 transition-transform group-hover:scale-110">
+        <div className={`relative w-6 h-6 flex-shrink-0 transition-transform group-hover:scale-110 ${needsBackground ? 'dark:bg-white/90 dark:rounded-full dark:p-0.5' : ''}`}>
           <img
             src={skill.icon}
             alt={skill.name}
@@ -195,3 +204,10 @@ export function Skills() {
     </section>
   )
 }
+
+
+
+
+
+
+
