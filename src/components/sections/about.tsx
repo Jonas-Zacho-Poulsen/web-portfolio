@@ -39,7 +39,6 @@ export function About() {
           <motion.div variants={item} className="space-y-6 flex flex-col justify-between">
             <div className="space-y-6">
               <p className="text-lg text-muted-foreground">
-              I’m passionate about solving real-world problems and making a difference.
               I enjoy working on meaningful projects, learning, and collaborating with great people. 
               My goal is to grow, contribute, and create solutions that matter.
               </p>
@@ -101,4 +100,3 @@ export function About() {
     </section>
   )
 } 
-

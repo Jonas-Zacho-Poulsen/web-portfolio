@@ -40,7 +40,7 @@ const socials = [
   },
   {
     name: "LinkedIn",
-    value: "j-poulsen",
+    value: "j-poulsen-",
     icon: LinkedInIcon,
     href: "https://www.linkedin.com/in/j-poulsen-/"
   }
