@@ -2,15 +2,24 @@
 
 import { motion, AnimatePresence, useDragControls } from "framer-motion"
 import { useState, useRef, useEffect } from "react"
+import { create } from 'zustand'
+
+// Add rate limiting
+const RATE_LIMIT_MS = 1000;
+let lastMessageTime = 0;
+
+// Improve message handling with proper typing
+type MessageType = 'experience' | 'skills' | 'projects' | 'contact' | 'default';
 
 interface Message {
-  id: string
-  text: string
-  sender: "user" | "ai"
-  timestamp: Date
-  topic?: "experience" | "skills" | "projects" | "contact" | "default"
+  id: string;
+  text: string;
+  sender: 'user' | 'ai';
+  timestamp: Date;
+  topic?: MessageType;
 }
 
+// Move predefinedResponses before initialMessage
 const predefinedResponses = {
   experience: `Jonas is a Full Stack Developer with experience in building and maintaining scalable applications
    using .NET, Python, Next.js, TypeScript, and various cloud services.`,
@@ -34,6 +43,14 @@ const predefinedResponses = {
 
   default: "I'm an assistant that can help you learn more about Jonas' experience, skills, and projects. Feel free to ask me anything!"
 }
+
+const initialMessage: Message = {
+  id: '0',
+  text: predefinedResponses.default,
+  sender: 'ai',
+  timestamp: new Date(),
+  topic: 'default'
+};
 
 const suggestedQuestions = {
   experience: [
@@ -83,17 +100,21 @@ function findBestResponse(message: string): { text: string; topic: Message["topi
   return { text: predefinedResponses.default, topic: "default" }
 }
 
+// Use a proper state management solution
+const useChatStore = create<{
+  messages: Message[];
+  addMessage: (message: Message) => void;
+}>((set) => ({
+  messages: [initialMessage],
+  addMessage: (message) => set((state) => ({ 
+    messages: [...state.messages, message] 
+  })),
+}));
+
 export function Chat() {
   const [isOpen, setIsOpen] = useState(false)
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "welcome",
-      text: "Hi! I'm Jonas' assistant. How can I help you learn more about his experience?",
-      sender: "ai",
-      timestamp: new Date(),
-      topic: "default"
-    }
-  ])
+  const [error, setError] = useState<string | null>(null);
+  const { messages, addMessage } = useChatStore();
   const [inputValue, setInputValue] = useState("")
   const [isTyping, setIsTyping] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -112,34 +133,47 @@ export function Chat() {
   }, [messages])
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!inputValue.trim()) return
-
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      text: inputValue,
-      sender: "user",
-      timestamp: new Date()
+    e.preventDefault();
+    
+    const now = Date.now();
+    if (now - lastMessageTime < RATE_LIMIT_MS) {
+      setError("Please wait before sending another message");
+      return;
     }
+    lastMessageTime = now;
 
-    setMessages(prev => [...prev, userMessage])
-    setInputValue("")
-    setIsTyping(true)
+    try {
+      if (!inputValue.trim()) return;
 
-    // Simulate AI thinking time
-    setTimeout(() => {
-      const response = findBestResponse(userMessage.text)
-      const Response: Message = {
-        id: (Date.now() + 1).toString(),
-        text: response.text,
-        sender: "ai",
-        timestamp: new Date(),
-        topic: response.topic
-      }
-      setMessages(prev => [...prev, Response])
-      setIsTyping(false)
-    }, 1000)
-  }
+      const userMessage: Message = {
+        id: Date.now().toString(),
+        text: inputValue,
+        sender: "user",
+        timestamp: new Date()
+      };
+
+      addMessage(userMessage);
+      setInputValue("");
+      setIsTyping(true);
+
+      // Simulate AI thinking time
+      setTimeout(() => {
+        const response = findBestResponse(userMessage.text);
+        const aiMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          text: response.text,
+          sender: "ai",
+          timestamp: new Date(),
+          topic: response.topic
+        };
+        addMessage(aiMessage);
+        setIsTyping(false);
+      }, 1000);
+    } catch (err) {
+      setError("Failed to process message");
+      console.error(err);
+    }
+  };
 
   const handleSuggestedQuestion = (question: string) => {
     const userMessage: Message = {
@@ -149,20 +183,22 @@ export function Chat() {
       timestamp: new Date()
     }
 
-    setMessages(prev => [...prev, userMessage])
+    // Use addMessage from the store instead of setMessages
+    addMessage(userMessage)
     setIsTyping(true)
 
     // Simulate AI thinking time
     setTimeout(() => {
       const response = findBestResponse(question)
-      const Response: Message = {
+      const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
         text: response.text,
         sender: "ai",
         timestamp: new Date(),
         topic: response.topic
       }
-      setMessages(prev => [...prev, Response])
+      // Use addMessage from the store instead of setMessages
+      addMessage(aiMessage)
       setIsTyping(false)
     }, 1000)
   }

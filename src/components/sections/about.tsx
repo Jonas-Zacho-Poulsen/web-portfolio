@@ -58,7 +58,7 @@ export function About() {
                 whileTap={{ scale: 0.95 }}
                 className="px-6 py-2 bg-primary text-primary-foreground rounded-lg"
               >
-                Download CV
+                Download CV/Resume
               </motion.a>
               <motion.a
                 href="#contact"
@@ -86,7 +86,9 @@ export function About() {
                 width={400}
                 height={400}
                 className="object-contain p-4 rounded-lg"
-                priority
+                priority={true}
+                sizes="(max-width: 768px) 100vw, 400px"
+                quality={75}
                 onError={() => setImageError(true)}
               />
             ) : (

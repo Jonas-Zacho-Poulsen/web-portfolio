@@ -17,9 +17,11 @@ export function Navigation() {
   const { scrollY } = useScroll()
 
   useEffect(() => {
-    return scrollY.onChange((latest) => {
+    const unsubscribe = scrollY.on("change", (latest) => {
       setIsScrolled(latest > 50)
     })
+    
+    return () => unsubscribe()
   }, [scrollY])
 
   const handleNavClick = (href: string) => {

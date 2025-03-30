@@ -44,7 +44,7 @@ export function Hero() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Download CV
+            Download CV/Resume
           </motion.a>
         </div>
 
