@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Jonas Zacho Poulsen - Full Stack Developer",
   description: "Portfolio of Jonas Zacho Poulsen, a Full Stack Developer specializing in building and maintaining scalable applications",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://your-production-domain.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://jonas-poulsen.vercel.app/'),
   openGraph: {
     title: "Jonas Zacho Poulsen - Full Stack Developer",
     description: "Full Stack Developer specializing in scalable applications",

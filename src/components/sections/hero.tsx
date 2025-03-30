@@ -36,7 +36,7 @@ export function Hero() {
             View Projects
           </motion.a>
           <motion.a
-            href="/cv.pdf"
+            href="/Jonas_Poulsen_Software_Resume.pdf"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="px-8 py-3 border border-primary text-primary rounded-lg font-medium"

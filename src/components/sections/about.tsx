@@ -45,12 +45,12 @@ export function About() {
               <p className="text-lg text-muted-foreground">
                 With a strong foundation in both frontend and backend development,
                 I specialize in building scalable applications using technologies
-                like .NET, Python, Next.js, TypeScript, and various cloud services.
+                like .NET/C#, Python, JavaScript, Java, SQL, Node.js, React, TypeScript, Next.js, and various cloud services.
               </p>
             </div>
             <div className="flex flex-wrap gap-4">
               <motion.a
-                href="/cv.pdf"
+                href="/Jonas_Poulsen_Software_Resume.pdf"
                 download
                 target="_blank"
                 rel="noopener noreferrer"
