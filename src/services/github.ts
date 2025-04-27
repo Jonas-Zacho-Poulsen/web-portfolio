@@ -1,129 +1,136 @@
-/**
- * GitHub API service
- * Handles all interactions with the GitHub API
- */
-import { Repository } from '@/types';
-import { fetchWithTimeout } from '@/utils';
-import { techStackIcons } from '@/config';
+// src/services/github.ts - Fixed version
 
-// Default fallback projects if API fails
-import { fallbackProjects } from './fallback-data';
+// Import necessary types and utilities
+import { Octokit } from "@octokit/rest";
 
-const GITHUB_API_BASE = 'https://api.github.com';
-const GITHUB_USERNAME = process.env.NEXT_PUBLIC_GITHUB_USERNAME || 'Jonas-Zacho-Poulsen';
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+// Define repository type
+interface Repository {
+  id: number;
+  name: string;
+  description: string | null;
+  html_url: string;
+  language: string;
+  created_at: string;
+  updated_at: string;
+  topics: string[];
+  stargazers_count: number;
+  fork: boolean;
+}
 
-/**
- * Headers for GitHub API requests
- */
-const getHeaders = () => {
-  const headers: HeadersInit = {
-    'Accept': 'application/vnd.github.v3+json',
-  };
-  
-  if (GITHUB_TOKEN) {
-    headers['Authorization'] = `token ${GITHUB_TOKEN}`;
-  }
-  
-  return headers;
+// Define tech stack item type
+interface TechStackItem {
+  name: string;
+  icon: string;
+}
+
+// Define tech stack icons dictionary
+const techStackIcons: Record<string, string> = {
+  "next.js": "/icons/nextjs.svg",
+  "typescript": "/icons/typescript.svg",
+  "react": "/icons/react.svg",
+  "tailwindcss": "/icons/tailwind.svg",
+  "nodejs": "/icons/nodejs.svg",
+  "postgresql": "/icons/postgresql.svg",
+  "docker": "/icons/docker.svg",
+  "c#": "/icons/csharp.svg",
+  "python": "/icons/python.svg",
+  "javascript": "/icons/javascript.svg",
+  "dotnet": "/icons/dotnet.svg",
+  "azure": "/icons/azure.svg",
+  "git": "/icons/git.svg",
 };
 
-/**
- * Fetches repositories from GitHub API
- * @param limit - Maximum number of repositories to fetch
- * @returns Promise with repositories data
- */
-export async function fetchRepositories(limit = 6): Promise<Repository[]> {
-  try {
-    const response = await fetchWithTimeout(
-      `${GITHUB_API_BASE}/users/${GITHUB_USERNAME}/repos?sort=stars&per_page=${limit}`,
-      { headers: getHeaders() }
-    );
-    
-    if (!response.ok) {
-      throw new Error(`GitHub API error: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    
-    if (Array.isArray(data) && data.length > 0) {
-      // Merge GitHub data with our enhanced project data
-      const enhancedProjects = data.map(githubProject => {
-        const existingProject = fallbackProjects.find(p => p.name === githubProject.name);
-        
-        return existingProject ? {
-          ...existingProject,
-          stargazers_count: githubProject.stargazers_count,
-          github_stats: {
-            forks: githubProject.forks_count,
-            issues: githubProject.open_issues_count,
-            watchers: githubProject.watchers_count
-          }
-        } : {
-          id: githubProject.id,
-          name: githubProject.name,
-          description: githubProject.description || 'No description provided',
-          html_url: githubProject.html_url,
-          topics: githubProject.topics || [],
-          stargazers_count: githubProject.stargazers_count,
-          language: githubProject.language || 'Unknown',
-          screenshots: [],
-          status: "completed" as const,
-          tech_stack: inferTechStack(githubProject),
-          github_stats: {
-            forks: githubProject.forks_count,
-            issues: githubProject.open_issues_count,
-            watchers: githubProject.watchers_count
-          }
-        };
+// GitHub service
+export class GitHubService {
+  private octokit: Octokit;
+  private username: string;
+
+  constructor(username: string) {
+    this.username = username;
+    this.octokit = new Octokit({
+      auth: process.env.GITHUB_TOKEN,
+    });
+  }
+
+  /**
+   * Fetch repositories from GitHub
+   * @returns Promise<Repository[]>
+   */
+  async getRepositories(): Promise<Repository[]> {
+    try {
+      const { data } = await this.octokit.repos.listForUser({
+        username: this.username,
+        type: "owner",
+        sort: "updated",
+        per_page: 100,
       });
-      
-      return enhancedProjects;
+
+      // Filter out forked repositories
+      const ownRepos = data.filter(repo => !repo.fork);
+
+      return ownRepos as Repository[];
+    } catch (error) {
+      console.error("Error fetching GitHub repositories:", error);
+      return [];
     }
-    
-    return fallbackProjects;
-  } catch (error) {
-    console.error('Error fetching GitHub repositories:', error);
-    return fallbackProjects;
+  }
+
+  /**
+   * Fetch featured repositories
+   * @returns Promise<Repository[]>
+   */
+  async getFeaturedRepositories(): Promise<Repository[]> {
+    try {
+      const repos = await this.getRepositories();
+      
+      // Filter for repositories with the "featured" topic
+      const featuredRepos = repos.filter(repo => 
+        repo.topics && repo.topics.includes("featured")
+      );
+      
+      return featuredRepos;
+    } catch (error) {
+      console.error("Error fetching featured repositories:", error);
+      return [];
+    }
+  }
+
+  /**
+   * Extract tech stack from repositories
+   * @returns Promise<TechStackItem[]>
+   */
+  async getTechStack(): Promise<TechStackItem[]> {
+    try {
+      const repos = await this.getRepositories();
+      const techStack: TechStackItem[] = [];
+      const addedTechs = new Set<string>();
+      
+      // Extract tech stack from repository languages
+      for (const repo of repos) {
+        if (!repo.language || addedTechs.has(repo.language.toLowerCase())) {
+          continue;
+        }
+        
+        addedTechs.add(repo.language.toLowerCase());
+        
+        // Normalize language name for lookup
+        const languageKey = repo.language.toLowerCase() as keyof typeof techStackIcons | string;
+        
+        techStack.push({
+          name: repo.language,
+          icon: languageKey in techStackIcons ? techStackIcons[languageKey as keyof typeof techStackIcons] : techStackIcons.javascript
+        });
+      }
+      
+      return techStack;
+    } catch (error) {
+      console.error("Error extracting tech stack:", error);
+      return [];
+    }
   }
 }
 
-/**
- * Infers tech stack from GitHub repository data
- * @param repo - GitHub repository data
- * @returns Inferred tech stack
- */
-function inferTechStack(repo: any) {
-  const techStack = [];
-  
-  // Add language if available
-  if (repo.language) {
-    const languageKey = repo.language.toLowerCase();
-    techStack.push({
-      name: repo.language,
-      icon: techStackIcons[languageKey] || techStackIcons.javascript
-    });
-  }
-  
-  // Add technologies from topics
-  if (repo.topics && Array.isArray(repo.topics)) {
-    repo.topics.forEach((topic: string) => {
-      if (techStackIcons[topic]) {
-        techStack.push({
-          name: topic.charAt(0).toUpperCase() + topic.slice(1),
-          icon: techStackIcons[topic]
-        });
-      }
-    });
-  }
-  
-  // Ensure we have at least one tech stack item
-  if (techStack.length === 0) {
-    techStack.push({
-      name: 'JavaScript',
-      icon: techStackIcons.javascript
-    });
-  }
-  
-  return techStack;
-}
+// Export an instance of the service
+export const githubService = new GitHubService(process.env.GITHUB_USERNAME || "jonas-zacho-poulsen");
+
+export default githubService;
