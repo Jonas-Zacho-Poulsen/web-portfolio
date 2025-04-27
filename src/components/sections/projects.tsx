@@ -56,7 +56,7 @@ const techStackIcons = {
 
 function ProjectPreview({ title, subtitle, imageUrl }: { title: string; subtitle?: string; imageUrl?: string }) {
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center bg-primary/10 text-primary relative overflow-hidden">
+    <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-primary/5 to-accent/5 text-primary relative overflow-hidden">
       {imageUrl && imageUrl.startsWith("/") ? (
         <div className="absolute inset-0">
           <Image
@@ -65,17 +65,28 @@ function ProjectPreview({ title, subtitle, imageUrl }: { title: string; subtitle
             fill
             className="object-cover"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority={true}
+            quality={90}
           />
-          <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center p-4">
-            <h4 className="text-xl font-semibold text-white">{title}</h4>
-            {subtitle && <p className="text-sm mt-2 text-white/70">{subtitle}</p>}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30 flex flex-col items-center justify-center p-4">
+            <h4 className="text-xl font-semibold text-white drop-shadow-md">{title}</h4>
+            {subtitle && (
+              <p className="text-sm mt-2 text-white/80 backdrop-blur-sm bg-black/20 px-2 py-0.5 rounded-full">
+                {subtitle}
+              </p>
+            )}
           </div>
         </div>
       ) : (
-        <>
+        <div className="flex flex-col items-center justify-center text-center p-4 h-full w-full bg-gradient-to-br from-primary/10 to-accent/10">
+          <div className="rounded-full bg-primary/10 p-4 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+          </div>
           <h4 className="text-xl font-semibold">{title}</h4>
           {subtitle && <p className="text-sm mt-2 text-primary/70">{subtitle}</p>}
-        </>
+        </div>
       )}
     </div>
   )
@@ -156,17 +167,34 @@ const fallbackProjects: Repository[] = [
 
 function ProjectCard({ project }: { project: Repository }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [isHovered, setIsHovered] = useState(false)
   const screenshots = project.screenshots || [project.name]
   const status = project.status || "planned"
 
+  // Animation variants for card elements
+  const cardVariants = {
+    initial: { boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)" },
+    hover: { boxShadow: "0 20px 25px -5px rgba(var(--primary-rgb), 0.2)" }
+  }
+
+  const imageVariants = {
+    initial: { scale: 1 },
+    hover: { scale: 1.05 }
+  }
+
+  const buttonVariants = {
+    initial: { opacity: 0, y: 10 },
+    hover: { opacity: 1, y: 0, transition: { delay: 0.1 } }
+  }
+
   const nextImage = () => {
-    setCurrentImageIndex((prev) => 
+    setCurrentImageIndex((prev) =>
       prev === screenshots.length - 1 ? 0 : prev + 1
     )
   }
 
   const previousImage = () => {
-    setCurrentImageIndex((prev) => 
+    setCurrentImageIndex((prev) =>
       prev === 0 ? screenshots.length - 1 : prev - 1
     )
   }
@@ -174,53 +202,76 @@ function ProjectCard({ project }: { project: Repository }) {
   return (
     <motion.div
       variants={item}
-      className="rounded-lg bg-secondary/50 backdrop-blur-sm hover:bg-secondary/70 transition-colors overflow-hidden"
+      initial="initial"
+      whileHover="hover"
+      animate={isHovered ? "hover" : "initial"}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      className="rounded-lg glass h-full flex flex-col overflow-hidden transition-all duration-300"
+      style={{ transformStyle: "preserve-3d" }}
     >
-      {/* Project Screenshots */}
-      <div className="relative h-48 bg-background/50">
-        <ProjectPreview 
-          title={project.name}
-          subtitle={status === "completed" ? "Live Project" : status}
-          imageUrl={typeof screenshots[currentImageIndex] === 'string' ? screenshots[currentImageIndex] : undefined}
-        />
-        {screenshots.length > 1 && (
-          <div className="absolute inset-0 flex items-center justify-between p-2">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={previousImage}
-              className="p-2 rounded-full bg-background/50 text-primary hover:bg-background/70"
-            >
-              ←
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={nextImage}
-              className="p-2 rounded-full bg-background/50 text-primary hover:bg-background/70"
-            >
-              →
-            </motion.button>
-          </div>
-        )}
-      </div>
+      {/* Project Screenshots with hover effect */}
+      <div className="relative h-52 overflow-hidden">
+        <motion.div
+          variants={imageVariants}
+          transition={{ duration: 0.4 }}
+          className="absolute inset-0"
+        >
+          <ProjectPreview
+            title={project.name}
+            subtitle={status === "completed" ? "Live Project" : status}
+            imageUrl={typeof screenshots[currentImageIndex] === 'string' ? screenshots[currentImageIndex] : undefined}
+          />
+        </motion.div>
 
-      <div className="p-6">
-        {/* Project Status */}
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="text-xl font-semibold text-primary">
-            {project.name}
-          </h3>
-          <span className={`px-2 py-1 text-xs rounded-full ${
-            status === "completed" ? "bg-green-500/10 text-green-500" :
-            status === "in-progress" ? "bg-yellow-500/10 text-yellow-500" :
-            "bg-blue-500/10 text-blue-500"
+        {/* Status badge */}
+        <div className="absolute top-3 right-3 z-10">
+          <span className={`px-2 py-1 text-xs rounded-full backdrop-blur-sm ${
+            status === "completed" ? "bg-green-500/20 text-green-400" :
+            status === "in-progress" ? "bg-yellow-500/20 text-yellow-400" :
+            "bg-blue-500/20 text-blue-400"
           }`}>
             {(status || "planned").replace("-", " ")}
           </span>
         </div>
 
-        <p className="text-muted-foreground mb-4 line-clamp-2">
+        {/* Navigation arrows for screenshots */}
+        {screenshots.length > 1 && (
+          <motion.div
+            variants={buttonVariants}
+            className="absolute inset-0 flex items-center justify-between p-2"
+          >
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={previousImage}
+              className="p-2 rounded-full bg-background/70 backdrop-blur-sm text-primary hover:bg-background/90 transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={nextImage}
+              className="p-2 rounded-full bg-background/70 backdrop-blur-sm text-primary hover:bg-background/90 transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </motion.button>
+          </motion.div>
+        )}
+      </div>
+
+      <div className="p-6 flex-1 flex flex-col">
+        {/* Project Title */}
+        <h3 className="text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
+          {project.name}
+        </h3>
+
+        <p className="text-muted-foreground mb-4 line-clamp-3 flex-grow">
           {project.description}
         </p>
 
@@ -252,34 +303,44 @@ function ProjectCard({ project }: { project: Repository }) {
             <span>{project.language}</span>
           </span>
           <div className="flex gap-3">
-            <span>⭐ {project.stargazers_count}</span>
-            <span>🔄 {project.github_stats?.forks || 0}</span>
-            <span>👀 {project.github_stats?.watchers || 0}</span>
+            <span title="Stars">⭐ {project.stargazers_count}</span>
+            <span title="Forks">🔄 {project.github_stats?.forks || 0}</span>
+            <span title="Watchers">👀 {project.github_stats?.watchers || 0}</span>
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-2">
+        <div className="flex gap-2 mt-auto pt-2">
           <motion.a
             href={project.html_url}
             target="_blank"
             rel="noopener noreferrer"
-            whileHover={{ scale: 1.02 }}
+            whileHover={{ scale: 1.05, boxShadow: "0 10px 15px -3px rgba(var(--primary-rgb), 0.3)" }}
             whileTap={{ scale: 0.98 }}
-            className="flex-1 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-center text-sm"
+            className="flex-1 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-center text-sm font-medium transition-all"
           >
-            View Code
+            <span className="flex items-center justify-center gap-2">
+              <GithubIcon className="w-4 h-4" />
+              View Code
+            </span>
           </motion.a>
           {project.demo_url && (
             <motion.a
               href={project.demo_url}
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ scale: 1.05, boxShadow: "0 10px 15px -3px rgba(var(--primary-rgb), 0.1)" }}
               whileTap={{ scale: 0.98 }}
-              className="flex-1 px-4 py-2 border border-primary text-primary rounded-lg text-center text-sm"
+              className="flex-1 px-4 py-2 border border-primary text-primary rounded-lg text-center text-sm font-medium transition-all"
             >
-              Live Demo
+              <span className="flex items-center justify-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+                Live Demo
+              </span>
             </motion.a>
           )}
         </div>
@@ -338,7 +399,7 @@ export function Projects() {
 
   if (loading) {
     return (
-      <section className="px-4 sm:px-6 lg:px-8">
+      <section className="px-4 sm:px-6 lg:px-8 py-16">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl sm:text-4xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500">
             Featured Projects
@@ -352,7 +413,7 @@ export function Projects() {
   }
 
   return (
-    <section className="px-4 sm:px-6 lg:px-8">
+    <section className="px-4 sm:px-6 lg:px-8 py-16">
       <motion.div
         initial="hidden"
         whileInView="show"
@@ -360,15 +421,35 @@ export function Projects() {
         variants={container}
         className="max-w-7xl mx-auto"
       >
-        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500">
-          Featured Projects
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500">
+            Featured Projects
+          </h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            A selection of my recent work showcasing my skills and experience in building web applications.
+          </p>
+        </motion.div>
+
+        {/* Projects grid with staggered animation */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+            <motion.div
+              key={project.id}
+              variants={item}
+              whileHover={{ y: -8 }}
+              className="h-full"
+            >
+              <ProjectCard project={project} />
+            </motion.div>
           ))}
         </div>
       </motion.div>
     </section>
   )
-} 
+}

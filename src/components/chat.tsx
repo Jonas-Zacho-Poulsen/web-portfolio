@@ -3,37 +3,32 @@
 import { motion, AnimatePresence, useDragControls } from "framer-motion"
 import { useState, useRef, useEffect } from "react"
 import { create } from 'zustand'
+import { chatConfig } from '@/config'
+import { LLMProvider } from '@/services/llm'
+import { ChatMessage, MessageType } from '@/types'
 
 // Add rate limiting
-const RATE_LIMIT_MS = 1000;
+const RATE_LIMIT_MS = chatConfig.rateLimit || 1000;
 let lastMessageTime = 0;
 
-// Improve message handling with proper typing
-type MessageType = 'experience' | 'skills' | 'projects' | 'contact' | 'default';
-
-interface Message {
-  id: string;
-  text: string;
-  sender: 'user' | 'ai';
-  timestamp: Date;
-  topic?: MessageType;
-}
+// Use the ChatMessage type from types
+type Message = ChatMessage;
 
 // Move predefinedResponses before initialMessage
 const predefinedResponses = {
   experience: `Jonas is a Full Stack Developer with experience in building and maintaining scalable applications
    using .NET, Python, Next.js, TypeScript, and various cloud services.`,
-  
+
   skills: `Jonas' key technical skills include:
 - Frontend: React, Next.js, Tailwind CSS
 - Backend: .NET, Python, Node.js, TypeScript, PostgreSQL
 - Cloud & DevOps: Docker, GitHub Actions, Azure
 - Tools: Git, VS Code, Jira`,
-  
+
   projects: `Some of Jonas' notable projects include:
 1. Portfolio Website (Next.js 14, TypeScript, Tailwind)
 2. Chat Application (React, OpenAI, WebSocket)`,
-  
+
   contact: `Get in Touch with Jonas:
 📧 Email: jonaszachopoulsen@live.dk
 📞 Phone: +45 50 22 73 00
@@ -49,7 +44,8 @@ const initialMessage: Message = {
   text: predefinedResponses.default,
   sender: 'ai',
   timestamp: new Date(),
-  topic: 'default'
+  topic: 'default',
+  provider: 'fallback'
 };
 
 const suggestedQuestions = {
@@ -83,7 +79,7 @@ const suggestedQuestions = {
 
 function findBestResponse(message: string): { text: string; topic: Message["topic"] } {
   message = message.toLowerCase()
-  
+
   if (message.includes("experience") || message.includes("background") || message.includes("work")) {
     return { text: predefinedResponses.experience, topic: "experience" }
   }
@@ -96,7 +92,7 @@ function findBestResponse(message: string): { text: string; topic: Message["topi
   if (message.includes("contact") || message.includes("reach") || message.includes("email") || message.includes("phone")) {
     return { text: predefinedResponses.contact, topic: "contact" }
   }
-  
+
   return { text: predefinedResponses.default, topic: "default" }
 }
 
@@ -106,8 +102,8 @@ const useChatStore = create<{
   addMessage: (message: Message) => void;
 }>((set) => ({
   messages: [initialMessage],
-  addMessage: (message) => set((state) => ({ 
-    messages: [...state.messages, message] 
+  addMessage: (message) => set((state) => ({
+    messages: [...state.messages, message]
   })),
 }));
 
@@ -134,7 +130,7 @@ export function Chat() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const now = Date.now();
     if (now - lastMessageTime < RATE_LIMIT_MS) {
       setError("Please wait before sending another message");
@@ -155,27 +151,61 @@ export function Chat() {
       addMessage(userMessage);
       setInputValue("");
       setIsTyping(true);
+      setError(null);
 
-      // Simulate AI thinking time
-      setTimeout(() => {
-        const response = findBestResponse(userMessage.text);
+      try {
+        // Call the chat API
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ message: userMessage.text }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to get response from chat API');
+        }
+
+        const data = await response.json();
+
         const aiMessage: Message = {
           id: (Date.now() + 1).toString(),
-          text: response.text,
+          text: data.text,
           sender: "ai",
           timestamp: new Date(),
-          topic: response.topic
+          topic: data.topic as MessageType,
+          provider: data.provider as LLMProvider | 'fallback'
         };
+
         addMessage(aiMessage);
+      } catch (apiError) {
+        console.error('Chat API error:', apiError);
+
+        // Fallback to predefined responses if API fails
+        const fallbackResponse = findBestResponse(userMessage.text);
+        const fallbackMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          text: fallbackResponse.text,
+          sender: "ai",
+          timestamp: new Date(),
+          topic: fallbackResponse.topic,
+          provider: 'fallback'
+        };
+
+        addMessage(fallbackMessage);
+        setError("Using fallback responses due to API error");
+      } finally {
         setIsTyping(false);
-      }, 1000);
+      }
     } catch (err) {
       setError("Failed to process message");
       console.error(err);
+      setIsTyping(false);
     }
   };
 
-  const handleSuggestedQuestion = (question: string) => {
+  const handleSuggestedQuestion = async (question: string) => {
     const userMessage: Message = {
       id: Date.now().toString(),
       text: question,
@@ -186,57 +216,89 @@ export function Chat() {
     // Use addMessage from the store instead of setMessages
     addMessage(userMessage)
     setIsTyping(true)
+    setError(null)
 
-    // Simulate AI thinking time
-    setTimeout(() => {
-      const response = findBestResponse(question)
+    try {
+      // Call the chat API
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: question }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get response from chat API');
+      }
+
+      const data = await response.json();
+
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: response.text,
+        text: data.text,
         sender: "ai",
         timestamp: new Date(),
-        topic: response.topic
-      }
-      // Use addMessage from the store instead of setMessages
-      addMessage(aiMessage)
-      setIsTyping(false)
-    }, 1000)
+        topic: data.topic as MessageType,
+        provider: data.provider as LLMProvider | 'fallback'
+      };
+
+      addMessage(aiMessage);
+    } catch (apiError) {
+      console.error('Chat API error:', apiError);
+
+      // Fallback to predefined responses if API fails
+      const fallbackResponse = findBestResponse(question);
+      const fallbackMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: fallbackResponse.text,
+        sender: "ai",
+        timestamp: new Date(),
+        topic: fallbackResponse.topic,
+        provider: 'fallback'
+      };
+
+      addMessage(fallbackMessage);
+      setError("Using fallback responses due to API error");
+    } finally {
+      setIsTyping(false);
+    }
   }
 
   // Resize handlers
   const startResize = (e: React.PointerEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     // Capture the pointer to ensure all pointer events go to this element
     (e.target as Element).setPointerCapture(e.pointerId);
-    
+
     setIsResizing(true);
     resizeStartPos.current = { x: e.clientX, y: e.clientY };
     resizeStartSize.current = { ...chatSize };
-    
+
     // We'll handle the resize in the pointer events on the element itself
     // rather than adding document-level event listeners
   }
-  
+
   const handleResize = (e: React.PointerEvent) => {
     if (!isResizing) return;
-    
+
     const deltaX = e.clientX - resizeStartPos.current.x;
     const deltaY = e.clientY - resizeStartPos.current.y;
-    
+
     setChatSize({
       width: Math.max(300, resizeStartSize.current.width + deltaX),
       height: Math.max(400, resizeStartSize.current.height + deltaY)
     });
   }
-  
+
   const stopResize = (e: React.PointerEvent) => {
     if (!isResizing) return;
-    
+
     // Release the pointer capture
     (e.target as Element).releasePointerCapture(e.pointerId);
-    
+
     setIsResizing(false);
   }
 
@@ -262,19 +324,28 @@ export function Chat() {
             dragControls={dragControls}
             dragMomentum={false}
             dragListener={!isResizing} // Disable drag when resizing
-            style={{ 
-              width: chatSize.width, 
+            style={{
+              width: chatSize.width,
               height: chatSize.height,
               position: 'relative'
             }}
             className="mb-4 bg-background border border-border rounded-lg shadow-lg flex flex-col"
           >
-            <div 
+            <div
               className="p-4 border-b border-border cursor-move flex justify-between items-center"
               onPointerDown={startDrag}
             >
-              <h3 className="text-lg font-semibold">Assistant</h3>
-              <button 
+              <div>
+                <h3 className="text-lg font-semibold">Assistant</h3>
+                {messages.length > 0 && messages[messages.length - 1].provider && (
+                  <p className="text-xs text-muted-foreground">
+                    {messages[messages.length - 1].provider === 'fallback'
+                      ? 'Using predefined responses'
+                      : `Powered by ${messages[messages.length - 1].provider}`}
+                  </p>
+                )}
+              </div>
+              <button
                 onClick={() => setIsOpen(false)}
                 className="text-muted-foreground hover:text-foreground"
               >
@@ -284,7 +355,7 @@ export function Chat() {
                 </svg>
               </button>
             </div>
-            
+
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {messages.map((message) => (
                 <motion.div
@@ -338,8 +409,13 @@ export function Chat() {
                 ))}
               </div>
             </div>
-            
+
             <form onSubmit={handleSubmit} className="p-4 border-t border-border">
+              {error && (
+                <div className="mb-2 p-2 text-sm bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300 rounded">
+                  {error}
+                </div>
+              )}
               <div className="flex gap-2">
                 <input
                   type="text"
@@ -353,15 +429,16 @@ export function Chat() {
                   whileTap={{ scale: 0.95 }}
                   type="submit"
                   className="px-4 py-2 bg-primary text-primary-foreground rounded-lg"
+                  disabled={isTyping}
                 >
-                  Send
+                  {isTyping ? "..." : "Send"}
                 </motion.button>
               </div>
             </form>
 
             {/* Resize handle */}
-            <div 
-              className="absolute bottom-0 right-0 w-8 h-8 cursor-se-resize z-50" 
+            <div
+              className="absolute bottom-0 right-0 w-8 h-8 cursor-se-resize z-50"
               onPointerDown={startResize}
               onPointerMove={handleResize}
               onPointerUp={stopResize}
@@ -377,7 +454,7 @@ export function Chat() {
           </motion.div>
         )}
       </AnimatePresence>
-      
+
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
@@ -397,4 +474,4 @@ export function Chat() {
       </motion.button>
     </div>
   )
-} 
+}
