@@ -1,15 +1,13 @@
 {
-  "version": 2,
-  "framework": "nextjs",
-  "buildCommand": "pnpm build",
-  "installCommand": "pnpm install",
-  "git": {
-    "deploymentEnabled": {
-      "main": true
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
     }
-  },
-  "github": {
-    "enabled": true,
-    "silent": true
+  ],
+  "build": {
+    "env": {
+      "NPM_FLAGS": "--prefer-offline --no-audit --no-fund --no-optional"
+    }
   }
-} 
+}
