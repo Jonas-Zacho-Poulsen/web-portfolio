@@ -4,7 +4,7 @@
  */
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, HTMLMotionProps } from "framer-motion"
 import { forwardRef, ButtonHTMLAttributes } from "react"
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -28,6 +28,10 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
    * Icon to show after button text
    */
   rightIcon?: React.ReactNode
+  /**
+   * Motion props for animation configuration
+   */
+  motionProps?: Omit<HTMLMotionProps<"button">, keyof ButtonHTMLAttributes<HTMLButtonElement>>
 }
 
 /**
@@ -43,6 +47,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     leftIcon,
     rightIcon,
     disabled,
+    motionProps = {},
     ...props 
   }, ref) => {
     // Base classes
@@ -66,10 +71,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     // Combine classes
     const buttonClasses = `${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`
     
-    // Animation variants
-    const buttonAnimations = {
-      whileHover: { scale: 1.02 },
-      whileTap: { scale: 0.98 }
+    // Animation props
+    const animationProps = {
+      whileHover: !disabled && !isLoading ? { scale: 1.02 } : undefined,
+      whileTap: !disabled && !isLoading ? { scale: 0.98 } : undefined,
     }
     
     return (
@@ -77,9 +82,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         className={buttonClasses}
         disabled={isLoading || disabled}
-        whileHover={!disabled && !isLoading ? buttonAnimations.whileHover : undefined}
-        whileTap={!disabled && !isLoading ? buttonAnimations.whileTap : undefined}
-        {...props}
+        {...animationProps}
+        {...props as any} // Type assertion to avoid event handler type conflicts
+        {...motionProps}
       >
         {isLoading && (
           <svg 
