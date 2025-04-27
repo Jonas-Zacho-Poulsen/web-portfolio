@@ -30,7 +30,7 @@ Name: ${name}
 Email: ${email}
 Message: ${message}
       `,
-      replyTo: email,
+      reply_to: email,
     })
 
     if (error) {
