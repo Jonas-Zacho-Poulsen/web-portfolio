@@ -7,7 +7,9 @@
   ],
   "build": {
     "env": {
-      "NPM_FLAGS": "--prefer-offline --no-audit --no-fund --no-optional"
+      "NPM_FLAGS": "--prefer-offline --no-audit --no-fund --no-optional",
+      "GITHUB_USERNAME": "jonas-zacho-poulsen",
+      "NEXT_PUBLIC_SITE_URL": "https://jonas-poulsen.vercel.app"
     }
   }
 }
