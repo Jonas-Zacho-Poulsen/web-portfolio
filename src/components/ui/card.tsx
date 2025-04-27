@@ -1,21 +1,25 @@
 /**
  * Card component
- * Reusable card component with variants
+ * Reusable card component with animations
  */
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, HTMLMotionProps } from "framer-motion"
 import { forwardRef, HTMLAttributes } from "react"
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Card variant
    */
-  variant?: "default" | "outline" | "glass"
+  variant?: "default" | "bordered" | "elevated"
   /**
-   * Whether to add hover effects
+   * Whether to disable animations
    */
-  hoverable?: boolean
+  disableAnimations?: boolean
+  /**
+   * Motion props for animation configuration
+   */
+  motionProps?: Omit<HTMLMotionProps<"div">, keyof HTMLAttributes<HTMLDivElement>>
 }
 
 /**
@@ -26,7 +30,8 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
     children, 
     className = "", 
     variant = "default", 
-    hoverable = false,
+    disableAnimations = false,
+    motionProps = {},
     ...props 
   }, ref) => {
     // Base classes
@@ -34,18 +39,19 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
     
     // Variant classes
     const variantClasses = {
-      default: "bg-secondary/50 backdrop-blur-sm",
-      outline: "border border-border",
-      glass: "glass"
+      default: "bg-card text-card-foreground",
+      bordered: "bg-card text-card-foreground border border-border",
+      elevated: "bg-card text-card-foreground shadow-md"
     }
     
     // Combine classes
     const cardClasses = `${baseClasses} ${variantClasses[variant]} ${className}`
     
-    // Animation variants
-    const cardAnimations = hoverable ? {
-      whileHover: { y: -5, boxShadow: "0 10px 25px -5px rgba(var(--primary-rgb), 0.2)" },
-      transition: { duration: 0.2 }
+    // Animation props
+    const cardAnimations = !disableAnimations ? {
+      initial: { opacity: 0, y: 20 },
+      animate: { opacity: 1, y: 0 },
+      transition: { duration: 0.3 }
     } : {}
     
     return (
@@ -53,7 +59,8 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
         ref={ref}
         className={cardClasses}
         {...cardAnimations}
-        {...props}
+        {...props as any} // Type assertion to avoid event handler type conflicts
+        {...motionProps}
       >
         {children}
       </motion.div>
