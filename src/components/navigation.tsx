@@ -20,13 +20,28 @@ export function Navigation() {
     const unsubscribe = scrollY.on("change", (latest) => {
       setIsScrolled(latest > 50)
     })
-    
+
     return () => unsubscribe()
   }, [scrollY])
 
   const handleNavClick = (href: string) => {
     const element = document.querySelector(href)
-    element?.scrollIntoView({ behavior: "smooth" })
+    if (element) {
+      // Get the navigation bar height (h-16 = 64px)
+      const navHeight = 64
+
+      // Get the element's position relative to the viewport
+      const elementPosition = element.getBoundingClientRect().top
+
+      // Get the current scroll position
+      const offsetPosition = elementPosition + window.pageYOffset - navHeight - 16 // Added extra padding
+
+      // Scroll to the element with the offset
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      })
+    }
     setIsMobileMenuOpen(false)
   }
 
@@ -40,7 +55,7 @@ export function Navigation() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <motion.span 
+          <motion.span
             className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500"
             whileHover={{ scale: 1.05 }}
           >
@@ -85,8 +100,8 @@ export function Navigation() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d={isMobileMenuOpen 
-                    ? "M6 18L18 6M6 6l12 12" 
+                  d={isMobileMenuOpen
+                    ? "M6 18L18 6M6 6l12 12"
                     : "M4 6h16M4 12h16M4 18h16"}
                 />
               </svg>
