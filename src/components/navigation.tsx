@@ -2,6 +2,7 @@
 
 import { motion, useScroll, AnimatePresence } from "framer-motion"
 import { useEffect, useState } from "react"
+import { ThemeSwitcher } from "./theme-switcher"
 
 const navItems = [
   { name: "Home", href: "#home" },
@@ -63,7 +64,7 @@ export function Navigation() {
           </motion.span>
 
           <div className="hidden sm:block">
-            <div className="flex space-x-4">
+            <div className="flex items-center space-x-4">
               {navItems.map((item) => (
                 <motion.a
                   key={item.name}
@@ -78,11 +79,13 @@ export function Navigation() {
                   {item.name}
                 </motion.a>
               ))}
+              <ThemeSwitcher className="text-foreground/80 hover:text-foreground" />
             </div>
           </div>
 
-          {/* Mobile menu button */}
-          <div className="sm:hidden">
+          {/* Theme switcher and mobile menu button */}
+          <div className="sm:hidden flex items-center space-x-2">
+            <ThemeSwitcher className="text-foreground/80 hover:text-foreground" />
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

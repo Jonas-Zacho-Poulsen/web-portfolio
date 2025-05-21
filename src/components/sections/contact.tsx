@@ -1,7 +1,7 @@
 "use client"
 
 import { motion, AnimatePresence } from "framer-motion"
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { EmailIcon, PhoneIcon, GithubIcon, LinkedInIcon } from "@/components/icons"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -47,9 +47,9 @@ const socials = [
   },
   {
     name: "LinkedIn",
-    value: "linkedin.com/in/jonaszpoulsen",
+    value: "linkedin.com/in/j-poulsen-",
     icon: LinkedInIcon,
-    href: "https://www.linkedin.com/in/jonaszpoulsen/",
+    href: "https://www.linkedin.com/in/j-poulsen-",
     ariaLabel: "Connect with Jonas on LinkedIn"
   }
 ]
@@ -64,6 +64,8 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>
 
+// Calendly types are defined in src/types/global.d.ts
+
 export default function Contact() {
   const [isCalendlyOpen, setIsCalendlyOpen] = useState(false);
   const [sending, setSending] = useState(false)
@@ -72,6 +74,7 @@ export default function Contact() {
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null)
   const recaptchaRef = React.useRef<ReCAPTCHA>(null)
   const [showSuccessMessage, setShowSuccessMessage] = useState(false)
+  const [isCalendlyReady, setIsCalendlyReady] = useState(false)
   
   // Form validation with react-hook-form and zod
   const {
@@ -89,6 +92,35 @@ export default function Contact() {
     }
   })
 
+  // Preload Calendly script when component mounts
+  useEffect(() => {
+    const loadCalendlyScript = () => {
+      // Only add the script once
+      if (!document.getElementById('calendly-script')) {
+        const script = document.createElement('script');
+        script.id = 'calendly-script';
+        script.src = 'https://assets.calendly.com/assets/external/widget.js';
+        script.async = true;
+        script.onload = () => setIsCalendlyReady(true);
+        document.head.appendChild(script);
+      } else {
+        // If script already exists, mark as ready
+        setIsCalendlyReady(true);
+      }
+    };
+    
+    // Load immediately
+    loadCalendlyScript();
+    
+    return () => {
+      // Clean up on unmount if needed
+      if (isCalendlyOpen) {
+        document.body.style.overflow = 'auto';
+      }
+    };
+  }, []);
+  
+  // Simple toggle for Calendly modal
   const toggleCalendly = () => {
     setIsCalendlyOpen(!isCalendlyOpen);
     // Toggle body scroll
@@ -224,13 +256,20 @@ export default function Contact() {
                       >
                         <span className="text-2xl text-gray-700">×</span>
                       </button>
-                      <iframe
-                        src="https://calendly.com/jonaszp97"
-                        width="100%"
-                        height="100%"
-                        frameBorder="0"
-                        title="Schedule a Meeting"
-                      />
+                      
+                      {/* Direct iframe embed with preconnect for speed */}
+                      <>
+                        {/* Preconnect hint for faster loading */}
+                        <link rel="preconnect" href="https://calendly.com" />
+                        <iframe
+                          src="https://calendly.com/jonaszp97?hide_gdpr_banner=1&background_color=ffffff&text_color=333333&primary_color=6366f1"
+                          width="100%"
+                          height="100%"
+                          frameBorder="0"
+                          title="Schedule a Meeting"
+                          loading="eager"
+                        />
+                      </>
                     </motion.div>
                   </div>
                 </div>

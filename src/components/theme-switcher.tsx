@@ -4,7 +4,7 @@ import { useTheme } from "next-themes"
 import { motion } from "framer-motion"
 import { useState, useEffect } from "react"
 
-export function ThemeSwitcher() {
+export function ThemeSwitcher({ className = "" }: { className?: string }) {
   const [mounted, setMounted] = useState(false)
   const { theme, setTheme } = useTheme()
 
@@ -16,17 +16,17 @@ export function ThemeSwitcher() {
 
   return (
     <motion.button
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.9 }}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="fixed top-4 right-4 z-50 p-3 rounded-full bg-secondary/50 backdrop-blur-sm hover:bg-secondary/70 transition-colors border border-border"
+      className={`p-2 rounded-md hover:bg-primary/10 transition-colors ${className}`}
       aria-label="Toggle theme"
     >
       {theme === "dark" ? (
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
-          width="20" 
-          height="20" 
+          width="18" 
+          height="18" 
           viewBox="0 0 24 24" 
           fill="none" 
           stroke="currentColor" 
@@ -48,8 +48,8 @@ export function ThemeSwitcher() {
       ) : (
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
-          width="20" 
-          height="20" 
+          width="18" 
+          height="18" 
           viewBox="0 0 24 24" 
           fill="none" 
           stroke="currentColor" 
