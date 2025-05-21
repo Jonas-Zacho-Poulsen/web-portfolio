@@ -1,6 +1,37 @@
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
+// Define the validateRecaptcha function inline until the module is properly set up
+async function validateRecaptcha(token: string): Promise<boolean> {
+  try {
+    // Get the secret key from environment variables
+    const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+    
+    if (!secretKey || secretKey === 'your_recaptcha_secret_key') {
+      console.warn('RECAPTCHA_SECRET_KEY is not properly set in environment variables');
+      return false;
+    }
+    
+    // Send the token to Google's verification API
+    const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `secret=${secretKey}&response=${token}`,
+    });
+    
+    // Parse the response
+    const data = await response.json();
+    
+    // Check if the token is valid
+    return data.success === true;
+  } catch (error) {
+    console.error('Error validating reCAPTCHA token:', error);
+    return false;
+  }
+}
+
 // Check if API key exists
 const hasResendApiKey = !!process.env.RESEND_API_KEY;
 if (!hasResendApiKey) {
@@ -12,13 +43,38 @@ const resend = hasResendApiKey ? new Resend(process.env.RESEND_API_KEY) : null
 
 export async function POST(request: Request) {
   try {
-    const { name, email, message } = await request.json()
+    const { name, email, message, recaptchaToken } = await request.json()
 
     if (!name || !email || !message) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
       )
+    }
+    
+    // Verify reCAPTCHA token if provided and keys are properly configured
+    const hasValidRecaptchaKeys = process.env.RECAPTCHA_SECRET_KEY && 
+                                process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && 
+                                process.env.RECAPTCHA_SECRET_KEY !== 'your_recaptcha_secret_key' &&
+                                process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY !== 'your_recaptcha_site_key';
+    
+    if (process.env.NODE_ENV !== 'development' && hasValidRecaptchaKeys) {
+      if (!recaptchaToken) {
+        return NextResponse.json(
+          { error: 'reCAPTCHA verification failed. Please try again.' },
+          { status: 400 }
+        )
+      }
+      
+      const recaptchaValid = await validateRecaptcha(recaptchaToken)
+      if (!recaptchaValid) {
+        return NextResponse.json(
+          { error: 'reCAPTCHA verification failed. Please try again.' },
+          { status: 400 }
+        )
+      }
+    } else {
+      console.log('Skipping reCAPTCHA verification - keys not configured or in development mode')
     }
 
     console.log('Attempting to send email with data:', { name, email })
