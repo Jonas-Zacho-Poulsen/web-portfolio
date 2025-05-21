@@ -182,7 +182,7 @@ function SkillItem({ skill }: { skill: Skill }) {
     <motion.li
       ref={ref}
       whileHover={{ x: 5 }}
-      className="group relative"
+      className="group relative list-none"
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
     >

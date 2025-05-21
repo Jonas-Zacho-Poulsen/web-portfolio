@@ -23,32 +23,35 @@ export function About() {
   const [imageError, setImageError] = useState(false)
 
   return (
-    <section className="px-4 sm:px-6 lg:px-8">
+    <section className="px-4 sm:px-6 lg:px-8 py-12">
       <motion.div
         initial="hidden"
         whileInView="show"
         viewport={{ once: true }}
         variants={container}
-        className="max-w-7xl mx-auto"
+        className="max-w-5xl mx-auto"
       >
-        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500">
+        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500">
           About Me
         </h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <motion.div variants={item} className="space-y-6 flex flex-col justify-between">
-            <div className="space-y-6">
-              <p className="text-lg text-muted-foreground">
-              I enjoy working on meaningful projects, learning, and collaborating with great people. 
-              My goal is to grow, contribute, and create solutions that matter.
+        <div className="flex flex-col lg:flex-row items-center gap-12">
+          <motion.div 
+            variants={item} 
+            className="flex-1 space-y-8 max-w-2xl mx-auto lg:mx-0"
+          >
+            <div className="space-y-6 text-center lg:text-left">
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                I enjoy working on meaningful projects, learning, and collaborating with great people. 
+                My goal is to grow, contribute, and create solutions that matter.
               </p>
-              <p className="text-lg text-muted-foreground">
+              <p className="text-lg text-muted-foreground leading-relaxed">
                 With a strong foundation in both frontend and backend development,
                 I specialize in building scalable applications using technologies
                 like .NET/C#, Python, JavaScript, Java, SQL, Node.js, React, TypeScript, Next.js, and various cloud services.
               </p>
             </div>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap justify-center lg:justify-start gap-4 pt-2">
               <motion.a
                 href="/Jonas_Poulsen_Software_Resume.pdf"
                 download
@@ -56,7 +59,7 @@ export function About() {
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-6 py-2 bg-primary text-primary-foreground rounded-lg"
+                className="px-6 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium transition-colors hover:bg-primary/90"
               >
                 Download CV/Resume
               </motion.a>
@@ -64,7 +67,7 @@ export function About() {
                 href="#contact"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-6 py-2 border border-primary text-primary rounded-lg"
+                className="px-6 py-2.5 border border-primary text-primary rounded-lg text-sm font-medium transition-colors hover:bg-primary/5"
                 onClick={(e) => {
                   e.preventDefault()
                   document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" })
@@ -77,22 +80,22 @@ export function About() {
 
           <motion.div
             variants={item}
-            className="relative h-[300px] rounded-lg overflow-hidden bg-secondary/50 flex items-center justify-center"
+            className="relative w-full max-w-[220px] sm:max-w-[260px] aspect-square rounded-full overflow-hidden border-4 border-primary/20 shadow-lg mx-auto"
           >
             {!imageError ? (
               <Image
                 src="https://i.imgur.com/27rWIav.jpeg"
                 alt="Jonas Zacho Poulsen"
-                width={400}
-                height={400}
-                className="object-contain p-4 rounded-lg"
+                width={350}
+                height={350}
+                className="w-full h-full object-cover"
                 priority={true}
-                sizes="(max-width: 768px) 100vw, 400px"
-                quality={75}
+                sizes="(max-width: 640px) 220px, 260px"
+                quality={90}
                 onError={() => setImageError(true)}
               />
             ) : (
-              <div className="flex items-center justify-center">
+              <div className="flex items-center justify-center w-full h-full bg-secondary">
                 <span className="text-6xl">👨‍💻</span>
               </div>
             )}
