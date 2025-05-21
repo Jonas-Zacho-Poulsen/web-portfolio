@@ -2,12 +2,6 @@
 
 import { useEffect } from 'react';
 
-declare global {
-  interface Window {
-    Calendly: any;
-  }
-}
-
 export function CalendlyInlineWidget() {
   useEffect(() => {
     // Load Calendly script
