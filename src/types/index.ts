@@ -1,11 +1,26 @@
-/**
- * Core type definitions for the portfolio website
- * This file centralizes all shared types used across the application
- */
+// Core message types
+export type MessageType = 'experience' | 'skills' | 'projects' | 'contact' | 'default';
+export type LLMProvider = 'huggingface' | 'ollama' | 'openai' | 'fallback';
 
-/**
- * Repository/Project type representing a portfolio project
- */
+// Chat message interface
+export interface ChatMessage {
+  id: string;
+  text: string;
+  sender: 'user' | 'ai';
+  timestamp: Date;
+  topic?: MessageType;
+  provider?: LLMProvider;
+}
+
+// LLM Response interface
+export interface LLMResponse {
+  text: string;
+  provider: LLMProvider;
+  success: boolean;
+  error?: string;
+}
+
+// Repository interface (for projects)
 export interface Repository {
   id: number;
   name: string;
@@ -21,26 +36,18 @@ export interface Repository {
   github_stats?: GithubStats;
 }
 
-/**
- * Technology stack item
- */
 export interface TechStack {
   name: string;
   icon: string;
 }
 
-/**
- * GitHub repository statistics
- */
 export interface GithubStats {
   forks: number;
   issues: number;
   watchers: number;
 }
 
-/**
- * Skill definition for the skills section
- */
+// Skill interfaces
 export interface Skill {
   name: string;
   icon: string;
@@ -48,9 +55,6 @@ export interface Skill {
   description?: string;
 }
 
-/**
- * Skill category grouping related skills
- */
 export interface SkillCategory {
   category: string;
   icon?: string;
@@ -58,62 +62,17 @@ export interface SkillCategory {
   items: Skill[];
 }
 
-/**
- * Social media or contact information
- */
-export interface SocialLink {
-  name: string;
-  value: string;
-  icon: React.ComponentType;
-  href: string;
-}
-
-/**
- * Contact form data structure
- */
+// Contact form interface
 export interface ContactFormData {
   name: string;
   email: string;
   message: string;
 }
 
-/**
- * LLM provider types
- */
-export type LLMProvider = 'huggingface' | 'ollama' | 'openai';
-
-/**
- * Chat message type for the chat component
- */
-export interface ChatMessage {
-  id: string;
-  text: string;
-  sender: 'user' | 'ai';
-  timestamp: Date;
-  topic?: MessageType;
-  provider?: LLMProvider | 'fallback';
+// Social links interface
+export interface SocialLink {
+  name: string;
+  value: string;
+  icon: React.ComponentType;
+  href: string;
 }
-
-/**
- * Message topic types for the chat component
- */
-export type MessageType = 'experience' | 'skills' | 'projects' | 'contact' | 'default';
-
-/**
- * Animation variants for Framer Motion
- */
-export const animationVariants = {
-  container: {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  },
-  item: {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 }
-  }
-};

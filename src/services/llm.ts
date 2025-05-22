@@ -55,7 +55,7 @@ async function generateHuggingFaceResponse(message: string): Promise<LLMResponse
     const endpoint = `https://api-inference.huggingface.co/models/${model}`;
 
     // Create a system prompt about Jonas
-    const systemPrompt = `You are an assistant for Jonas Zacho Poulsen, a Full Stack Developer. 
+    const systemPrompt = `You are an assistant for Jonas Zacho Poulsen, a Full Stack Developer.
     Answer questions about Jonas' experience, skills, projects, and contact information.
     Keep responses concise and professional.`;
 
@@ -125,7 +125,7 @@ async function generateOpenAIResponse(message: string): Promise<LLMResponse> {
           messages: [
             {
               role: 'system',
-              content: `You are an assistant for Jonas Zacho Poulsen, a Full Stack Developer. 
+              content: `You are an assistant for Jonas Zacho Poulsen, a Full Stack Developer.
               Answer questions about Jonas' experience, skills, projects, and contact information.
               Keep responses concise and professional.`
             },
@@ -171,7 +171,7 @@ async function generateOllamaResponse(message: string): Promise<LLMResponse> {
     }
 
     const model = process.env.NEXT_PUBLIC_OLLAMA_MODEL || DEFAULT_MODELS.ollama;
-    
+
     const response = await fetchWithTimeout(
       `${endpoint}/api/generate`,
       {
@@ -181,10 +181,10 @@ async function generateOllamaResponse(message: string): Promise<LLMResponse> {
         },
         body: JSON.stringify({
           model: model,
-          prompt: `You are an assistant for Jonas Zacho Poulsen, a Full Stack Developer. 
+          prompt: `You are an assistant for Jonas Zacho Poulsen, a Full Stack Developer.
           Answer questions about Jonas' experience, skills, projects, and contact information.
           Keep responses concise and professional.
-          
+
           User: ${message}
           Assistant:`,
           stream: false,
@@ -219,13 +219,15 @@ async function generateOllamaResponse(message: string): Promise<LLMResponse> {
  * @param message - User message to respond to
  * @returns Object with the fallback response
  */
-function generateFallbackResponse(message: string): { text: string; topic: string } {
+export function findBestResponse(message: string): { text: string; topic: string } {
   message = message.toLowerCase();
-  
+
   if (message.includes("experience") || message.includes("background") || message.includes("work")) {
     return { text: chatConfig.predefinedResponses.experience, topic: "experience" };
   }
-  if (message.includes("skill") || message.includes("technology") || message.includes("tech stack")) {
+  if (message.includes("skill") || message.includes("technology") || message.includes("tech stack") ||
+      message.includes("programming language") || message.includes("language") || message.includes("lang") ||
+      message.includes("framework") || message.includes("tool")) {
     return { text: chatConfig.predefinedResponses.skills, topic: "skills" };
   }
   if (message.includes("project") || message.includes("portfolio") || message.includes("build")) {
@@ -234,7 +236,7 @@ function generateFallbackResponse(message: string): { text: string; topic: strin
   if (message.includes("contact") || message.includes("reach") || message.includes("email") || message.includes("phone")) {
     return { text: chatConfig.predefinedResponses.contact, topic: "contact" };
   }
-  
+
   return { text: chatConfig.predefinedResponses.default, topic: "default" };
 }
 
@@ -244,17 +246,27 @@ function generateFallbackResponse(message: string): { text: string; topic: strin
  * @param message - User message to respond to
  * @returns Promise with the generated response
  */
-export async function generateResponse(message: string): Promise<{ text: string; topic: string }> {
+// Export MessageType for use in other files
+export type MessageType = 'experience' | 'skills' | 'projects' | 'contact' | 'default';
+
+// LLM Provider class for use in components
+export class LLMProvider {
+  static async sendMessage(message: string): Promise<{ text: string; topic: MessageType }> {
+    return generateResponse(message);
+  }
+}
+
+export async function generateResponse(message: string): Promise<{ text: string; topic: MessageType }> {
   const provider = getActiveProvider();
-  
+
   try {
     if (!provider) {
       // No API keys configured, use fallback
-      return generateFallbackResponse(message);
+      return findBestResponse(message);
     }
 
     let response: LLMResponse;
-    
+
     switch (provider) {
       case 'huggingface':
         response = await generateHuggingFaceResponse(message);
@@ -266,18 +278,18 @@ export async function generateResponse(message: string): Promise<{ text: string;
         response = await generateOllamaResponse(message);
         break;
       default:
-        return generateFallbackResponse(message);
+        return findBestResponse(message);
     }
 
     if (!response.success) {
       // API call failed, use fallback
-      return generateFallbackResponse(message);
+      return findBestResponse(message);
     }
 
     // Determine the topic based on the response or message
     let topic = 'default';
     const lowerResponse = response.text.toLowerCase();
-    
+
     if (lowerResponse.includes('experience') || lowerResponse.includes('background') || message.toLowerCase().includes('experience')) {
       topic = 'experience';
     } else if (lowerResponse.includes('skill') || lowerResponse.includes('technology') || message.toLowerCase().includes('skill')) {
@@ -294,6 +306,6 @@ export async function generateResponse(message: string): Promise<{ text: string;
     };
   } catch (error) {
     console.error('Error generating response:', error);
-    return generateFallbackResponse(message);
+    return findBestResponse(message);
   }
 }

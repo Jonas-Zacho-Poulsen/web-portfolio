@@ -1,0 +1,388 @@
+"use client";
+
+import { motion, AnimatePresence, useDragControls } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { useChatStore } from '@/stores/chatStore';
+import { ChatHeader } from './ChatHeader';
+import { ChatMessage } from './ChatMessage';
+import { ChatInput } from './ChatInput';
+import { SuggestedQuestions } from './SuggestedQuestions';
+import { PredefinedPrompts } from './PredefinedPrompts';
+
+export const ChatContainer = () => {
+  const {
+    messages,
+    isOpen,
+    isLoading,
+    error,
+    chatSize,
+    chatPosition,
+    setIsOpen,
+    setChatSize,
+    setChatPosition,
+    clearMessages,
+  } = useChatStore();
+
+  const [isResizing, setIsResizing] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [resizeStart, setResizeStart] = useState({ x: 0, y: 0, width: 0, height: 0 });
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0, chatX: 0, chatY: 0 });
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const dragControls = useDragControls();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to bottom when new messages arrive
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
+  // Position chat in viewport when opened
+  useEffect(() => {
+    if (isOpen) {
+      positionChatInViewport();
+    }
+  }, [isOpen]);
+
+  // Handle viewport changes
+  useEffect(() => {
+    const handleViewportChange = () => {
+      if (isOpen) {
+        positionChatInViewport();
+      }
+    };
+
+    window.addEventListener('resize', handleViewportChange);
+    return () => window.removeEventListener('resize', handleViewportChange);
+  }, [isOpen, chatSize]);
+
+  const positionChatInViewport = () => {
+    const viewport = {
+      width: window.innerWidth,
+      height: window.innerHeight,
+    };
+
+    // Default to bottom right corner if not set
+    let newX = chatPosition.x || viewport.width - chatSize.width - 20;
+    let newY = chatPosition.y || viewport.height - chatSize.height - 20;
+
+    // Ensure chat stays within viewport
+    if (newX + chatSize.width > viewport.width - 20) {
+      newX = viewport.width - chatSize.width - 20;
+    }
+    if (newY + chatSize.height > viewport.height - 20) {
+      newY = viewport.height - chatSize.height - 20;
+    }
+    if (newX < 20) newX = 20;
+    if (newY < 20) newY = 20;
+
+    if (newX !== chatPosition.x || newY !== chatPosition.y) {
+      setChatPosition({ x: newX, y: newY });
+    }
+  };
+
+  // Resize handlers for all corners
+  const startResize = (e: React.PointerEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Don't start resizing if clicking on close button or its children
+    const target = e.target as HTMLElement;
+    if (target.closest('button[title="Close chat"]')) {
+      return;
+    }
+
+    // Capture the pointer to ensure all pointer events go to this element
+    (e.target as Element).setPointerCapture(e.pointerId);
+
+    // Determine which corner is being resized based on the target's position
+    const targetElement = e.currentTarget as HTMLElement;
+    const isTop = targetElement.classList.contains('top') || targetElement.style.top === '0px';
+    const isLeft = targetElement.classList.contains('left') || targetElement.style.left === '0px';
+    const isBottom = targetElement.classList.contains('bottom') || targetElement.style.bottom === '0px';
+    const isRight = targetElement.classList.contains('right') || targetElement.style.right === '0px';
+
+    let direction = '';
+    if (isTop) direction += 'n';
+    if (isBottom) direction += 's';
+    if (isLeft) direction += 'w';
+    if (isRight) direction += 'e';
+
+    // If no direction is determined from classes, infer from position
+    if (!direction) {
+      const rect = targetElement.getBoundingClientRect();
+      if (rect.top === 0) direction += 'n';
+      if (rect.bottom === window.innerHeight) direction += 's';
+      if (rect.left === 0) direction += 'w';
+      if (rect.right === window.innerWidth) direction += 'e';
+    }
+
+    // Default to southeast if still no direction
+    if (!direction) direction = 'se';
+
+    // Store the direction on the element
+    targetElement.dataset.direction = direction;
+
+    setIsResizing(true);
+    setResizeStart({
+      x: e.clientX,
+      y: e.clientY,
+      width: chatSize.width,
+      height: chatSize.height,
+    });
+  };
+
+  const handleResize = (e: React.PointerEvent) => {
+    if (!isResizing) return;
+
+    const targetElement = e.currentTarget as HTMLElement;
+    const direction = targetElement.dataset.direction || 'se';
+
+    const deltaX = e.clientX - resizeStart.x;
+    const deltaY = e.clientY - resizeStart.y;
+
+    let newWidth = chatSize.width;
+    let newHeight = chatSize.height;
+    let newX = chatPosition.x;
+    let newY = chatPosition.y;
+
+    // Handle width changes based on direction
+    if (direction.includes('e')) {
+      // East/right edge
+      newWidth = Math.max(300, Math.min(800, resizeStart.width + deltaX));
+    } else if (direction.includes('w')) {
+      // West/left edge
+      newWidth = Math.max(300, Math.min(800, resizeStart.width - deltaX));
+      newX = chatPosition.x + (resizeStart.width - newWidth);
+    }
+
+    // Handle height changes based on direction
+    if (direction.includes('s')) {
+      // South/bottom edge
+      newHeight = Math.max(350, Math.min(800, resizeStart.height + deltaY));
+    } else if (direction.includes('n')) {
+      // North/top edge
+      newHeight = Math.max(350, Math.min(800, resizeStart.height - deltaY));
+      newY = chatPosition.y + (resizeStart.height - newHeight);
+    }
+
+    setChatSize({ width: newWidth, height: newHeight });
+    setChatPosition({ x: newX, y: newY });
+  };
+
+  const stopResize = (e: React.PointerEvent) => {
+    if (!isResizing) return;
+
+    // Release the pointer capture
+    (e.target as Element).releasePointerCapture(e.pointerId);
+
+    // Clean up the direction data attribute
+    const targetElement = e.currentTarget as HTMLElement;
+    if (targetElement.dataset.direction) {
+      delete targetElement.dataset.direction;
+    }
+
+    setIsResizing(false);
+  };
+
+  // Drag handlers
+  const startDrag = (e: React.PointerEvent) => {
+    if (isResizing) return;
+    e.preventDefault();
+    setIsDragging(true);
+    setDragStart({
+      x: e.clientX,
+      y: e.clientY,
+      chatX: chatPosition.x,
+      chatY: chatPosition.y,
+    });
+    dragControls.start(e);
+  };
+
+  const onDragEnd = (info: any) => {
+    if (isResizing) return;
+    setIsDragging(false);
+
+    // Check if info and info.offset exist before accessing properties
+    if (info && info.offset) {
+      const newX = Math.max(0, Math.min(window.innerWidth - chatSize.width, chatPosition.x + info.offset.x));
+      const newY = Math.max(0, Math.min(window.innerHeight - chatSize.height, chatPosition.y + info.offset.y));
+      setChatPosition({ x: newX, y: newY });
+    }
+  };
+
+  // Close chat
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
+  // Clear messages
+  const handleClear = () => {
+    clearMessages();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <AnimatePresence>
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center pointer-events-none">
+        <motion.div
+          ref={containerRef}
+          className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-2xl overflow-hidden pointer-events-auto relative flex flex-col"
+          style={{
+            width: chatSize.width,
+            height: chatSize.height,
+            position: 'absolute',
+            left: chatPosition.x,
+            top: chatPosition.y,
+            minWidth: '300px',
+            minHeight: '400px',
+            maxWidth: '90vw',
+            maxHeight: '90vh',
+          }}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          transition={{ duration: 0.2 }}
+          drag={!isResizing}
+          dragControls={dragControls}
+          dragMomentum={false}
+          dragElastic={0}
+          onDragEnd={onDragEnd}
+        >
+          {/* Chat Header */}
+          <div
+            className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-2 rounded-t-lg cursor-move select-none"
+            onPointerDown={startDrag}
+            onTouchStart={(e) => {
+              if (isResizing) return;
+              const touch = e.touches[0];
+              startDrag({
+                clientX: touch.clientX,
+                clientY: touch.clientY,
+                preventDefault: () => e.preventDefault(),
+                stopPropagation: () => e.stopPropagation(),
+                pointerId: 1,
+                target: e.target,
+              } as any);
+            }}
+          >
+            <ChatHeader onClose={handleClose} onClear={handleClear} />
+          </div>
+
+          {/* Chat Content */}
+          <div className="flex flex-col h-[calc(100%-40px)]">
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-1.5 space-y-1.5 bg-gray-50 dark:bg-gray-800">
+              {messages.length === 0 ? (
+                <div className="text-center text-gray-500 dark:text-gray-400 py-1">
+                </div>
+              ) : (
+                messages.map((message) => (
+                  <ChatMessage key={message.id} message={message} />
+                ))
+              )}
+
+              {/* Loading indicator */}
+              {isLoading && (
+                <div className="flex items-center space-x-2 text-gray-500 dark:text-gray-400">
+                  <div className="flex space-x-1">
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  </div>
+                  <span className="text-sm">Thinking...</span>
+                </div>
+              )}
+
+              {/* Error message */}
+              {error && (
+                <div className="bg-red-100 dark:bg-red-900 border border-red-400 text-red-700 dark:text-red-300 px-3 py-2 rounded">
+                  {error}
+                </div>
+              )}
+
+              {/* Suggested questions */}
+              {messages.length === 0 && (
+                <div className="space-y-1">
+                  <SuggestedQuestions />
+                  <PredefinedPrompts />
+                </div>
+              )}
+
+              <div ref={messagesEndRef} />
+            </div>
+
+            {/* Chat Input */}
+            <div className="border-t border-gray-200 dark:border-gray-700 p-2 bg-white dark:bg-gray-900">
+              <ChatInput disabled={isLoading} />
+            </div>
+          </div>
+
+          {/* Resize handles for all corners */}
+          {/* Bottom-right corner */}
+          <div
+            className="absolute bottom-0 right-0 w-6 h-6 cursor-se-resize z-10"
+            onPointerDown={startResize}
+            onPointerMove={handleResize}
+            onPointerUp={stopResize}
+            onPointerCancel={stopResize}
+            style={{ touchAction: 'none' }}
+            data-direction="se"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="absolute bottom-0 right-0 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300">
+              <path d="M22 22H16V16H22V22ZM22 13H19V16H16V19H13V22H22V13Z" />
+            </svg>
+          </div>
+
+          {/* Bottom-left corner */}
+          <div
+            className="absolute bottom-0 left-0 w-6 h-6 cursor-sw-resize z-10"
+            onPointerDown={startResize}
+            onPointerMove={handleResize}
+            onPointerUp={stopResize}
+            onPointerCancel={stopResize}
+            style={{ touchAction: 'none' }}
+            data-direction="sw"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="absolute bottom-0 left-0 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300">
+              <path d="M2 22H8V16H2V22ZM2 13H5V16H8V19H11V22H2V13Z" transform="scale(-1, 1) translate(-24, 0)" />
+            </svg>
+          </div>
+
+          {/* Top-right corner */}
+          <div
+            className="absolute top-0 right-0 w-6 h-6 cursor-ne-resize z-10"
+            onPointerDown={startResize}
+            onPointerMove={handleResize}
+            onPointerUp={stopResize}
+            onPointerCancel={stopResize}
+            style={{ touchAction: 'none' }}
+            data-direction="ne"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="absolute top-0 right-0 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300">
+              <path d="M22 2H16V8H22V2ZM22 11H19V8H16V5H13V2H22V11Z" />
+            </svg>
+          </div>
+
+          {/* Top-left corner */}
+          <div
+            className="absolute top-0 left-0 w-6 h-6 cursor-nw-resize z-10"
+            onPointerDown={startResize}
+            onPointerMove={handleResize}
+            onPointerUp={stopResize}
+            onPointerCancel={stopResize}
+            style={{ touchAction: 'none' }}
+            data-direction="nw"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="absolute top-0 left-0 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300">
+              <path d="M2 2H8V8H2V2ZM2 11H5V8H8V5H11V2H2V11Z" transform="scale(-1, 1) translate(-24, 0)" />
+            </svg>
+          </div>
+        </motion.div>
+      </div>
+    </AnimatePresence>
+  );
+};

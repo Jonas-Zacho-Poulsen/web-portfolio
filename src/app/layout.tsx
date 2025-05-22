@@ -1,7 +1,5 @@
-import { Suspense } from 'react'
 import { ThemeProvider } from "@/components/theme-provider"
 import { Inter } from "next/font/google"
-import { BackgroundAnimation } from "@/components/background-animation"
 import "./globals.css"
 import type { Metadata } from 'next'
 
@@ -25,6 +23,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Preload critical resources */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://assets.calendly.com" />
+        
+        {/* Add meta tags for performance */}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+      </head>
       <body className={inter.className}>
         <ThemeProvider
           attribute="class"
@@ -32,10 +39,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Suspense fallback={<div className="min-h-screen bg-background" />}>
-            <BackgroundAnimation />
-            {children}
-          </Suspense>
+          {/* Main content loads immediately */}
+          {children}
+          
+          {/* Background removed */}
         </ThemeProvider>
       </body>
     </html>

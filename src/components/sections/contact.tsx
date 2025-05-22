@@ -43,7 +43,7 @@ const socials = [
     value: "Jonas-Zacho-Poulsen",
     icon: GithubIcon,
     href: "https://github.com/Jonas-Zacho-Poulsen",
-    ariaLabel: "Visit Jonas's GitHub profile"
+    ariaLabel: "Visit Jonas' GitHub profile"
   },
   {
     name: "LinkedIn",
@@ -101,7 +101,9 @@ export default function Contact() {
         script.id = 'calendly-script';
         script.src = 'https://assets.calendly.com/assets/external/widget.js';
         script.async = true;
-        script.onload = () => setIsCalendlyReady(true);
+        script.onload = () => {
+          setIsCalendlyReady(true);
+        };
         document.head.appendChild(script);
       } else {
         // If script already exists, mark as ready
@@ -112,20 +114,81 @@ export default function Contact() {
     // Load immediately
     loadCalendlyScript();
     
+    // Add event listener for Calendly events
+    const handleCalendlyEvent = (e: any) => {
+      if (e.data && e.data.event && e.data.event === 'calendly.close') {
+        setIsCalendlyOpen(false);
+        document.body.style.overflow = 'auto';
+      }
+    };
+    
+    window.addEventListener('message', handleCalendlyEvent);
+    
     return () => {
-      // Clean up on unmount if needed
+      // Clean up on unmount
+      window.removeEventListener('message', handleCalendlyEvent);
       if (isCalendlyOpen) {
         document.body.style.overflow = 'auto';
       }
     };
-  }, []);
+  }, [isCalendlyOpen]);
   
   // Simple toggle for Calendly modal
   const toggleCalendly = () => {
-    setIsCalendlyOpen(!isCalendlyOpen);
-    // Toggle body scroll
-    document.body.style.overflow = isCalendlyOpen ? 'auto' : 'hidden';
+    const wasOpen = isCalendlyOpen;
+    setIsCalendlyOpen(!wasOpen);
+    document.body.style.overflow = wasOpen ? 'auto' : 'hidden';
+    
+    // Force reflow to ensure the previous state is cleaned up
+    if (wasOpen) {
+      const container = document.getElementById('calendly-container');
+      if (container) {
+        container.innerHTML = '';
+      }
+    }
   };
+
+  // Handle Calendly script loading and initialization
+  useEffect(() => {
+    if (!isCalendlyOpen || !isCalendlyReady) return;
+    
+    // Clean up any existing iframes first
+    const existingIframe = document.getElementById('calendly-iframe');
+    if (existingIframe) {
+      existingIframe.remove();
+    }
+
+    // Create and append the iframe
+    const iframe = document.createElement('iframe');
+    iframe.id = 'calendly-iframe';
+    iframe.src = 'https://calendly.com/jonaszp97?hide_gdpr_banner=1&background_color=ffffff&text_color=333333&primary_color=6366f1';
+    iframe.width = '100%';
+    iframe.height = '100%';
+    iframe.frameBorder = '0';
+    iframe.title = 'Schedule a Meeting';
+    iframe.style.border = 'none';
+    iframe.style.display = 'block';
+    iframe.style.background = 'white';
+    
+    const calendlyContainer = document.getElementById('calendly-container');
+    if (calendlyContainer) {
+      // Clear any existing content
+      calendlyContainer.innerHTML = '';
+      calendlyContainer.style.background = 'white';
+      calendlyContainer.appendChild(iframe);
+    }
+
+    // Cleanup function
+    return () => {
+      if (iframe && iframe.parentNode) {
+        iframe.parentNode.removeChild(iframe);
+      }
+      const container = document.getElementById('calendly-container');
+      if (container) {
+        container.innerHTML = '';
+      }
+    };
+  }, [isCalendlyOpen, isCalendlyReady]);
   
   // Hide success message after 5 seconds
   useEffect(() => {
@@ -232,7 +295,7 @@ export default function Contact() {
             {/* Calendly Modal */}
             <AnimatePresence>
               {isCalendlyOpen && (
-                <div className="fixed inset-0 z-50 overflow-y-auto">
+                <div className="fixed inset-0 z-50">
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -240,7 +303,7 @@ export default function Contact() {
                     className="fixed inset-0 bg-black/50 backdrop-blur-sm"
                     onClick={toggleCalendly}
                   />
-                  <div className="flex min-h-screen items-center justify-center p-4">
+                  <div className="fixed inset-0 flex items-center justify-center p-4">
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -257,19 +320,12 @@ export default function Contact() {
                         <span className="text-2xl text-gray-700">×</span>
                       </button>
                       
-                      {/* Direct iframe embed with preconnect for speed */}
-                      <>
-                        {/* Preconnect hint for faster loading */}
-                        <link rel="preconnect" href="https://calendly.com" />
-                        <iframe
-                          src="https://calendly.com/jonaszp97?hide_gdpr_banner=1&background_color=ffffff&text_color=333333&primary_color=6366f1"
-                          width="100%"
-                          height="100%"
-                          frameBorder="0"
-                          title="Schedule a Meeting"
-                          loading="eager"
-                        />
-                      </>
+                      {/* Calendly container */}
+                      <div 
+                        id="calendly-container" 
+                        className="w-full h-full bg-white"
+                        style={{ minHeight: '650px' }}
+                      />
                     </motion.div>
                   </div>
                 </div>
