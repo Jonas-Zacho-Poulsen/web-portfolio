@@ -3,6 +3,17 @@
 import { useState, useEffect } from 'react'
 
 /**
+ * Common breakpoints for responsive design
+ */
+export const breakpoints = {
+  sm: '(min-width: 640px)',
+  md: '(min-width: 768px)',
+  lg: '(min-width: 1024px)',
+  xl: '(min-width: 1280px)',
+  '2xl': '(min-width: 1536px)',
+} as const
+
+/**
  * Custom hook to detect if a media query matches
  * 
  * @param query The media query to check
