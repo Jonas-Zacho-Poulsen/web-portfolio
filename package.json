@@ -21,7 +21,7 @@
     "react-rnd": "^10.4.1",
     "resend": "^2.0.0",
     "zod": "^3.25.20",
-    "zustand": "^4.4.1"
+    "zustand": "^5.0.5"
   },
   "devDependencies": {
     "@jest/globals": "^29.5.0",
