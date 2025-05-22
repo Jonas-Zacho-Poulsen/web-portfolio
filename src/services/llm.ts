@@ -219,7 +219,7 @@ async function generateOllamaResponse(message: string): Promise<LLMResponse> {
  * @param message - User message to respond to
  * @returns Object with the fallback response
  */
-export function findBestResponse(message: string): { text: string; topic: string } {
+export function findBestResponse(message: string): { text: string; topic: MessageType } {
   message = message.toLowerCase();
 
   if (message.includes("experience") || message.includes("background") || message.includes("work")) {
@@ -249,8 +249,8 @@ export function findBestResponse(message: string): { text: string; topic: string
 // Export MessageType for use in other files
 export type MessageType = 'experience' | 'skills' | 'projects' | 'contact' | 'default';
 
-// LLM Provider class for use in components
-export class LLMProvider {
+// LLM Service class for use in components
+export class LLMService {
   static async sendMessage(message: string): Promise<{ text: string; topic: MessageType }> {
     return generateResponse(message);
   }
@@ -287,16 +287,17 @@ export async function generateResponse(message: string): Promise<{ text: string;
     }
 
     // Determine the topic based on the response or message
-    let topic = 'default';
+    let topic: MessageType = 'default';
     const lowerResponse = response.text.toLowerCase();
+    const lowerMessage = message.toLowerCase();
 
-    if (lowerResponse.includes('experience') || lowerResponse.includes('background') || message.toLowerCase().includes('experience')) {
+    if (lowerResponse.includes('experience') || lowerResponse.includes('background') || lowerMessage.includes('experience')) {
       topic = 'experience';
-    } else if (lowerResponse.includes('skill') || lowerResponse.includes('technology') || message.toLowerCase().includes('skill')) {
+    } else if (lowerResponse.includes('skill') || lowerResponse.includes('technology') || lowerMessage.includes('skill')) {
       topic = 'skills';
-    } else if (lowerResponse.includes('project') || lowerResponse.includes('portfolio') || message.toLowerCase().includes('project')) {
+    } else if (lowerResponse.includes('project') || lowerResponse.includes('portfolio') || lowerMessage.includes('project')) {
       topic = 'projects';
-    } else if (lowerResponse.includes('contact') || lowerResponse.includes('email') || message.toLowerCase().includes('contact')) {
+    } else if (lowerResponse.includes('contact') || lowerResponse.includes('email') || lowerMessage.includes('contact')) {
       topic = 'contact';
     }
 
