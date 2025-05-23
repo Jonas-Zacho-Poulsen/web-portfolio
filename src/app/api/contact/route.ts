@@ -5,13 +5,13 @@ import { Resend } from 'resend'
 async function validateRecaptcha(token: string): Promise<boolean> {
   try {
     // Get the secret key from environment variables
-    const secretKey = process.env.RECAPTCHA_SECRET_KEY;
-    
+    const secretKey = process.env.RECAPTCHA_SECRET_KEY
+
     if (!secretKey || secretKey === 'your_recaptcha_secret_key') {
-      console.warn('RECAPTCHA_SECRET_KEY is not properly set in environment variables');
-      return false;
+      console.warn('RECAPTCHA_SECRET_KEY is not properly set in environment variables')
+      return false
     }
-    
+
     // Send the token to Google's verification API
     const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
       method: 'POST',
@@ -19,23 +19,25 @@ async function validateRecaptcha(token: string): Promise<boolean> {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: `secret=${secretKey}&response=${token}`,
-    });
-    
+    })
+
     // Parse the response
-    const data = await response.json();
-    
+    const data = await response.json()
+
     // Check if the token is valid
-    return data.success === true;
+    return data.success === true
   } catch (error) {
-    console.error('Error validating reCAPTCHA token:', error);
-    return false;
+    console.error('Error validating reCAPTCHA token:', error)
+    return false
   }
 }
 
 // Check if API key exists
-const hasResendApiKey = !!process.env.RESEND_API_KEY;
+const hasResendApiKey = !!process.env.RESEND_API_KEY
 if (!hasResendApiKey) {
-  console.warn('RESEND_API_KEY is not set in environment variables - contact form will use mock mode')
+  console.warn(
+    'RESEND_API_KEY is not set in environment variables - contact form will use mock mode'
+  )
 }
 
 // Initialize Resend only if API key is available
@@ -46,18 +48,16 @@ export async function POST(request: Request) {
     const { name, email, message, recaptchaToken } = await request.json()
 
     if (!name || !email || !message) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
-    
+
     // Verify reCAPTCHA token if provided and keys are properly configured
-    const hasValidRecaptchaKeys = process.env.RECAPTCHA_SECRET_KEY && 
-                                process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && 
-                                process.env.RECAPTCHA_SECRET_KEY !== 'your_recaptcha_secret_key' &&
-                                process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY !== 'your_recaptcha_site_key';
-    
+    const hasValidRecaptchaKeys =
+      process.env.RECAPTCHA_SECRET_KEY &&
+      process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY &&
+      process.env.RECAPTCHA_SECRET_KEY !== 'your_recaptcha_secret_key' &&
+      process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY !== 'your_recaptcha_site_key'
+
     if (process.env.NODE_ENV !== 'development' && hasValidRecaptchaKeys) {
       if (!recaptchaToken) {
         return NextResponse.json(
@@ -65,7 +65,7 @@ export async function POST(request: Request) {
           { status: 400 }
         )
       }
-      
+
       const recaptchaValid = await validateRecaptcha(recaptchaToken)
       if (!recaptchaValid) {
         return NextResponse.json(
@@ -90,7 +90,7 @@ export async function POST(request: Request) {
           to: 'jonaszachopoulsen@live.dk',
           subject: `New Contact Form Submission from ${name}`,
         },
-        mock: true
+        mock: true,
       })
     }
 
@@ -104,7 +104,7 @@ Name: ${name}
 Email: ${email}
 Message: ${message}
       `,
-      reply_to: email,
+      replyTo: email,
     })
 
     if (error) {

@@ -1,15 +1,15 @@
-"use client"
+'use client'
 
-import { motion, useScroll, AnimatePresence } from "framer-motion"
-import { useEffect, useState } from "react"
-import { ThemeSwitcher } from "./theme-switcher"
+import { motion, useScroll, AnimatePresence } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { ThemeSwitcher } from './theme-switcher'
 
 const navItems = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
-  { name: "Skills", href: "#skills" },
-  { name: "Projects", href: "#projects" },
-  { name: "Contact", href: "#contact" }
+  { name: 'Home', href: '#home' },
+  { name: 'About', href: '#about' },
+  { name: 'Skills', href: '#skills' },
+  { name: 'Projects', href: '#projects' },
+  { name: 'Contact', href: '#contact' },
 ]
 
 export function Navigation() {
@@ -18,7 +18,7 @@ export function Navigation() {
   const { scrollY } = useScroll()
 
   useEffect(() => {
-    const unsubscribe = scrollY.on("change", (latest) => {
+    const unsubscribe = scrollY.on('change', latest => {
       setIsScrolled(latest > 50)
     })
 
@@ -32,15 +32,15 @@ export function Navigation() {
       const navHeight = 64
 
       // Get the element's position relative to the viewport
-      const elementPosition = element.getBoundingClientRect().top
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
 
-      // Get the current scroll position
-      const offsetPosition = elementPosition + window.pageYOffset - navHeight - 16 // Added extra padding
+      // Calculate the offset position
+      const offsetPosition = elementPosition - navHeight - 16 // Added extra padding
 
       // Scroll to the element with the offset
       window.scrollTo({
         top: offsetPosition,
-        behavior: "smooth"
+        behavior: 'smooth',
       })
     }
     setIsMobileMenuOpen(false)
@@ -51,8 +51,15 @@ export function Navigation() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-200 ${
-        isScrolled ? "bg-background/80 backdrop-blur-md border-b border-border" : ""
+        isScrolled ? 'bg-background/80 backdrop-blur-md border-b border-border' : 'bg-background/80 backdrop-blur-md'
       }`}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 50,
+      }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
@@ -65,13 +72,13 @@ export function Navigation() {
 
           <div className="hidden sm:block">
             <div className="flex items-center space-x-4">
-              {navItems.map((item) => (
+              {navItems.map(item => (
                 <motion.a
                   key={item.name}
                   href={item.href}
                   whileHover={{ y: -2 }}
                   className="px-3 py-2 rounded-md text-sm font-medium text-foreground/80 hover:text-foreground hover:bg-primary/10"
-                  onClick={(e) => {
+                  onClick={e => {
                     e.preventDefault()
                     handleNavClick(item.href)
                   }}
@@ -103,9 +110,7 @@ export function Navigation() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d={isMobileMenuOpen
-                    ? "M6 18L18 6M6 6l12 12"
-                    : "M4 6h16M4 12h16M4 18h16"}
+                  d={isMobileMenuOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'}
                 />
               </svg>
             </motion.button>
@@ -117,19 +122,19 @@ export function Navigation() {
           {isMobileMenuOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
+              animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}
               className="sm:hidden"
             >
               <div className="px-2 pt-2 pb-3 space-y-1">
-                {navItems.map((item) => (
+                {navItems.map(item => (
                   <motion.a
                     key={item.name}
                     href={item.href}
                     whileHover={{ x: 4 }}
                     className="block px-3 py-2 rounded-md text-base font-medium text-foreground/80 hover:text-foreground hover:bg-primary/10"
-                    onClick={(e) => {
+                    onClick={e => {
                       e.preventDefault()
                       handleNavClick(item.href)
                     }}

@@ -1,14 +1,14 @@
 /**
  * Custom hook for tracking scroll position
  */
-import { useState, useEffect } from 'react';
-import { throttle } from '@/utils';
+import { useState, useEffect } from 'react'
+import { throttle } from '@/utils'
 
 interface ScrollPosition {
-  scrollY: number;
-  scrollX: number;
-  isScrolled: boolean;
-  scrollDirection: 'up' | 'down' | 'none';
+  scrollY: number
+  scrollX: number
+  isScrolled: boolean
+  scrollDirection: 'up' | 'down' | 'none'
 }
 
 /**
@@ -17,54 +17,47 @@ interface ScrollPosition {
  * @param throttleTime - Time in ms to throttle scroll events
  * @returns Current scroll position state
  */
-export function useScrollPosition(
-  threshold = 50,
-  throttleTime = 100
-): ScrollPosition {
+export function useScrollPosition(threshold = 50, throttleTime = 100): ScrollPosition {
   const [scrollPosition, setScrollPosition] = useState<ScrollPosition>({
     scrollY: 0,
     scrollX: 0,
     isScrolled: false,
     scrollDirection: 'none',
-  });
+  })
 
   useEffect(() => {
-    let previousScrollY = window.scrollY;
+    let previousScrollY = window.scrollY
 
     const handleScroll = throttle(() => {
-      const currentScrollY = window.scrollY;
-      const currentScrollX = window.scrollX;
-      const isScrolled = currentScrollY > threshold;
-      
+      const currentScrollY = window.scrollY
+      const currentScrollX = window.scrollX
+      const isScrolled = currentScrollY > threshold
+
       // Determine scroll direction
-      const scrollDirection = 
-        currentScrollY > previousScrollY 
-          ? 'down' 
-          : currentScrollY < previousScrollY 
-            ? 'up' 
-            : 'none';
-      
-      previousScrollY = currentScrollY;
-      
+      const scrollDirection =
+        currentScrollY > previousScrollY ? 'down' : currentScrollY < previousScrollY ? 'up' : 'none'
+
+      previousScrollY = currentScrollY
+
       setScrollPosition({
         scrollY: currentScrollY,
         scrollX: currentScrollX,
         isScrolled,
         scrollDirection,
-      });
-    }, throttleTime);
+      })
+    }, throttleTime)
 
-    window.addEventListener('scroll', handleScroll);
-    
+    window.addEventListener('scroll', handleScroll)
+
     // Call once to initialize
-    handleScroll();
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [threshold, throttleTime]);
+    handleScroll()
 
-  return scrollPosition;
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [threshold, throttleTime])
+
+  return scrollPosition
 }
 
-export default useScrollPosition;
+export default useScrollPosition

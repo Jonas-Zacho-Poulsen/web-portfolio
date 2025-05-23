@@ -1,65 +1,65 @@
-"use client"
+'use client'
 
-import { motion, AnimatePresence } from "framer-motion"
-import React, { useState, useEffect, useRef } from "react"
-import { EmailIcon, PhoneIcon, GithubIcon, LinkedInIcon } from "@/components/icons"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import ReCAPTCHA from "react-google-recaptcha"
+import { motion, AnimatePresence } from 'framer-motion'
+import React, { useState, useEffect } from 'react'
+import { EmailIcon, PhoneIcon, GithubIcon, LinkedInIcon } from '@/components/icons'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import ReCAPTCHA from 'react-google-recaptcha'
 
 const container = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1
-    }
-  }
+      staggerChildren: 0.1,
+    },
+  },
 }
 
 const item = {
   hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0 }
+  show: { opacity: 1, y: 0 },
 }
 
 const socials = [
   {
-    name: "Email",
-    value: "jonaszachopoulsen@live.dk",
+    name: 'Email',
+    value: 'jonaszachopoulsen@live.dk',
     icon: EmailIcon,
-    href: "mailto:jonaszachopoulsen@live.dk",
-    ariaLabel: "Send an email to Jonas"
+    href: 'mailto:jonaszachopoulsen@live.dk',
+    ariaLabel: 'Send an email to Jonas',
   },
   {
-    name: "Phone",
-    value: "+45 50 22 73 00",
+    name: 'Phone',
+    value: '+45 50 22 73 00',
     icon: PhoneIcon,
-    href: "tel:+4550227300",
-    ariaLabel: "Call Jonas at +45 50 22 73 00"
+    href: 'tel:+4550227300',
+    ariaLabel: 'Call Jonas at +45 50 22 73 00',
   },
   {
-    name: "GitHub",
-    value: "Jonas-Zacho-Poulsen",
+    name: 'GitHub',
+    value: 'Jonas-Zacho-Poulsen',
     icon: GithubIcon,
-    href: "https://github.com/Jonas-Zacho-Poulsen",
-    ariaLabel: "Visit Jonas' GitHub profile"
+    href: 'https://github.com/Jonas-Zacho-Poulsen',
+    ariaLabel: "Visit Jonas' GitHub profile",
   },
   {
-    name: "LinkedIn",
-    value: "linkedin.com/in/j-poulsen-",
+    name: 'LinkedIn',
+    value: 'linkedin.com/in/j-poulsen-',
     icon: LinkedInIcon,
-    href: "https://www.linkedin.com/in/j-poulsen-",
-    ariaLabel: "Connect with Jonas on LinkedIn"
-  }
+    href: 'https://www.linkedin.com/in/j-poulsen-',
+    ariaLabel: 'Connect with Jonas on LinkedIn',
+  },
 ]
 
 // Form validation schema
 const formSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters" }),
-  email: z.string().email({ message: "Please enter a valid email address" }),
-  message: z.string().min(10, { message: "Message must be at least 10 characters" }),
-  recaptchaToken: z.string().optional()
+  name: z.string().min(2, { message: 'Name must be at least 2 characters' }),
+  email: z.string().email({ message: 'Please enter a valid email address' }),
+  message: z.string().min(10, { message: 'Message must be at least 10 characters' }),
+  recaptchaToken: z.string().optional(),
 })
 
 type FormValues = z.infer<typeof formSchema>
@@ -67,129 +67,118 @@ type FormValues = z.infer<typeof formSchema>
 // Calendly types are defined in src/types/global.d.ts
 
 export default function Contact() {
-  const [isCalendlyOpen, setIsCalendlyOpen] = useState(false);
-  const [sending, setSending] = useState(false)
+  const [isCalendlyOpen, setIsCalendlyOpen] = useState(false)
+  // State for form submission and UI feedback
   const [sent, setSent] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null)
   const recaptchaRef = React.useRef<ReCAPTCHA>(null)
   const [showSuccessMessage, setShowSuccessMessage] = useState(false)
   const [isCalendlyReady, setIsCalendlyReady] = useState(false)
-  
+
   // Form validation with react-hook-form and zod
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-    setValue
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      message: ""
-    }
+      name: '',
+      email: '',
+      message: '',
+    },
   })
 
-  // Preload Calendly script when component mounts
+  // Handle Calendly events
   useEffect(() => {
-    const loadCalendlyScript = () => {
-      // Only add the script once
-      if (!document.getElementById('calendly-script')) {
-        const script = document.createElement('script');
-        script.id = 'calendly-script';
-        script.src = 'https://assets.calendly.com/assets/external/widget.js';
-        script.async = true;
-        script.onload = () => {
-          setIsCalendlyReady(true);
-        };
-        document.head.appendChild(script);
-      } else {
-        // If script already exists, mark as ready
-        setIsCalendlyReady(true);
-      }
-    };
-    
-    // Load immediately
-    loadCalendlyScript();
-    
     // Add event listener for Calendly events
     const handleCalendlyEvent = (e: any) => {
       if (e.data && e.data.event && e.data.event === 'calendly.close') {
-        setIsCalendlyOpen(false);
-        document.body.style.overflow = 'auto';
-      }
-    };
-    
-    window.addEventListener('message', handleCalendlyEvent);
-    
-    return () => {
-      // Clean up on unmount
-      window.removeEventListener('message', handleCalendlyEvent);
-      if (isCalendlyOpen) {
-        document.body.style.overflow = 'auto';
-      }
-    };
-  }, [isCalendlyOpen]);
-  
-  // Simple toggle for Calendly modal
-  const toggleCalendly = () => {
-    const wasOpen = isCalendlyOpen;
-    setIsCalendlyOpen(!wasOpen);
-    document.body.style.overflow = wasOpen ? 'auto' : 'hidden';
-    
-    // Force reflow to ensure the previous state is cleaned up
-    if (wasOpen) {
-      const container = document.getElementById('calendly-container');
-      if (container) {
-        container.innerHTML = '';
+        setIsCalendlyOpen(false)
+        document.body.style.overflow = 'auto'
       }
     }
-  };
+
+    window.addEventListener('message', handleCalendlyEvent)
+
+    return () => {
+      // Clean up on unmount
+      window.removeEventListener('message', handleCalendlyEvent)
+      if (isCalendlyOpen) {
+        document.body.style.overflow = 'auto'
+      }
+    }
+  }, [isCalendlyOpen])
+
+  // Set Calendly as ready when component mounts
+  useEffect(() => {
+    // Import the loadCalendlyScript function from our shared component
+    import('@/components/calendly').then(({ loadCalendlyScript }) => {
+      loadCalendlyScript().then(() => {
+        setIsCalendlyReady(true)
+      })
+    })
+  }, [])
+
+  // Simple toggle for Calendly modal
+  const toggleCalendly = () => {
+    const wasOpen = isCalendlyOpen
+    setIsCalendlyOpen(!wasOpen)
+    document.body.style.overflow = wasOpen ? 'auto' : 'hidden'
+
+    // Force reflow to ensure the previous state is cleaned up
+    if (wasOpen) {
+      const container = document.getElementById('calendly-container')
+      if (container) {
+        container.innerHTML = ''
+      }
+    }
+  }
 
   // Handle Calendly script loading and initialization
   useEffect(() => {
-    if (!isCalendlyOpen || !isCalendlyReady) return;
-    
+    if (!isCalendlyOpen || !isCalendlyReady) return
+
     // Clean up any existing iframes first
-    const existingIframe = document.getElementById('calendly-iframe');
+    const existingIframe = document.getElementById('calendly-iframe')
     if (existingIframe) {
-      existingIframe.remove();
+      existingIframe.remove()
     }
 
     // Create and append the iframe
-    const iframe = document.createElement('iframe');
-    iframe.id = 'calendly-iframe';
-    iframe.src = 'https://calendly.com/jonaszp97?hide_gdpr_banner=1&background_color=ffffff&text_color=333333&primary_color=6366f1';
-    iframe.width = '100%';
-    iframe.height = '100%';
-    iframe.frameBorder = '0';
-    iframe.title = 'Schedule a Meeting';
-    iframe.style.border = 'none';
-    iframe.style.display = 'block';
-    iframe.style.background = 'white';
-    
-    const calendlyContainer = document.getElementById('calendly-container');
+    const iframe = document.createElement('iframe')
+    iframe.id = 'calendly-iframe'
+    iframe.src =
+      'https://calendly.com/jonaszp97?hide_gdpr_banner=1&background_color=ffffff&text_color=333333&primary_color=6366f1'
+    iframe.width = '100%'
+    iframe.height = '100%'
+    iframe.title = 'Schedule a Meeting'
+    iframe.style.border = 'none'
+    iframe.style.display = 'block'
+    iframe.style.background = 'white'
+
+    const calendlyContainer = document.getElementById('calendly-container')
     if (calendlyContainer) {
       // Clear any existing content
-      calendlyContainer.innerHTML = '';
-      calendlyContainer.style.background = 'white';
-      calendlyContainer.appendChild(iframe);
+      calendlyContainer.innerHTML = ''
+      calendlyContainer.style.background = 'white'
+      calendlyContainer.appendChild(iframe)
     }
 
     // Cleanup function
     return () => {
       if (iframe && iframe.parentNode) {
-        iframe.parentNode.removeChild(iframe);
+        iframe.parentNode.removeChild(iframe)
       }
-      const container = document.getElementById('calendly-container');
+      const container = document.getElementById('calendly-container')
       if (container) {
-        container.innerHTML = '';
+        container.innerHTML = ''
       }
-    };
-  }, [isCalendlyOpen, isCalendlyReady]);
-  
+    }
+  }, [isCalendlyOpen, isCalendlyReady])
+
   // Hide success message after 5 seconds
   useEffect(() => {
     let timer: NodeJS.Timeout
@@ -202,10 +191,10 @@ export default function Contact() {
   }, [showSuccessMessage])
 
   const onSubmit = async (data: FormValues) => {
-    setSending(true)
+    // Set form state for submission
     setError(null)
     setSent(false)
-    
+
     try {
       // Verify reCAPTCHA if we're not in development mode
       if (process.env.NODE_ENV !== 'development' && !recaptchaToken) {
@@ -216,25 +205,24 @@ export default function Contact() {
           data.recaptchaToken = token
         } else {
           setError('Please complete the reCAPTCHA verification')
-          setSending(false)
           return
         }
       } else if (recaptchaToken) {
         // Use existing token if available
         data.recaptchaToken = recaptchaToken
       }
-      
+
       // Add CSRF token from cookie if available
       const csrfToken = document.cookie
         .split('; ')
         .find(row => row.startsWith('XSRF-TOKEN='))
-        ?.split('=')[1];
-      
+        ?.split('=')[1]
+
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-CSRF-Token': csrfToken || ''
+          'X-CSRF-Token': csrfToken || '',
         },
         body: JSON.stringify(data),
       })
@@ -248,7 +236,7 @@ export default function Contact() {
       setSent(true)
       setShowSuccessMessage(true)
       reset() // Reset form fields
-      
+
       // Reset reCAPTCHA
       recaptchaRef.current?.reset()
       setRecaptchaToken(null)
@@ -256,8 +244,6 @@ export default function Contact() {
       console.error('Form submission error:', err)
       setError(err instanceof Error ? err.message : 'Failed to send message. Please try again.')
       setSent(false)
-    } finally {
-      setSending(false)
     }
   }
 
@@ -280,11 +266,17 @@ export default function Contact() {
             <h3 className="text-2xl font-semibold text-primary mb-6">Schedule a Meeting</h3>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
               Book a time that works for you to discuss potential opportunities or collaborations.
-              <span className="block mt-2 text-sm font-medium text-primary">I'll get back to you within 24 hours to confirm our meeting.</span>
+              <span className="block mt-2 text-sm font-medium text-primary">
+                I'll get back to you within 24 hours to confirm our meeting.
+              </span>
             </p>
             <motion.button
               onClick={toggleCalendly}
-              whileHover={{ scale: 1.05, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)" }}
+              whileHover={{
+                scale: 1.05,
+                boxShadow:
+                  '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+              }}
               whileTap={{ scale: 0.95 }}
               className="px-8 py-3 text-lg font-medium bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg hover:opacity-90 transition-all duration-300 shadow-md"
               aria-label="Open scheduling calendar"
@@ -310,7 +302,7 @@ export default function Contact() {
                       exit={{ opacity: 0, y: 20 }}
                       className="relative w-full max-w-4xl bg-white rounded-lg shadow-xl overflow-hidden"
                       style={{ height: '700px' }}
-                      onClick={(e) => e.stopPropagation()}
+                      onClick={e => e.stopPropagation()}
                     >
                       <button
                         onClick={toggleCalendly}
@@ -319,10 +311,10 @@ export default function Contact() {
                       >
                         <span className="text-2xl text-gray-700">×</span>
                       </button>
-                      
+
                       {/* Calendly container */}
-                      <div 
-                        id="calendly-container" 
+                      <div
+                        id="calendly-container"
                         className="w-full h-full bg-white"
                         style={{ minHeight: '650px' }}
                       />
@@ -349,16 +341,27 @@ export default function Contact() {
             <div className="space-y-8">
               <h3 className="text-2xl font-semibold text-primary mb-6">Contact Information</h3>
               <p className="text-muted-foreground mb-6">
-                Feel free to reach out through any of these channels. I'm always excited to discuss new opportunities and ideas!
+                Feel free to reach out through any of these channels. I'm always excited to discuss
+                new opportunities and ideas
               </p>
               <div className="space-y-4">
-                {socials.map((social) => (
+                {socials.map(social => (
                   <motion.a
                     key={social.name}
                     href={social.href}
-                    target={social.name === "GitHub" || social.name === "LinkedIn" ? "_blank" : undefined}
-                    rel={social.name === "GitHub" || social.name === "LinkedIn" ? "noopener noreferrer" : undefined}
-                    whileHover={{ x: 5, boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)" }}
+                    target={
+                      social.name === 'GitHub' || social.name === 'LinkedIn' ? '_blank' : undefined
+                    }
+                    rel={
+                      social.name === 'GitHub' || social.name === 'LinkedIn'
+                        ? 'noopener noreferrer'
+                        : undefined
+                    }
+                    whileHover={{
+                      x: 5,
+                      boxShadow:
+                        '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                    }}
                     className="flex items-center space-x-4 p-4 rounded-lg bg-secondary/50 backdrop-blur-sm hover:bg-secondary/70 transition-all duration-300"
                     aria-label={social.ariaLabel}
                   >
@@ -386,15 +389,15 @@ export default function Contact() {
                     type="text"
                     id="name"
                     placeholder="Your name"
-                    {...register("name")}
+                    {...register('name')}
                     className={`w-full px-4 py-3 rounded-lg bg-secondary/50 border ${errors.name ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-border focus:border-primary focus:ring-primary'} focus:outline-none focus:ring-1 transition-colors duration-200`}
-                    aria-invalid={errors.name ? "true" : "false"}
+                    aria-invalid={errors.name ? 'true' : 'false'}
                   />
                   {errors.name && (
                     <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
                   )}
                 </div>
-                
+
                 <div className="space-y-2">
                   <label htmlFor="email" className="flex text-sm font-medium text-primary mb-1">
                     Email <span className="text-red-500 ml-1">*</span>
@@ -403,15 +406,15 @@ export default function Contact() {
                     type="email"
                     id="email"
                     placeholder="your.email@example.com"
-                    {...register("email")}
+                    {...register('email')}
                     className={`w-full px-4 py-3 rounded-lg bg-secondary/50 border ${errors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-border focus:border-primary focus:ring-primary'} focus:outline-none focus:ring-1 transition-colors duration-200`}
-                    aria-invalid={errors.email ? "true" : "false"}
+                    aria-invalid={errors.email ? 'true' : 'false'}
                   />
                   {errors.email && (
                     <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
                   )}
                 </div>
-                
+
                 <div className="space-y-2">
                   <label htmlFor="message" className="flex text-sm font-medium text-primary mb-1">
                     Message <span className="text-red-500 ml-1">*</span>
@@ -419,36 +422,37 @@ export default function Contact() {
                   <textarea
                     id="message"
                     placeholder="Your message here..."
-                    {...register("message")}
+                    {...register('message')}
                     rows={4}
                     className={`w-full px-4 py-3 rounded-lg bg-secondary/50 border ${errors.message ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-border focus:border-primary focus:ring-primary'} focus:outline-none focus:ring-1 transition-colors duration-200`}
-                    aria-invalid={errors.message ? "true" : "false"}
+                    aria-invalid={errors.message ? 'true' : 'false'}
                   />
                   {errors.message && (
                     <p className="text-red-500 text-xs mt-1">{errors.message.message}</p>
                   )}
                 </div>
-                
+
                 {/* reCAPTCHA - hidden until keys are provided */}
-                {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY !== 'your_recaptcha_site_key' && (
-                  <div className="my-4">
-                    <ReCAPTCHA
-                      ref={recaptchaRef}
-                      size="invisible"
-                      sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-                      onChange={(token) => setRecaptchaToken(token)}
-                      onExpired={() => setRecaptchaToken(null)}
-                      onErrored={() => setError('reCAPTCHA error occurred. Please try again.')}
-                    />
-                  </div>
-                )}
-                
+                {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY &&
+                  process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY !== 'your_recaptcha_site_key' && (
+                    <div className="my-4">
+                      <ReCAPTCHA
+                        ref={recaptchaRef}
+                        size="invisible"
+                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                        onChange={token => setRecaptchaToken(token)}
+                        onExpired={() => setRecaptchaToken(null)}
+                        onErrored={() => setError('reCAPTCHA error occurred. Please try again.')}
+                      />
+                    </div>
+                  )}
+
                 {error && (
                   <div className="p-3 bg-red-50 border border-red-200 rounded-md">
                     <p className="text-red-500 text-sm">{error}</p>
                   </div>
                 )}
-                
+
                 {/* Success message */}
                 <AnimatePresence>
                   {showSuccessMessage && (
@@ -459,34 +463,69 @@ export default function Contact() {
                       className="p-3 bg-green-50 border border-green-200 rounded-md"
                     >
                       <p className="text-green-600 text-sm flex items-center">
-                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        <svg
+                          className="w-4 h-4 mr-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
                         </svg>
                         Message sent successfully! I'll get back to you within 24 hours.
                       </p>
                     </motion.div>
                   )}
                 </AnimatePresence>
-                
+
                 <motion.button
                   type="submit"
                   disabled={isSubmitting || sent}
-                  whileHover={{ scale: 1.03, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)" }}
+                  whileHover={{
+                    scale: 1.03,
+                    boxShadow:
+                      '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                  }}
                   whileTap={{ scale: 0.97 }}
                   className="w-full px-6 py-3 bg-gradient-to-r from-purple-500 to-blue-500 text-white font-medium rounded-lg hover:opacity-90 transition-all duration-300 disabled:opacity-50 shadow-md"
                   aria-label="Send message"
                 >
                   {isSubmitting ? (
                     <span className="flex items-center justify-center">
-                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      <svg
+                        className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
                       </svg>
                       Sending...
                     </span>
-                  ) : sent ? "Message Sent!" : "Send Message"}
+                  ) : sent ? (
+                    'Message Sent!'
+                  ) : (
+                    'Send Message'
+                  )}
                 </motion.button>
-                
+
                 <p className="text-xs text-muted-foreground text-center mt-4">
                   Your information is securely processed and never shared with third parties.
                 </p>

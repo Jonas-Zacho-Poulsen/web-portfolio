@@ -1,10 +1,10 @@
-"use client"
+'use client'
 
-import { useTheme } from "next-themes"
-import { motion } from "framer-motion"
-import { useState, useEffect } from "react"
+import { useTheme } from 'next-themes'
+import { motion } from 'framer-motion'
+import { useState, useEffect } from 'react'
 
-export function ThemeSwitcher({ className = "" }: { className?: string }) {
+export function ThemeSwitcher({ className = '' }: { className?: string }) {
   const [mounted, setMounted] = useState(false)
   const { theme, setTheme } = useTheme()
 
@@ -18,21 +18,21 @@ export function ThemeSwitcher({ className = "" }: { className?: string }) {
     <motion.button
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
       className={`p-2 rounded-md hover:bg-primary/10 transition-colors ${className}`}
       aria-label="Toggle theme"
     >
-      {theme === "dark" ? (
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          width="18" 
-          height="18" 
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke="currentColor" 
-          strokeWidth="2" 
-          strokeLinecap="round" 
-          strokeLinejoin="round" 
+      {theme === 'dark' ? (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           className="text-yellow-400"
         >
           <circle cx="12" cy="12" r="5"></circle>
@@ -46,16 +46,16 @@ export function ThemeSwitcher({ className = "" }: { className?: string }) {
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
         </svg>
       ) : (
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          width="18" 
-          height="18" 
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke="currentColor" 
-          strokeWidth="2" 
-          strokeLinecap="round" 
-          strokeLinejoin="round" 
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           className="text-indigo-400"
         >
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
@@ -63,4 +63,4 @@ export function ThemeSwitcher({ className = "" }: { className?: string }) {
       )}
     </motion.button>
   )
-} 
+}

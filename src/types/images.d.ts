@@ -21,4 +21,4 @@ declare module '*.png' {
 declare module '*.gif' {
   const content: string
   export default content
-} 
+}

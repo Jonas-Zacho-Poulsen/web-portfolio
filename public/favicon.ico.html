@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>favicon.ico Generator</title>
+    <style>
+        body { 
+            margin: 0; 
+            padding: 20px; 
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            margin: 20px auto;
+            display: block;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .instructions {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+        }
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 10px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>favicon.ico Generator</h1>
+    
+    <div class="instructions">
+        <h3>Instructions:</h3>
+        <ol>
+            <li>Click the "Generate Image" button below</li>
+            <li>Right-click on the generated image and select "Save Image As..."</li>
+            <li>Save the file as <strong>favicon.png</strong> in your project's <strong>public</strong> directory</li>
+        </ol>
+        
+        <div class="note">
+            <strong>Note:</strong> This will generate a PNG file. To create a proper favicon.ico file, you need to:
+            <ol>
+                <li>Save this as favicon.png</li>
+                <li>Visit <a href="https://favicon.io/favicon-converter/" target="_blank">favicon.io/favicon-converter</a></li>
+                <li>Upload the favicon.png file</li>
+                <li>Download the generated favicon.ico file</li>
+                <li>Place the favicon.ico file in your project's public directory</li>
+            </ol>
+        </div>
+    </div>
+    
+    <canvas id="canvas" width="32" height="32"></canvas>
+    <button onclick="generateImage()">Generate Image</button>
+    <a id="download" style="display:none;">Download</a>
+    
+    <script>
+        function generateImage() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw background
+            ctx.fillStyle = '#19c37d';  // Using the theme color from your site.webmanifest
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw text
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 16px Arial';  // Size is half of 32
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('JP', canvas.width/2, canvas.height/2);
+            
+            // Set up download
+            const downloadLink = document.getElementById('download');
+            downloadLink.href = canvas.toDataURL('image/png');
+            downloadLink.download = 'favicon.png';
+            downloadLink.click();
+        }
+        
+        // Generate the image when the page loads
+        window.onload = generateImage;
+    </script>
+</body>
+</html>

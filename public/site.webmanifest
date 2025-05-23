@@ -1,0 +1,22 @@
+{
+  "name": "Jonas Zacho Poulsen - Full Stack Developer",
+  "short_name": "Jonas Poulsen",
+  "description": "Portfolio of Jonas Zacho Poulsen, a Full Stack Developer specializing in building and maintaining scalable applications",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#19c37d",
+  "background_color": "#111111",
+  "display": "standalone",
+  "start_url": "/",
+  "orientation": "portrait"
+}

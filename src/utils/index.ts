@@ -13,7 +13,7 @@ export function formatDate(date: Date): string {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
-  }).format(date);
+  }).format(date)
 }
 
 /**
@@ -21,7 +21,7 @@ export function formatDate(date: Date): string {
  * @returns A unique string ID
  */
 export function generateId(): string {
-  return Math.random().toString(36).substring(2, 9);
+  return Math.random().toString(36).substring(2, 9)
 }
 
 /**
@@ -34,17 +34,17 @@ export function debounce<T extends (...args: any[]) => any>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {
-  let timeout: NodeJS.Timeout | null = null;
-  
-  return function(...args: Parameters<T>): void {
+  let timeout: NodeJS.Timeout | null = null
+
+  return function (...args: Parameters<T>): void {
     const later = () => {
-      timeout = null;
-      func(...args);
-    };
-    
-    if (timeout) clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
+      timeout = null
+      func(...args)
+    }
+
+    if (timeout) clearTimeout(timeout)
+    timeout = setTimeout(later, wait)
+  }
 }
 
 /**
@@ -57,17 +57,17 @@ export function throttle<T extends (...args: any[]) => any>(
   func: T,
   limit: number
 ): (...args: Parameters<T>) => void {
-  let inThrottle = false;
-  
-  return function(...args: Parameters<T>): void {
+  let inThrottle = false
+
+  return function (...args: Parameters<T>): void {
     if (!inThrottle) {
-      func(...args);
-      inThrottle = true;
+      func(...args)
+      inThrottle = true
       setTimeout(() => {
-        inThrottle = false;
-      }, limit);
+        inThrottle = false
+      }, limit)
     }
-  };
+  }
 }
 
 /**
@@ -76,8 +76,8 @@ export function throttle<T extends (...args: any[]) => any>(
  * @returns Whether the email is valid
  */
 export function isValidEmail(email: string): boolean {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test(email)
 }
 
 /**
@@ -87,8 +87,8 @@ export function isValidEmail(email: string): boolean {
  * @returns Truncated text with ellipsis if needed
  */
 export function truncateText(text: string, maxLength: number): string {
-  if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength) + '...';
+  if (text.length <= maxLength) return text
+  return text.slice(0, maxLength) + '...'
 }
 
 /**
@@ -103,19 +103,19 @@ export async function fetchWithTimeout(
   options: RequestInit = {},
   timeout = 8000
 ): Promise<Response> {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), timeout);
-  
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), timeout)
+
   try {
     const response = await fetch(url, {
       ...options,
-      signal: controller.signal
-    });
-    
-    clearTimeout(timeoutId);
-    return response;
+      signal: controller.signal,
+    })
+
+    clearTimeout(timeoutId)
+    return response
   } catch (error) {
-    clearTimeout(timeoutId);
-    throw error;
+    clearTimeout(timeoutId)
+    throw error
   }
 }

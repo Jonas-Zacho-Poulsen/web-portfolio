@@ -1,54 +1,51 @@
-"use client"
+'use client'
 
-import { motion } from "framer-motion"
-import Image from "next/image"
-import { useState } from "react"
+import { motion } from 'framer-motion'
+import Image from 'next/image'
+import { useState } from 'react'
 
 const container = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1
-    }
-  }
+      staggerChildren: 0.1,
+    },
+  },
 }
 
 const item = {
   hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0 }
+  show: { opacity: 1, y: 0 },
 }
 
 export function About() {
   const [imageError, setImageError] = useState(false)
 
   return (
-    <section className="px-4 sm:px-6 lg:px-8 py-12">
+    <section className="px-4 sm:px-6 lg:px-8 py-6 w-full mt-0">
       <motion.div
         initial="hidden"
         whileInView="show"
         viewport={{ once: true }}
         variants={container}
-        className="max-w-5xl mx-auto"
+        className="max-w-5xl mx-auto w-full"
       >
-        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500">
+        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500">
           About Me
         </h2>
 
         <div className="flex flex-col lg:flex-row items-center gap-12">
-          <motion.div 
-            variants={item} 
-            className="flex-1 space-y-8 max-w-2xl mx-auto lg:mx-0"
-          >
+          <motion.div variants={item} className="flex-1 space-y-8 max-w-2xl mx-auto lg:mx-0">
             <div className="space-y-6 text-center lg:text-left">
               <p className="text-lg text-muted-foreground leading-relaxed">
-                I enjoy working on meaningful projects, learning, and collaborating with great people. 
-                My goal is to grow, contribute, and create solutions that matter.
+                I enjoy working on meaningful projects, learning, and collaborating with great
+                people. My goal is to grow, contribute, and create solutions that matter.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                With a strong foundation in both frontend and backend development,
-                I specialize in building scalable applications using technologies
-                like .NET/C#, Python, JavaScript, Java, SQL, Node.js, React, TypeScript, Next.js, and various cloud services.
+                With a strong foundation in both frontend and backend development, I specialize in
+                building scalable applications using technologies like .NET/C#, Python, JavaScript,
+                Java, SQL, Node.js, React, TypeScript, Next.js, and various cloud services.
               </p>
             </div>
             <div className="flex flex-wrap justify-center lg:justify-start gap-4 pt-2">
@@ -68,9 +65,9 @@ export function About() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="px-6 py-2.5 border border-primary text-primary rounded-lg text-sm font-medium transition-colors hover:bg-primary/5"
-                onClick={(e) => {
+                onClick={e => {
                   e.preventDefault()
-                  document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" })
+                  document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })
                 }}
               >
                 Get in Touch
@@ -91,8 +88,12 @@ export function About() {
                 className="w-full h-full object-cover"
                 priority={true}
                 sizes="(max-width: 640px) 220px, 260px"
-                quality={90}
+                quality={85} // Slightly reduced quality for better performance
+                loading="eager" // Load this image eagerly as it's above the fold
+                fetchPriority="high" // High fetch priority for this critical image
                 onError={() => setImageError(true)}
+                placeholder="blur" // Add blur placeholder
+                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAhEAACAQIGAwAAAAAAAAAAAAABAgMABAUGERIhMUFRcf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AmzHMVs7vT5beW3EsSsVI3KCR7iqNAooP/9k=" // Base64 encoded tiny placeholder
               />
             ) : (
               <div className="flex items-center justify-center w-full h-full bg-secondary">
@@ -104,4 +105,4 @@ export function About() {
       </motion.div>
     </section>
   )
-} 
+}

@@ -1,23 +1,24 @@
-"use client";
+'use client'
 
-import { motion } from 'framer-motion';
-import { useChatStore } from '@/stores/chatStore';
-import { useState } from 'react';
+import { motion } from 'framer-motion'
+import { useChatStore } from '@/stores/chatStore'
+import { useState } from 'react'
 
 const prompts = [
   "Tell me about Jonas' background",
-  "What makes Jonas a good developer?",
-  "Is Jonas available for hire?",
+  'What makes Jonas a good developer?',
+  'Is Jonas available for hire?',
   "What are Jonas' strongest skills?",
-];
+]
 
 export const PredefinedPrompts = () => {
-  const { addUserMessage } = useChatStore();
-  const [isExpanded, setIsExpanded] = useState(false);
+  const { addUserMessage } = useChatStore()
+  const [isExpanded, setIsExpanded] = useState(false)
 
-  const handlePromptClick = async (prompt: string) => {
-    await addUserMessage(prompt);
-  };
+  const handlePromptClick = (prompt: string) => {
+    // Don't await to keep UI responsive
+    addUserMessage(prompt)
+  }
 
   return (
     <div className="mt-2">
@@ -42,7 +43,7 @@ export const PredefinedPrompts = () => {
         initial={{ height: 0, opacity: 0 }}
         animate={{
           height: isExpanded ? 'auto' : 0,
-          opacity: isExpanded ? 1 : 0
+          opacity: isExpanded ? 1 : 0,
         }}
         transition={{ duration: 0.3 }}
         className="overflow-hidden"
@@ -72,5 +73,5 @@ export const PredefinedPrompts = () => {
         </div>
       </motion.div>
     </div>
-  );
-};
+  )
+}

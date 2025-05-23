@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>android-chrome-512x512.png Generator</title>
+    <style>
+        body { 
+            margin: 0; 
+            padding: 20px; 
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            margin: 20px auto;
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .instructions {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>android-chrome-512x512.png Generator</h1>
+    
+    <div class="instructions">
+        <h3>Instructions:</h3>
+        <ol>
+            <li>Click the "Generate Image" button below</li>
+            <li>Right-click on the generated image and select "Save Image As..."</li>
+            <li>Save the file as <strong>android-chrome-512x512.png</strong> in your project's <strong>public</strong> directory</li>
+        </ol>
+    </div>
+    
+    <canvas id="canvas" width="512" height="512"></canvas>
+    <button onclick="generateImage()">Generate Image</button>
+    <a id="download" style="display:none;">Download</a>
+    
+    <script>
+        function generateImage() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw background
+            ctx.fillStyle = '#19c37d';  // Using the theme color from your site.webmanifest
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw text
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 256px Arial';  // Size is half of 512
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('JP', canvas.width/2, canvas.height/2);
+            
+            // Set up download
+            const downloadLink = document.getElementById('download');
+            downloadLink.href = canvas.toDataURL('image/png');
+            downloadLink.download = 'android-chrome-512x512.png';
+            downloadLink.click();
+        }
+        
+        // Generate the image when the page loads
+        window.onload = generateImage;
+    </script>
+</body>
+</html>

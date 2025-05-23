@@ -1,18 +1,18 @@
-"use client";
+'use client'
 
-import { motion } from 'framer-motion';
-import { useChatStore } from '@/stores/chatStore';
+import { motion } from 'framer-motion'
+import { useChatStore } from '@/stores/chatStore'
 
 export const ChatToggle = () => {
-  const { isOpen, setIsOpen, chatPosition, chatSize } = useChatStore();
+  const { isOpen, setIsOpen, chatPosition, chatSize } = useChatStore()
 
   const toggleChat = () => {
-    setIsOpen(!isOpen);
-  };
+    setIsOpen(!isOpen)
+  }
 
   // Position the toggle button to the right of the chat window when open
-  const buttonStyle = isOpen 
-    ? { 
+  const buttonStyle = isOpen
+    ? {
         top: `${Math.min(chatPosition.y, window.innerHeight - 68)}px`,
         left: `${chatPosition.x + chatSize.width + 10}px`,
         bottom: 'auto',
@@ -20,9 +20,9 @@ export const ChatToggle = () => {
         position: 'fixed' as const,
         zIndex: 50,
         transform: 'none',
-        margin: 0
+        margin: 0,
       }
-    : {};
+    : {}
 
   return (
     <motion.button
@@ -31,7 +31,7 @@ export const ChatToggle = () => {
       style={isOpen ? buttonStyle : {}}
       whileHover={{
         scale: 1.1,
-        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
       }}
       whileTap={{ scale: 0.9 }}
       initial={{ opacity: 0, scale: 0 }}
@@ -40,12 +40,7 @@ export const ChatToggle = () => {
       title="Chat with Jonas"
     >
       <div className="relative">
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -63,10 +58,10 @@ export const ChatToggle = () => {
           transition={{
             duration: 2,
             repeat: Infinity,
-            ease: "easeInOut"
+            ease: 'easeInOut',
           }}
         />
       </div>
     </motion.button>
-  );
-};
+  )
+}

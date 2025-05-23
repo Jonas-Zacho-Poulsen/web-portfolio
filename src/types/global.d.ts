@@ -2,9 +2,9 @@
 
 interface Window {
   Calendly?: {
-    initInlineWidget: (options: any) => void;
-    initPopupWidget: (options: any) => void;
-    showPopupWidget: (url: string) => void;
-    closePopupWidget: () => void;
-  };
+    initInlineWidget: (options: any) => void
+    initPopupWidget: (options: any) => void
+    showPopupWidget: (url: string) => void
+    closePopupWidget: () => void
+  }
 }

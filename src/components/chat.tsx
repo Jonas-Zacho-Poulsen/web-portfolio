@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import { ChatContainer } from './chat/ChatContainer';
-import { ChatToggle } from './chat/ChatToggle';
+import { ChatContainer } from './chat/ChatContainer'
+import { ChatToggle } from './chat/ChatToggle'
 
 export const Chat = () => {
   return (
@@ -9,5 +9,5 @@ export const Chat = () => {
       <ChatToggle />
       <ChatContainer />
     </>
-  );
-};
+  )
+}
