@@ -38,13 +38,13 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
     ref
   ) => {
     // Base classes
-    const baseClasses = 'rounded-lg overflow-hidden'
+    const baseClasses = 'rounded-sm overflow-hidden'
 
     // Variant classes
     const variantClasses = {
-      default: 'bg-card text-card-foreground',
-      bordered: 'bg-card text-card-foreground border border-border',
-      elevated: 'bg-card text-card-foreground shadow-md',
+      default: 'bg-(--color-card) text-(--color-card-foreground)',
+      bordered: 'bg-(--color-card) text-(--color-card-foreground) border border-(--color-border)',
+      elevated: 'bg-(--color-card) text-(--color-card-foreground) shadow-sm',
     }
 
     // Combine classes

@@ -161,7 +161,7 @@ export function Hero() {
           transition={{ duration: 0.7, delay: 0.2 }}
           className="text-5xl sm:text-6xl md:text-7xl font-bold"
         >
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500">
+          <span className="gradient-text">
             Jonas Zacho Poulsen
           </span>
         </motion.h1>
@@ -177,7 +177,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1.2 }}
-          className="text-xl sm:text-2xl text-muted-foreground max-w-2xl mx-auto"
+          className="text-xl sm:text-2xl text-(--color-muted-foreground) max-w-2xl mx-auto"
         >
           Passionate about building elegant solutions to complex problems with modern technologies.
         </motion.p>
@@ -196,7 +196,7 @@ export function Hero() {
               boxShadow: '0 10px 25px -5px rgba(var(--primary-rgb), 0.4)',
             }}
             whileTap={{ scale: 0.95 }}
-            className="px-8 py-3 bg-primary text-primary-foreground rounded-lg font-medium transition-all"
+            className="px-8 py-3 bg-(--color-primary) text-(--color-primary-foreground) rounded-sm font-medium transition-all"
             onClick={e => {
               e.preventDefault()
               document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' })
@@ -211,7 +211,7 @@ export function Hero() {
               boxShadow: '0 10px 25px -5px rgba(var(--primary-rgb), 0.2)',
             }}
             whileTap={{ scale: 0.95 }}
-            className="px-8 py-3 border border-primary text-primary rounded-lg font-medium transition-all"
+            className="px-8 py-3 border border-(--color-primary) text-(--color-primary) rounded-sm font-medium transition-all"
             download
             target="_blank"
             rel="noopener noreferrer"
@@ -261,10 +261,10 @@ export function Hero() {
               }}
               whileHover={{
                 scale: 1.2,
-                color: 'hsl(var(--primary))',
+                color: 'var(--color-primary)',
                 rotate: [0, -10, 10, -10, 0],
               }}
-              className="text-muted-foreground transition-colors"
+              className="text-(--color-muted-foreground) transition-colors"
               title={social.title}
             >
               <social.icon />
@@ -285,7 +285,7 @@ export function Hero() {
           transition={{ duration: 1.5, repeat: Infinity, repeatType: 'loop' }}
           className="flex flex-col items-center"
         >
-          <span className="text-sm text-muted-foreground mb-2">Scroll Down</span>
+          <span className="text-sm text-(--color-muted-foreground) mb-2">Scroll Down</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -296,7 +296,7 @@ export function Hero() {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="text-primary"
+            className="text-(--color-primary)"
           >
             <path d="M12 5v14M19 12l-7 7-7-7" />
           </svg>

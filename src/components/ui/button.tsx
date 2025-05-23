@@ -55,7 +55,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     // Base classes
     const baseClasses =
-      'inline-flex items-center justify-center font-medium rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary/50'
+      'inline-flex items-center justify-center font-medium rounded-sm transition-all focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-(--color-primary)/50'
 
     // Size classes
     const sizeClasses = {
@@ -66,10 +66,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     // Variant classes
     const variantClasses = {
-      primary: 'bg-primary text-primary-foreground hover:bg-primary/90',
-      secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/90',
-      outline: 'border border-primary text-primary hover:bg-primary/10',
-      ghost: 'text-foreground hover:bg-muted',
+      primary: 'bg-(--color-primary) text-(--color-primary-foreground) hover:bg-(--color-primary)/90',
+      secondary: 'bg-(--color-secondary) text-(--color-secondary-foreground) hover:bg-(--color-secondary)/90',
+      outline: 'border border-(--color-primary) text-(--color-primary) hover:bg-(--color-primary)/10',
+      ghost: 'text-(--color-foreground) hover:bg-(--color-muted)',
     }
 
     // Combine classes

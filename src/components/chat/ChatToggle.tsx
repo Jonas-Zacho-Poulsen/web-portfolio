@@ -27,7 +27,7 @@ export const ChatToggle = () => {
   return (
     <motion.button
       onClick={toggleChat}
-      className={`bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ${!isOpen ? 'fixed bottom-6 right-6 z-40' : 'fixed'}`}
+      className={`bg-gradient-to-r from-(--color-blue-500) to-(--color-purple-600) hover:from-(--color-blue-600) hover:to-(--color-purple-700) text-white p-4 rounded-full shadow-sm hover:shadow-md transition-all duration-300 ${!isOpen ? 'fixed bottom-6 right-6 z-40' : 'fixed'}`}
       style={isOpen ? buttonStyle : {}}
       whileHover={{
         scale: 1.1,
@@ -51,7 +51,7 @@ export const ChatToggle = () => {
 
         {/* Notification dot */}
         <motion.div
-          className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"
+          className="absolute -top-1 -right-1 w-3 h-3 bg-(--color-red-500) rounded-full"
           animate={{
             scale: [1, 1.2, 1],
           }}

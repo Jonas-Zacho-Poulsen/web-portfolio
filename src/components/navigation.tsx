@@ -51,7 +51,7 @@ export function Navigation() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-200 ${
-        isScrolled ? 'bg-background/80 backdrop-blur-md border-b border-border' : 'bg-background/80 backdrop-blur-md'
+        isScrolled ? 'bg-(--color-background)/80 backdrop-blur-sm border-b border-(--color-border)' : 'bg-(--color-background)/80 backdrop-blur-sm'
       }`}
       style={{
         position: 'fixed',
@@ -64,7 +64,7 @@ export function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <motion.span
-            className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500"
+            className="text-xl font-bold gradient-text"
             whileHover={{ scale: 1.05 }}
           >
             JZP
@@ -77,7 +77,7 @@ export function Navigation() {
                   key={item.name}
                   href={item.href}
                   whileHover={{ y: -2 }}
-                  className="px-3 py-2 rounded-md text-sm font-medium text-foreground/80 hover:text-foreground hover:bg-primary/10"
+                  className="px-3 py-2 rounded-xs text-sm font-medium text-(--color-foreground)/80 hover:text-(--color-foreground) hover:bg-(--color-primary)/10"
                   onClick={e => {
                     e.preventDefault()
                     handleNavClick(item.href)
@@ -86,17 +86,17 @@ export function Navigation() {
                   {item.name}
                 </motion.a>
               ))}
-              <ThemeSwitcher className="text-foreground/80 hover:text-foreground" />
+              <ThemeSwitcher className="text-(--color-foreground)/80 hover:text-(--color-foreground)" />
             </div>
           </div>
 
           {/* Theme switcher and mobile menu button */}
           <div className="sm:hidden flex items-center space-x-2">
-            <ThemeSwitcher className="text-foreground/80 hover:text-foreground" />
+            <ThemeSwitcher className="text-(--color-foreground)/80 hover:text-(--color-foreground)" />
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-foreground/80 hover:text-foreground hover:bg-primary/10"
+              className="inline-flex items-center justify-center p-2 rounded-xs text-(--color-foreground)/80 hover:text-(--color-foreground) hover:bg-(--color-primary)/10"
             >
               <span className="sr-only">Open main menu</span>
               <svg
@@ -133,7 +133,7 @@ export function Navigation() {
                     key={item.name}
                     href={item.href}
                     whileHover={{ x: 4 }}
-                    className="block px-3 py-2 rounded-md text-base font-medium text-foreground/80 hover:text-foreground hover:bg-primary/10"
+                    className="block px-3 py-2 rounded-xs text-base font-medium text-(--color-foreground)/80 hover:text-(--color-foreground) hover:bg-(--color-primary)/10"
                     onClick={e => {
                       e.preventDefault()
                       handleNavClick(item.href)
