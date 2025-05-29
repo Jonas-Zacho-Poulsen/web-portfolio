@@ -39,7 +39,7 @@
     "@types/react-dom": "^19.1.5",
     "@types/react-google-recaptcha": "^2.1.9",
     "@typescript-eslint/eslint-plugin": "^8.32.1",
-    "@typescript-eslint/parser": "^8.32.1",
+    "@typescript-eslint/parser": "^8.33.0",
     "autoprefixer": "^10.4.21",
     "critters": "^0.0.25",
     "eslint": "^9.27.0",
