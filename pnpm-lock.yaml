@@ -45,8 +45,8 @@ dependencies:
     specifier: ^4.5.1
     version: 4.5.1(react-dom@19.1.0)(react@19.1.0)
   zod:
-    specifier: ^3.25.32
-    version: 3.25.32
+    specifier: ^3.25.49
+    version: 3.25.49
   zustand:
     specifier: ^5.0.5
     version: 5.0.5(@types/react@19.1.5)(react@19.1.0)
@@ -417,8 +417,8 @@ packages:
     engines: {node: '>=6.9.0'}
     dev: true
 
-  /@babel/runtime@7.27.3:
-    resolution: {integrity: sha512-7EYtGezsdiDMyY80+65EzwiGmcJqpmcZCojSXaRgdrBaGtWTgDZKq69cPIVped6MkIM78cTQ2GOiEYjwOlG4xw==}
+  /@babel/runtime@7.27.4:
+    resolution: {integrity: sha512-t3yaEOuGu9NlIZ+hIeGbBjFtZT7j2cb2tg0fuaJKeGotchRjjLfrBA9Kwf8quhpP1EUuxModQg04q/mBwyg8uA==}
     engines: {node: '>=6.9.0'}
     dev: true
 
@@ -1495,7 +1495,7 @@ packages:
     engines: {node: '>=18'}
     dependencies:
       '@babel/code-frame': 7.27.1
-      '@babel/runtime': 7.27.3
+      '@babel/runtime': 7.27.4
       '@types/aria-query': 5.0.4
       aria-query: 5.3.0
       chalk: 4.1.2
@@ -6379,8 +6379,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /zod@3.25.32:
-    resolution: {integrity: sha512-OSm2xTIRfW8CV5/QKgngwmQW/8aPfGdaQFlrGoErlgg/Epm7cjb6K6VEyExfe65a3VybUOnu381edLb0dfJl0g==}
+  /zod@3.25.49:
+    resolution: {integrity: sha512-JMMPMy9ZBk3XFEdbM3iL1brx4NUSejd6xr3ELrrGEfGb355gjhiAWtG3K5o+AViV/3ZfkIrCzXsZn6SbLwTR8Q==}
     dev: false
 
   /zustand@5.0.5(@types/react@19.1.5)(react@19.1.0):
