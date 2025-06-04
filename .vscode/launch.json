@@ -5,8 +5,8 @@
             "name": "Next.js: Debug Server-side",
             "type": "node-terminal",
             "request": "launch",
-            "command": "npm run dev",
             "cwd": "${workspaceFolder}"
+        },
         {
             "name": "Next.js: Debug Client-side",
             "type": "chrome",
@@ -18,9 +18,7 @@
             "name": "Next.js: Debug Full Stack",
             "type": "node-terminal",
             "request": "launch",
-            "command": "npm run dev",
             "cwd": "${workspaceFolder}",
-            "console": "integratedTerminal",
             "serverReadyAction": {
                 "pattern": "started server on .+, url: (https?://.+)",
                 "uriFormat": "%s",

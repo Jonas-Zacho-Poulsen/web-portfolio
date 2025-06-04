@@ -16,9 +16,13 @@ export function ThemeSwitcher({ className = '' }: { className?: string }) {
 
   return (
     <motion.button
+      key={theme}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      onClick={() => {
+        setTheme(theme === 'dark' ? 'light' : 'dark');
+        console.log("Theme toggled to:", theme === 'dark' ? 'light' : 'dark');
+      }}
       className={`p-2 rounded-md hover:bg-primary/10 transition-colors ${className}`}
       aria-label="Toggle theme"
     >
