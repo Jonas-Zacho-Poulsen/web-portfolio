@@ -3,50 +3,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef, useEffect, useState } from 'react'
 import { EmailIcon, PhoneIcon, GithubIcon, LinkedInIcon } from '@/components/icons'
-
-// Animated text typing effect
-const TypedText = ({ text, className }: { text: string; className?: string }) => {
-  const letters = Array.from(text)
-
-  const container = {
-    hidden: { opacity: 0 },
-    visible: (i = 1) => ({
-      opacity: 1,
-      transition: { staggerChildren: 0.03, delayChildren: 0.04 * i },
-    }),
-  }
-
-  const child = {
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: 'spring',
-        damping: 12,
-        stiffness: 100,
-      },
-    },
-    hidden: {
-      opacity: 0,
-      y: 20,
-      transition: {
-        type: 'spring',
-        damping: 12,
-        stiffness: 100,
-      },
-    },
-  }
-
-  return (
-    <motion.div className={className} variants={container} initial="hidden" animate="visible">
-      {letters.map((letter, index) => (
-        <motion.span key={index} variants={child} className="inline-block">
-          {letter === ' ' ? '\u00A0' : letter}
-        </motion.span>
-      ))}
-    </motion.div>
-  )
-}
+import { AnimatedTextCycle } from '@/components/ui/animated-text-cycle'
 
 // Background decoration for hero section
 const HeroBackground = () => {
@@ -142,7 +99,16 @@ export function Hero() {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
-  // Mouse position is used for the HeroBackground component
+  const titles = [
+    "Full Stack Developer",
+    "API Wizard",
+    "Problem Solver",
+    "Code Craftsman",
+    "Tech Innovator",
+    "Software Architect",
+    "Cloud Enthusiast",
+    "UI/UX Designer"
+  ]
 
   return (
     <section
@@ -166,11 +132,14 @@ export function Hero() {
           </span>
         </motion.h1>
 
-        {/* Animated typing effect for title */}
-        <TypedText
-          text="Full Stack Developer"
-          className="text-3xl sm:text-4xl md:text-5xl font-bold"
-        />
+        {/* Animated title cycling */}
+        <div className="text-3xl sm:text-4xl md:text-5xl font-bold">
+          <AnimatedTextCycle
+            words={titles}
+            interval={3000}
+            className="text-foreground"
+          />
+        </div>
 
         {/* Description with animated reveal */}
         <motion.p

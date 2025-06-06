@@ -2,7 +2,8 @@
 
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { Typewriter } from '@/components/ui/typewriter'
 
 const container = {
   hidden: { opacity: 0 },
@@ -21,6 +22,23 @@ const item = {
 
 export function About() {
   const [imageError, setImageError] = useState(false)
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  const technologies = [
+    ".NET/C#",
+    "Python",
+    "JavaScript",
+    "Java",
+    "SQL",
+    "Node.js",
+    "React",
+    "TypeScript",
+    "Next.js",
+  ]
 
   return (
     <section className="px-4 sm:px-6 lg:px-8 py-6 w-full mt-0">
@@ -44,10 +62,23 @@ export function About() {
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
                 With a strong foundation in both frontend and backend development, I specialize in
-                building scalable applications using technologies like .NET/C#, Python, JavaScript,
-                Java, SQL, Node.js, React, TypeScript, Next.js, and various cloud services.
+                building scalable applications using technologies like{" "}
+                {isClient ? (
+                  <Typewriter
+                    text={technologies}
+                    speed={70}
+                    className="text-primary font-medium"
+                    waitTime={1500}
+                    deleteSpeed={40}
+                    cursorChar="_"
+                  />
+                ) : (
+                  <span className="text-primary font-medium">{technologies[0]}</span>
+                )}
+                {" "}and various cloud services.
               </p>
             </div>
+            
             <div className="flex flex-wrap justify-center lg:justify-start gap-4 pt-2">
               <motion.a
                 href="/Jonas_Poulsen_Software_Resume.pdf"
@@ -88,12 +119,12 @@ export function About() {
                 className="w-full h-full object-cover"
                 priority={true}
                 sizes="(max-width: 640px) 220px, 260px"
-                quality={85} // Slightly reduced quality for better performance
-                loading="eager" // Load this image eagerly as it's above the fold
-                fetchPriority="high" // High fetch priority for this critical image
+                quality={85}
+                loading="eager"
+                fetchPriority="high"
                 onError={() => setImageError(true)}
-                placeholder="blur" // Add blur placeholder
-                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAhEAACAQIGAwAAAAAAAAAAAAABAgMABAUGERIhMUFRcf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AmzHMVs7vT5beW3EsSsVI3KCR7iqNAooP/9k=" // Base64 encoded tiny placeholder
+                placeholder="blur"
+                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAhEAACAQIGAwAAAAAAAAAAAAABAgMABAUGERIhMUFRcf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AmzHMVs7vT5beW3EsSsVI3KCR7iqNAooP/9k="
               />
             ) : (
               <div className="flex items-center justify-center w-full h-full bg-secondary">

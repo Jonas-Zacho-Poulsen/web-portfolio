@@ -66,14 +66,39 @@ export const ChatContainer = () => {
 
   // Handle viewport changes
   useEffect(() => {
+    let ticking = false
+
     const handleViewportChange = () => {
       if (isOpen) {
         positionChatInViewport()
       }
     }
 
+    const handleScroll = () => {
+      if (!ticking && isOpen) {
+        window.requestAnimationFrame(() => {
+          // Calculate position relative to the viewport
+          const viewport = {
+            width: window.innerWidth,
+            height: window.innerHeight,
+          }
+          const padding = 20
+          const newX = viewport.width - chatSize.width - padding
+          const newY = viewport.height - chatSize.height - padding
+
+          setChatPosition({ x: newX, y: newY })
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+
     window.addEventListener('resize', handleViewportChange)
-    return () => window.removeEventListener('resize', handleViewportChange)
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener('resize', handleViewportChange)
+      window.removeEventListener('scroll', handleScroll)
+    }
   }, [isOpen, chatSize, positionChatInViewport])
 
   // Resize handlers for all corners
@@ -232,188 +257,187 @@ export const ChatContainer = () => {
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center pointer-events-none">
-        <motion.div
-          ref={containerRef}
-          className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-2xl overflow-hidden pointer-events-auto relative flex flex-col"
-          style={{
-            width: chatSize.width,
-            height: chatSize.height,
-            position: 'absolute',
-            left: chatPosition.x,
-            top: chatPosition.y,
-            minWidth: '300px',
-            minHeight: '400px',
-            maxWidth: '90vw',
-            maxHeight: '90vh',
+      <motion.div
+        ref={containerRef}
+        className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-2xl overflow-hidden pointer-events-auto relative flex flex-col fixed z-50"
+        style={{
+          width: chatSize.width,
+          height: chatSize.height,
+          position: 'fixed',
+          right: '20px',
+          bottom: '20px',
+          minWidth: '300px',
+          minHeight: '400px',
+          maxWidth: '90vw',
+          maxHeight: '90vh',
+          transform: `translate(${chatPosition.x}px, ${chatPosition.y}px)`,
+        }}
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.8 }}
+        transition={{ duration: 0.2 }}
+        drag={!isResizing}
+        dragControls={dragControls}
+        dragMomentum={false}
+        dragElastic={0}
+        onDragEnd={onDragEnd}
+      >
+        {/* Chat Header */}
+        <div
+          className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-2 rounded-t-lg cursor-move select-none"
+          onPointerDown={startDrag}
+          onTouchStart={e => {
+            if (isResizing) return
+            e.preventDefault()
+            // Touch events are handled by the drag functionality
           }}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          transition={{ duration: 0.2 }}
-          drag={!isResizing}
-          dragControls={dragControls}
-          dragMomentum={false}
-          dragElastic={0}
-          onDragEnd={onDragEnd}
         >
-          {/* Chat Header */}
-          <div
-            className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-2 rounded-t-lg cursor-move select-none"
-            onPointerDown={startDrag}
-            onTouchStart={e => {
-              if (isResizing) return
-              e.preventDefault()
-              // Touch events are handled by the drag functionality
-            }}
-          >
-            <ChatHeader onClose={handleClose} onClear={handleClear} />
-          </div>
+          <ChatHeader onClose={handleClose} onClear={handleClear} />
+        </div>
 
-          {/* Chat Content */}
-          <div className="flex flex-col h-[calc(100%-40px)]">
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-1 space-y-1 bg-gray-50 dark:bg-gray-800">
-              {messages.length === 0 ? (
-                <div className="text-center text-gray-500 dark:text-gray-400 py-0.5"></div>
-              ) : (
-                messages.map(message => <ChatMessage key={message.id} message={message} />)
-              )}
+        {/* Chat Content */}
+        <div className="flex flex-col h-[calc(100%-40px)]">
+          {/* Messages */}
+          <div className="flex-1 overflow-y-auto p-1 space-y-1 bg-gray-50 dark:bg-gray-800">
+            {messages.length === 0 ? (
+              <div className="text-center text-gray-500 dark:text-gray-400 py-0.5"></div>
+            ) : (
+              messages.map(message => <ChatMessage key={message.id} message={message} />)
+            )}
 
-              {/* Loading indicator */}
-              {isLoading && (
-                <div className="flex items-center space-x-1.5 text-gray-500 dark:text-gray-400">
-                  <div className="flex space-x-0.5">
-                    <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></div>
-                    <div
-                      className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"
-                      style={{ animationDelay: '0.1s' }}
-                    ></div>
-                    <div
-                      className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"
-                      style={{ animationDelay: '0.2s' }}
-                    ></div>
-                  </div>
-                  <span className="text-xs">Thinking...</span>
+            {/* Loading indicator */}
+            {isLoading && (
+              <div className="flex items-center space-x-1.5 text-gray-500 dark:text-gray-400">
+                <div className="flex space-x-0.5">
+                  <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></div>
+                  <div
+                    className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"
+                    style={{ animationDelay: '0.1s' }}
+                  ></div>
+                  <div
+                    className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"
+                    style={{ animationDelay: '0.2s' }}
+                  ></div>
                 </div>
-              )}
+                <span className="text-xs">Thinking...</span>
+              </div>
+            )}
 
-              {/* Error message */}
-              {error && (
-                <div className="bg-red-100 dark:bg-red-900 border border-red-400 text-red-700 dark:text-red-300 px-2 py-1 rounded text-xs">
-                  {error}
-                </div>
-              )}
+            {/* Error message */}
+            {error && (
+              <div className="bg-red-100 dark:bg-red-900 border border-red-400 text-red-700 dark:text-red-300 px-2 py-1 rounded text-xs">
+                {error}
+              </div>
+            )}
 
-              {/* Suggested questions */}
-              {messages.length === 0 && (
-                <div className="space-y-0.5">
-                  <SuggestedQuestions />
-                  <PredefinedPrompts />
-                </div>
-              )}
+            {/* Suggested questions */}
+            {messages.length === 0 && (
+              <div className="space-y-0.5">
+                <SuggestedQuestions />
+                <PredefinedPrompts />
+              </div>
+            )}
 
-              <div ref={messagesEndRef} />
-            </div>
-
-            {/* Chat Input */}
-            <div className="border-t border-gray-200 dark:border-gray-700 p-1.5 bg-white dark:bg-gray-900">
-              <ChatInput disabled={isLoading} />
-            </div>
+            <div ref={messagesEndRef} />
           </div>
 
-          {/* Resize handles for all corners */}
-          {/* Bottom-right corner */}
-          <div
-            className="absolute bottom-0 right-0 w-6 h-6 cursor-se-resize z-10"
-            onPointerDown={startResize}
-            onPointerMove={handleResize}
-            onPointerUp={stopResize}
-            onPointerCancel={stopResize}
-            style={{ touchAction: 'none' }}
-            data-direction="se"
+          {/* Chat Input */}
+          <div className="border-t border-gray-200 dark:border-gray-700 p-1.5 bg-white dark:bg-gray-900">
+            <ChatInput disabled={isLoading} />
+          </div>
+        </div>
+
+        {/* Resize handles for all corners */}
+        {/* Bottom-right corner */}
+        <div
+          className="absolute bottom-0 right-0 w-6 h-6 cursor-se-resize z-10"
+          onPointerDown={startResize}
+          onPointerMove={handleResize}
+          onPointerUp={stopResize}
+          onPointerCancel={stopResize}
+          style={{ touchAction: 'none' }}
+          data-direction="se"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="absolute bottom-0 right-0 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
           >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="absolute bottom-0 right-0 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
-            >
-              <path d="M22 22H16V16H22V22ZM22 13H19V16H16V19H13V22H22V13Z" />
-            </svg>
-          </div>
+            <path d="M22 22H16V16H22V22ZM22 13H19V16H16V19H13V22H22V13Z" />
+          </svg>
+        </div>
 
-          {/* Bottom-left corner */}
-          <div
-            className="absolute bottom-0 left-0 w-6 h-6 cursor-sw-resize z-10"
-            onPointerDown={startResize}
-            onPointerMove={handleResize}
-            onPointerUp={stopResize}
-            onPointerCancel={stopResize}
-            style={{ touchAction: 'none' }}
-            data-direction="sw"
+        {/* Bottom-left corner */}
+        <div
+          className="absolute bottom-0 left-0 w-6 h-6 cursor-sw-resize z-10"
+          onPointerDown={startResize}
+          onPointerMove={handleResize}
+          onPointerUp={stopResize}
+          onPointerCancel={stopResize}
+          style={{ touchAction: 'none' }}
+          data-direction="sw"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="absolute bottom-0 left-0 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
           >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="absolute bottom-0 left-0 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
-            >
-              <path
-                d="M2 22H8V16H2V22ZM2 13H5V16H8V19H11V22H2V13Z"
-                transform="scale(-1, 1) translate(-24, 0)"
-              />
-            </svg>
-          </div>
+            <path
+              d="M2 22H8V16H2V22ZM2 13H5V16H8V19H11V22H2V13Z"
+              transform="scale(-1, 1) translate(-24, 0)"
+            />
+          </svg>
+        </div>
 
-          {/* Top-right corner */}
-          <div
-            className="absolute top-0 right-0 w-6 h-6 cursor-ne-resize z-10"
-            onPointerDown={startResize}
-            onPointerMove={handleResize}
-            onPointerUp={stopResize}
-            onPointerCancel={stopResize}
-            style={{ touchAction: 'none' }}
-            data-direction="ne"
+        {/* Top-right corner */}
+        <div
+          className="absolute top-0 right-0 w-6 h-6 cursor-ne-resize z-10"
+          onPointerDown={startResize}
+          onPointerMove={handleResize}
+          onPointerUp={stopResize}
+          onPointerCancel={stopResize}
+          style={{ touchAction: 'none' }}
+          data-direction="ne"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="absolute top-0 right-0 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
           >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="absolute top-0 right-0 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
-            >
-              <path d="M22 2H16V8H22V2ZM22 11H19V8H16V5H13V2H22V11Z" />
-            </svg>
-          </div>
+            <path d="M22 2H16V8H22V2ZM22 11H19V8H16V5H13V2H22V11Z" />
+          </svg>
+        </div>
 
-          {/* Top-left corner */}
-          <div
-            className="absolute top-0 left-0 w-6 h-6 cursor-nw-resize z-10"
-            onPointerDown={startResize}
-            onPointerMove={handleResize}
-            onPointerUp={stopResize}
-            onPointerCancel={stopResize}
-            style={{ touchAction: 'none' }}
-            data-direction="nw"
+        {/* Top-left corner */}
+        <div
+          className="absolute top-0 left-0 w-6 h-6 cursor-nw-resize z-10"
+          onPointerDown={startResize}
+          onPointerMove={handleResize}
+          onPointerUp={stopResize}
+          onPointerCancel={stopResize}
+          style={{ touchAction: 'none' }}
+          data-direction="nw"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="absolute top-0 left-0 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
           >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="absolute top-0 left-0 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
-            >
-              <path
-                d="M2 2H8V8H2V2ZM2 11H5V8H8V5H11V2H2V11Z"
-                transform="scale(-1, 1) translate(-24, 0)"
-              />
-            </svg>
-          </div>
-        </motion.div>
-      </div>
+            <path
+              d="M2 2H8V8H2V2ZM2 11H5V8H8V5H11V2H2V11Z"
+              transform="scale(-1, 1) translate(-24, 0)"
+            />
+          </svg>
+        </div>
+      </motion.div>
     </AnimatePresence>
   )
 }
