@@ -100,14 +100,17 @@ export function Hero() {
   }, [])
 
   const titles = [
-    "Full Stack Developer",
+    "Full Stack Sorcerer",
+    "Building Smarter Web Solutions",
+    "Emerging Tech Sage",
     "API Wizard",
-    "Problem Solver",
-    "Code Craftsman",
-    "Tech Innovator",
-    "Software Architect",
-    "Cloud Enthusiast",
-    "UI/UX Designer"
+    "Code Enchanter",
+    //"Digital Transformation Guide",
+    //"Digital Transformation Wizard",
+    //"Dev on Side Quest (Freelancing)",
+    //"Web Performance Alchemist",
+    //"Digital Future Builder",
+    //"Digital Experience Enchanter",
   ]
 
   return (
@@ -119,7 +122,7 @@ export function Hero() {
       <HeroBackground />
 
       {/* Main content with parallax effect */}
-      <motion.div style={{ y, opacity }} className="relative z-10 text-center space-y-4 max-w-4xl mx-auto w-full -mt-10">
+      <motion.div style={{ y, opacity }} className="relative z-10 text-center space-y-4 mx-auto w-full -mt-10">
         {/* Animated name with gradient effect */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
@@ -137,7 +140,7 @@ export function Hero() {
           <AnimatedTextCycle
             words={titles}
             interval={3000}
-            className="text-foreground"
+            className="text-foreground text-balance"
           />
         </div>
 
