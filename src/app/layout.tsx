@@ -78,9 +78,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="modulepreload" href="/_next/static/chunks/main.js" />
       </head>
       <body className={inter.className}>
-      <ThemeProvider attribute="class" enableSystem={true} defaultTheme="system" disableTransitionOnChange>
-        {children}
-        <Analytics />
+        <ThemeProvider attribute="class" enableSystem={true} defaultTheme="system" disableTransitionOnChange>
+          {children}
+          <Analytics mode="production" />
           <SpeedInsights />
         </ThemeProvider>
       </body>
