@@ -136,11 +136,11 @@ export function Hero() {
         </motion.h1>
 
         {/* Animated title cycling */}
-        <div className="text-3xl sm:text-4xl md:text-5xl font-bold w-full flex justify-center">
+        <div className="text-3xl sm:text-4xl md:text-5xl font-bold w-full">
           <AnimatedTextCycle
             words={titles}
             interval={3000}
-            className="text-foreground text-balance text-center"
+            className="text-foreground text-balance"
           />
         </div>
 

@@ -67,7 +67,7 @@ export function AnimatedTextCycle({
   }
 
   return (
-    <>
+    <div className="flex justify-center w-full">
       {/* Hidden measurement div with all words rendered */}
       <div 
         ref={measureRef} 
@@ -84,7 +84,7 @@ export function AnimatedTextCycle({
 
       {/* Visible animated word */}
       <motion.span 
-        className="relative inline-block"
+        className="relative inline-block text-center"
         animate={{ 
           width,
           transition: { 
@@ -109,6 +109,6 @@ export function AnimatedTextCycle({
           </motion.span>
         </AnimatePresence>
       </motion.span>
-    </>
+    </div>
   )
 } 
