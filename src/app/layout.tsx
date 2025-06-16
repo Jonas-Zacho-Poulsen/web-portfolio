@@ -71,17 +71,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="dns-prefetch" href="https://i.imgur.com" />
         <link rel="dns-prefetch" href="https://raw.githubusercontent.com" />
 
-        {/* Preload critical images */}
-        <link rel="preload" as="image" href="https://i.imgur.com/27rWIav.jpeg" />
-
         {/* Preload critical scripts */}
         <link rel="modulepreload" href="/_next/static/chunks/main.js" />
       </head>
       <body className={inter.className}>
         <ThemeProvider attribute="class" enableSystem={true} defaultTheme="system" disableTransitionOnChange>
           {children}
-          <Analytics mode="production" />
-          <SpeedInsights />
+          {process.env.NODE_ENV === 'production' && <Analytics />}
+          {process.env.NODE_ENV === 'production' && <SpeedInsights />}
         </ThemeProvider>
       </body>
     </html>

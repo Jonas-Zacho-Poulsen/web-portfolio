@@ -101,7 +101,7 @@ export function Hero() {
 
   const titles = [
     "Full Stack Sorcerer",
-    "Building Smarter Web Solutions",
+    "Building Smart Solutions",
     "Emerging Tech Sage",
     "API Wizard",
     "Code Enchanter",
@@ -122,7 +122,7 @@ export function Hero() {
       <HeroBackground />
 
       {/* Main content with parallax effect */}
-      <motion.div style={{ y, opacity }} className="relative z-10 text-center space-y-4 mx-auto w-full -mt-10">
+      <motion.div style={{ y, opacity }} className="relative z-10 text-center space-y-4 mx-auto w-full max-w-4xl -mt-10">
         {/* Animated name with gradient effect */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
@@ -136,12 +136,14 @@ export function Hero() {
         </motion.h1>
 
         {/* Animated title cycling */}
-        <div className="text-3xl sm:text-4xl md:text-5xl font-bold w-full">
-          <AnimatedTextCycle
-            words={titles}
-            interval={3000}
-            className="text-foreground text-balance"
-          />
+        <div className="text-3xl sm:text-4xl md:text-5xl font-bold w-full min-h-[4rem] relative flex items-center justify-center">
+          <div className="w-full max-w-[90vw] sm:max-w-[80vw] md:max-w-[70vw] lg:max-w-[60vw] text-center">
+            <AnimatedTextCycle
+              words={titles}
+              interval={3000}
+              className="text-foreground text-balance"
+            />
+          </div>
         </div>
 
         {/* Description with animated reveal */}

@@ -16,20 +16,7 @@ export function AnimatedTextCycle({
   className = "",
 }: AnimatedTextCycleProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [width, setWidth] = useState("auto")
   const measureRef = useRef<HTMLDivElement>(null)
-
-  // Get the width of the current word
-  useEffect(() => {
-    if (measureRef.current) {
-      const elements = measureRef.current.children
-      if (elements.length > currentIndex) {
-        // Add a small buffer (10px) to prevent text wrapping
-        const newWidth = elements[currentIndex].getBoundingClientRect().width
-        setWidth(`${newWidth}px`)
-      }
-    }
-  }, [currentIndex])
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -67,7 +54,7 @@ export function AnimatedTextCycle({
   }
 
   return (
-    <div className="flex justify-center w-full">
+    <div className="relative w-full flex justify-center items-center px-4">
       {/* Hidden measurement div with all words rendered */}
       <div 
         ref={measureRef} 
@@ -82,33 +69,29 @@ export function AnimatedTextCycle({
         ))}
       </div>
 
-      {/* Visible animated word */}
-      <motion.span 
-        className="relative inline-block text-center"
-        animate={{ 
-          width,
-          transition: { 
-            type: "spring",
-            stiffness: 150,
-            damping: 15,
-            mass: 1.2,
-          }
-        }}
-      >
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.span
-            key={currentIndex}
-            className={`inline-block font-bold ${className}`}
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            style={{ whiteSpace: "nowrap" }}
-          >
-            {words[currentIndex]}
-          </motion.span>
-        </AnimatePresence>
-      </motion.span>
+      {/* Container with fixed width to prevent layout shifts */}
+      <div className="w-full flex justify-center">
+        {/* Visible animated word */}
+        <div className="inline-block text-center">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={currentIndex}
+              className={`inline-block font-bold ${className} text-center`}
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              style={{ 
+                maxWidth: "100%",
+                wordBreak: "break-word",
+                hyphens: "auto"
+              }}
+            >
+              {words[currentIndex]}
+            </motion.span>
+          </AnimatePresence>
+        </div>
+      </div>
     </div>
   )
 } 
