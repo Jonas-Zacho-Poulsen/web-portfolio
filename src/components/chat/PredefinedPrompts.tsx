@@ -53,7 +53,7 @@ export const PredefinedPrompts = () => {
             <motion.button
               key={index}
               onClick={() => handlePromptClick(prompt)}
-              className="text-left bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 hover:from-blue-100 hover:to-purple-100 dark:hover:from-blue-800/30 dark:hover:to-purple-800/30 border border-blue-200 dark:border-blue-700 rounded-lg p-2 transition-all duration-200 group"
+              className="text-left bg-[var(--color-accent)] hover:brightness-95 border border-blue-200 dark:border-blue-700 rounded-lg p-2 transition-all duration-200 group"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               initial={{ opacity: 0, x: -10 }}

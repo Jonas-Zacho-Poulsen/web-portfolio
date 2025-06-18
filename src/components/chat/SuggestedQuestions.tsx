@@ -43,7 +43,7 @@ export const SuggestedQuestions = () => {
           <motion.button
             key={index}
             onClick={() => handleQuestionClick(item.question)}
-            className="text-left bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-md p-1 transition-colors duration-200 group" /* Reduced padding and border radius */
+            className="text-left bg-[var(--color-card)] hover:bg-gray-50 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-md p-1 transition-colors duration-200 group" /* Reduced padding and border radius */
             whileHover={{ scale: 1.01 }} /* Reduced scale effect */
             whileTap={{ scale: 0.99 }}
             initial={{ opacity: 0, y: 5 }} /* Reduced animation distance */
