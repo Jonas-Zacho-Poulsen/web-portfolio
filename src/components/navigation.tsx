@@ -38,9 +38,11 @@ export function Navigation() {
       const offsetPosition = elementPosition - navHeight - 16 // Added extra padding
 
       // Scroll to the element with the offset
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth',
+      requestAnimationFrame(() => {
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth',
+        })
       })
     }
     setIsMobileMenuOpen(false)
