@@ -259,7 +259,7 @@ export const ChatContainer = () => {
     <AnimatePresence>
       <motion.div
         ref={containerRef}
-        className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-2xl overflow-hidden pointer-events-auto relative flex flex-col fixed z-50"
+        className="bg-[var(--color-card)] border border-gray-200 dark:border-gray-700 rounded-lg shadow-2xl overflow-hidden pointer-events-auto relative flex flex-col fixed z-50"
         style={{
           width: chatSize.width,
           height: chatSize.height,
@@ -298,7 +298,7 @@ export const ChatContainer = () => {
         {/* Chat Content */}
         <div className="flex flex-col h-[calc(100%-40px)]">
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-1 space-y-1 bg-gray-50 dark:bg-gray-800">
+          <div className="flex-1 overflow-y-auto p-1 space-y-1 bg-[var(--color-secondary)]">
             {messages.length === 0 ? (
               <div className="text-center text-gray-500 dark:text-gray-400 py-0.5"></div>
             ) : (
@@ -342,7 +342,7 @@ export const ChatContainer = () => {
           </div>
 
           {/* Chat Input */}
-          <div className="border-t border-gray-200 dark:border-gray-700 p-1.5 bg-white dark:bg-gray-900">
+          <div className="border-t border-gray-200 dark:border-gray-700 p-1.5 bg-[var(--color-card)]">
             <ChatInput disabled={isLoading} />
           </div>
         </div>

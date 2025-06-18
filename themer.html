@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Theme Setter</title>
+</head>
+<body>
+  <h1>Setting theme...</h1>
+  <script>
+    async function setThemeAndFetch() {
+      localStorage.setItem('theme', 'dark');
+      try {
+        const response = await fetch('http://localhost:3000/');
+        const text = await response.text();
+        const htmlTagMatch = text.match(/<html[^>]*>/);
+        if (htmlTagMatch) {
+          document.body.innerText = 'HTML Tag: ' + htmlTagMatch[0];
+        } else {
+          document.body.innerText = 'Could not find HTML tag in response.';
+        }
+      } catch (error) {
+        document.body.innerText = 'Error fetching page: ' + error;
+      }
+    }
+    setThemeAndFetch();
+  </script>
+</body>
+</html>
