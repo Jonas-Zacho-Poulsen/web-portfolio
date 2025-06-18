@@ -56,7 +56,7 @@ const HeroBackground = () => {
           y2="100%"
           stroke="url(#heroGradient)"
           strokeWidth="1"
-          style={{ animationDelay: "-5s" }}
+          style={{ animationDelay: '-5s' }}
         />
         <line
           className="animated-line"
@@ -66,7 +66,7 @@ const HeroBackground = () => {
           y2="100%"
           stroke="url(#heroGradient)"
           strokeWidth="1"
-          style={{ animationDelay: "-10s" }}
+          style={{ animationDelay: '-10s' }}
         />
       </svg>
     </div>

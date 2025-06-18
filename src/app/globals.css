@@ -1,37 +1,26 @@
 @import "tailwindcss";
 
-/* Note: @theme is used here for custom theme variable definitions critical to styling. Ignore unknown at-rule warning. */
 @theme {
   /* Light mode colors */
   --color-background: hsl(0 0% 100%);
-  --color-background-rgb: 255, 255, 255;
   --color-foreground: hsl(240 10% 3.9%);
-  --color-foreground-rgb: 13, 14, 25;
   --color-card: hsl(0 0% 100%);
-  --color-card-rgb: 255, 255, 255;
   --color-card-foreground: hsl(240 10% 3.9%);
   --color-popover: hsl(0 0% 100%);
-  --color-popover-rgb: 255, 255, 255;
   --color-popover-foreground: hsl(240 10% 3.9%);
   --color-primary: hsl(142 76% 36%);
-  --color-primary-rgb: 25, 195, 125;
+  --color-primary-rgb: 25 195 125;
   --color-primary-foreground: hsl(355.7 100% 97.3%);
   --color-secondary: hsl(240 4.8% 95.9%);
-  --color-secondary-rgb: 243, 244, 246;
   --color-secondary-foreground: hsl(240 5.9% 10%);
   --color-muted: hsl(240 4.8% 95.9%);
-  --color-muted-rgb: 243, 244, 246;
   --color-muted-foreground: hsl(240 3.8% 46.1%);
   --color-accent: hsl(240 4.8% 95.9%);
-  --color-accent-rgb: 243, 244, 246;
   --color-accent-foreground: hsl(240 5.9% 10%);
   --color-destructive: hsl(0 84.2% 60.2%);
-  --color-destructive-rgb: 239, 68, 68;
   --color-destructive-foreground: hsl(0 0% 98%);
   --color-border: hsl(240 5.9% 90%);
-  --color-border-rgb: 229, 231, 235;
   --color-input: hsl(240 5.9% 90%);
-  --color-input-rgb: 229, 231, 235;
   --color-ring: hsl(142 76% 36%);
   --radius: 0.5rem;
 
@@ -50,34 +39,24 @@
 
 .dark {
   --color-background: hsl(20 14.3% 4.1%);
-  --color-background-rgb: 10, 9, 8;
   --color-foreground: hsl(0 0% 95%);
-  --color-foreground-rgb: 242, 242, 242;
   --color-card: hsl(24 9.8% 10%);
-  --color-card-rgb: 26, 23, 21;
   --color-card-foreground: hsl(0 0% 95%);
   --color-popover: hsl(0 0% 9%);
-  --color-popover-rgb: 23, 23, 23;
   --color-popover-foreground: hsl(0 0% 95%);
   --color-primary: hsl(142 76% 36%);
-  --color-primary-rgb: 25, 195, 125;
+  --color-primary-rgb: 25 195 125;
   --color-primary-foreground: hsl(144.9 80.4% 10%);
   --color-secondary: hsl(240 3.7% 15.9%);
-  --color-secondary-rgb: 38, 39, 41;
   --color-secondary-foreground: hsl(0 0% 98%);
   --color-muted: hsl(0 0% 15%);
-  --color-muted-rgb: 38, 38, 38;
   --color-muted-foreground: hsl(240 5% 64.9%);
   --color-accent: hsl(12 6.5% 15.1%);
-  --color-accent-rgb: 40, 35, 33;
   --color-accent-foreground: hsl(0 0% 98%);
   --color-destructive: hsl(0 62.8% 30.6%);
-  --color-destructive-rgb: 78, 29, 29;
   --color-destructive-foreground: hsl(0 85.7% 97.3%);
   --color-border: hsl(240 3.7% 15.9%);
-  --color-border-rgb: 38, 39, 41;
   --color-input: hsl(240 3.7% 15.9%);
-  --color-input-rgb: 38, 39, 41;
   --color-ring: hsl(142 76% 36%);
 }
 
@@ -109,14 +88,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(var(--color-primary-rgb, 25,195,125), 0.3); /* Fallback for Chrome <111 */
-  /* background: color-mix(in srgb, var(--color-primary) 30%, transparent); */
+  background: color-mix(in srgb, var(--color-primary) 30%, transparent);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(var(--color-primary-rgb, 25,195,125), 0.5); /* Fallback for Chrome <111 */
-  /* background: color-mix(in srgb, var(--color-primary) 50%, transparent); */
+  background: color-mix(in srgb, var(--color-primary) 50%, transparent);
 }
 
 /* Gradient text utility */
@@ -148,23 +125,8 @@ body {
 
 /* Glass effect */
 .glass {
-  background-color: rgba(255, 255, 255, 0.3); /* Fallback for Chrome <111 */
-  /* background-color: color-mix(in srgb, var(--color-background) 30%, transparent); */
-  background-color: rgba(var(--color-background-rgb, 255,255,255), 0.3); /* Custom fallback using CSS vars if available */
+  background-color: color-mix(in srgb, var(--color-background) 30%, transparent);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 0, 0, 0.1); /* Fallback for Chrome <111 */
-  /* border: 1px solid color-mix(in srgb, var(--color-border) 50%, transparent); */
-  border: 1px solid rgba(var(--color-border-rgb, 0,0,0), 0.1); /* Custom fallback using CSS vars if available */
+  border: 1px solid color-mix(in srgb, var(--color-border) 50%, transparent);
 }
-
-/* Animation delay classes */
-.animated-line-delay-1 { animation-delay: -5s; }
-.animated-line-delay-2 { animation-delay: -2.5s; }
-.animated-line-delay-3 { animation-delay: -10s; }
-.animated-line-delay-5s { animation-delay: -5s; }
-.animated-line-delay-10s { animation-delay: -10s; }
-
-/* Calendly widget states */
-.calendly-ready { opacity: 1; }
-.calendly-loading { opacity: 0.5; }
