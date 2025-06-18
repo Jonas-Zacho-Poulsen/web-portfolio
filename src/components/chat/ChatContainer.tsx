@@ -264,13 +264,12 @@ export const ChatContainer = () => {
           width: chatSize.width,
           height: chatSize.height,
           position: 'fixed',
-          right: '20px',
-          bottom: '20px',
           minWidth: '300px',
           minHeight: '400px',
           maxWidth: '90vw',
           maxHeight: '90vh',
-          transform: `translate(${chatPosition.x}px, ${chatPosition.y}px)`,
+          left: chatPosition.x + 'px',
+          top: chatPosition.y + 'px',
         }}
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
