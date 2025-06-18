@@ -43,7 +43,7 @@ export const SuggestedQuestions = () => {
           <motion.button
             key={index}
             onClick={() => handleQuestionClick(item.question)}
-            className="text-left bg-[var(--color-card)] hover:bg-gray-50 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 rounded-md p-1 transition-colors duration-200 group" /* Reduced padding and border radius */
+            className="text-left bg-[var(--color-card)] hover:bg-[var(--color-secondary)] border border-gray-200 dark:border-gray-600 rounded-md p-1 transition-colors duration-200 group" /* Reduced padding and border radius */
             whileHover={{ scale: 1.01 }} /* Reduced scale effect */
             whileTap={{ scale: 0.99 }}
             initial={{ opacity: 0, y: 5 }} /* Reduced animation distance */
@@ -54,7 +54,7 @@ export const SuggestedQuestions = () => {
               <span className="text-base group-hover:scale-110 transition-transform duration-200"> {/* Smaller icon */}
                 {item.icon}
               </span>
-              <span className="text-xs text-[var(--color-secondary-foreground)] group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200"> {/* Smaller text */}
+              <span className="text-xs text-[var(--color-foreground)] group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200"> {/* Smaller text */}
                 {item.question}
               </span>
             </div>

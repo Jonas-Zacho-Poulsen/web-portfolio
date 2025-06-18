@@ -53,7 +53,7 @@ export const PredefinedPrompts = () => {
             <motion.button
               key={index}
               onClick={() => handlePromptClick(prompt)}
-              className="text-left bg-[var(--color-accent)] hover:brightness-95 border border-blue-200 dark:border-blue-700 rounded-lg p-2 transition-all duration-200 group"
+              className="text-left bg-[var(--color-accent)] hover:bg-[var(--color-border)] border border-blue-200 dark:border-blue-700 rounded-lg p-2 transition-all duration-200 group"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               initial={{ opacity: 0, x: -10 }}
@@ -64,7 +64,7 @@ export const PredefinedPrompts = () => {
                 <span className="text-blue-500 dark:text-blue-400 group-hover:scale-110 transition-transform duration-200">
                   💡
                 </span>
-                <span className="text-sm text-[var(--color-secondary-foreground)] group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
+                <span className="text-sm text-[var(--color-foreground)] group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
                   {prompt}
                 </span>
               </div>
