@@ -9,6 +9,9 @@ import { ChatInput } from './ChatInput'
 import { SuggestedQuestions } from './SuggestedQuestions'
 import { PredefinedPrompts } from './PredefinedPrompts'
 
+// Temporary store for logging values for debugging resize logic
+let __LOG_DATA__: Record<string, any>[] = []
+
 export const ChatContainer = () => {
   const {
     messages,
@@ -156,16 +159,70 @@ export const ChatContainer = () => {
   const handleResize = (e: React.PointerEvent) => {
     if (!isResizing) return
 
+    // Log initial values
+    const initialLog = {
+      step: 'initial_values',
+      direction: (e.currentTarget as HTMLElement).dataset.direction || 'se',
+      event_clientX: e.clientX,
+      event_clientY: e.clientY,
+      resizeStart_x: resizeStart.x,
+      resizeStart_y: resizeStart.y,
+      resizeStart_width: resizeStart.width,
+      resizeStart_height: resizeStart.height,
+      initial_chatPosition_x: chatPosition.x,
+      initial_chatPosition_y: chatPosition.y,
+    }
+    __LOG_DATA__.push(initialLog)
+
     const targetElement = e.currentTarget as HTMLElement
     const direction = targetElement.dataset.direction || 'se'
 
     const deltaX = e.clientX - resizeStart.x
     const deltaY = e.clientY - resizeStart.y
 
+    // Log delta values
+    const deltaLog = {
+      step: 'delta_values',
+      deltaX_calculated: deltaX,
+      deltaY_calculated: deltaY,
+    }
+    __LOG_DATA__.push(deltaLog)
+
     let newWidth = chatSize.width
     let newHeight = chatSize.height
     let newX = chatPosition.x
     let newY = chatPosition.y
+
+    // Store raw calculated values before clamping
+    let raw_newWidth = newWidth
+    let raw_newHeight = newHeight
+    let raw_newX = newX
+    let raw_newY = newY
+
+    // Handle width changes based on direction (raw calculation)
+    if (direction.includes('e')) {
+      raw_newWidth = resizeStart.width + deltaX
+    } else if (direction.includes('w')) {
+      raw_newWidth = resizeStart.width - deltaX
+      raw_newX = chatPosition.x + (resizeStart.width - raw_newWidth) // Simplified: chatPosition.x + deltaX
+    }
+
+    // Handle height changes based on direction (raw calculation)
+    if (direction.includes('s')) {
+      raw_newHeight = resizeStart.height + deltaY
+    } else if (direction.includes('n')) {
+      raw_newHeight = resizeStart.height - deltaY
+      raw_newY = chatPosition.y + (resizeStart.height - raw_newHeight) // Simplified: chatPosition.y + deltaY
+    }
+
+    const rawCalculatedLog = {
+      step: 'raw_calculated_values',
+      raw_newWidth: raw_newWidth,
+      raw_newHeight: raw_newHeight,
+      raw_newX: raw_newX,
+      raw_newY: raw_newY,
+    }
+    __LOG_DATA__.push(rawCalculatedLog)
 
     // Min and max dimensions - respect viewport size
     const minWidth = 300
@@ -173,23 +230,25 @@ export const ChatContainer = () => {
     const minHeight = 350
     const maxHeight = Math.min(800, window.innerHeight - 40)
 
-    // Handle width changes based on direction
+    // Handle width changes based on direction (now applying clamping)
     if (direction.includes('e')) {
       // East/right edge
       newWidth = Math.max(minWidth, Math.min(maxWidth, resizeStart.width + deltaX))
+      // newX remains chatPosition.x from initialization
     } else if (direction.includes('w')) {
       // West/left edge
-      newWidth = Math.max(minWidth, Math.min(maxWidth, resizeStart.width - deltaX))
+      newWidth = Math.max(minWidth, Math.min(maxWidth, resizeStart.width - deltaX)); // Corrected: should be -deltaX
       newX = chatPosition.x + (resizeStart.width - newWidth)
     }
 
-    // Handle height changes based on direction
+    // Handle height changes based on direction (now applying clamping)
     if (direction.includes('s')) {
       // South/bottom edge
       newHeight = Math.max(minHeight, Math.min(maxHeight, resizeStart.height + deltaY))
+      // newY remains chatPosition.y from initialization
     } else if (direction.includes('n')) {
       // North/top edge
-      newHeight = Math.max(minHeight, Math.min(maxHeight, resizeStart.height - deltaY))
+      newHeight = Math.max(minHeight, Math.min(maxHeight, resizeStart.height - deltaY)); // Corrected: should be -deltaY
       newY = chatPosition.y + (resizeStart.height - newHeight)
     }
 
