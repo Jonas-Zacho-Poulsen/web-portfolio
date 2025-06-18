@@ -64,7 +64,7 @@ export const PredefinedPrompts = () => {
                 <span className="text-blue-500 dark:text-blue-400 group-hover:scale-110 transition-transform duration-200">
                   💡
                 </span>
-                <span className="text-sm text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
+                <span className="text-sm text-[var(--color-secondary-foreground)] dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
                   {prompt}
                 </span>
               </div>

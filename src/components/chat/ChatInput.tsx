@@ -62,7 +62,7 @@ export const ChatInput = ({ disabled = false }: ChatInputProps) => {
           onKeyDown={handleKeyDown}
           placeholder={disabled ? 'Thinking...' : 'Ask about Jonas...'}
           disabled={disabled}
-          className="w-full resize-none border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full resize-none border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 bg-[var(--color-card)] dark:bg-gray-800 text-[var(--color-card-foreground)] dark:text-gray-100 placeholder-[var(--color-muted-foreground)] dark:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
           style={{ minHeight: '36px', maxHeight: '100px' }}
           rows={1}
         />

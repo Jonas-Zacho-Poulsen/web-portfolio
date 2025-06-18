@@ -63,13 +63,9 @@ export function CalendlyButton({ className = '' }: { className?: string }) {
   }, [])
 
   const handleClick = () => {
-    try {
-      if (typeof window !== 'undefined' && window.Calendly) {
-        window.Calendly.initPopupWidget({ url: 'https://calendly.com/jonaszp97' })
-        return false
-      }
-    } catch (error) {
-      console.error('Calendly initialization error:', error)
+    if (window.Calendly) {
+      window.Calendly.initPopupWidget({ url: 'https://calendly.com/jonaszp97' })
+      return false
     }
   }
 
