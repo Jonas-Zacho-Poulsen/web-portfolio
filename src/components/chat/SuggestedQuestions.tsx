@@ -54,7 +54,7 @@ export const SuggestedQuestions = () => {
               <span className="text-base group-hover:scale-110 transition-transform duration-200"> {/* Smaller icon */}
                 {item.icon}
               </span>
-              <span className="text-xs text-[var(--color-secondary-foreground)] dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200"> {/* Smaller text */}
+              <span className="text-xs text-[var(--color-secondary-foreground)] group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200"> {/* Smaller text */}
                 {item.question}
               </span>
             </div>

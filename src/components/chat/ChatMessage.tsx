@@ -29,7 +29,7 @@ export const ChatMessage = ({ message }: ChatMessageProps) => {
           className={`px-4 py-2 rounded-lg ${
             isUser
               ? 'bg-blue-500 text-white ml-auto'
-              : 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-600'
+              : 'bg-[var(--color-card)] text-[var(--color-card-foreground)] border border-[var(--color-border)]'
           }`}
         >
           <p className="text-sm whitespace-pre-wrap break-words">{message.text}</p>
