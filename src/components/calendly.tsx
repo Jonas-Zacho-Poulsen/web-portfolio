@@ -48,9 +48,8 @@ export function CalendlyInlineWidget() {
 
   return (
     <div
-      className="calendly-inline-widget h-[600px] w-full rounded-lg overflow-hidden"
+      className={`calendly-inline-widget h-[600px] w-full rounded-lg overflow-hidden calendly-widget-min-width ${isReady ? 'calendly-ready' : 'calendly-loading'}`}
       data-url="https://calendly.com/jonaszp97"
-      style={{ minWidth: '320px', opacity: isReady ? 1 : 0.5 }}
     />
   )
 }
