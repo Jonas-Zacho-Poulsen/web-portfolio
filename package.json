@@ -28,7 +28,7 @@
     "resend": "^4.5.1",
     "tailwind-merge": "^3.3.0",
     "tailwindcss-themes": "^1.0.0",
-    "zod": "^3.25.32",
+    "zod": "^4.1.1",
     "zustand": "^5.0.5"
   },
   "devDependencies": {
