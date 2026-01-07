@@ -1,10 +1,13 @@
-import js from '@eslint/js';
-import tsParser from '@typescript-eslint/parser';
-import tsPlugin from '@typescript-eslint/eslint-plugin';
-import nextPlugin from 'eslint-config-next';
+import js from '@eslint/js'
+import tsParser from '@typescript-eslint/parser'
+import tsPlugin from '@typescript-eslint/eslint-plugin'
+import nextPlugin from '@next/eslint-plugin-next'
+import reactPlugin from 'eslint-plugin-react'
+import reactHooksPlugin from 'eslint-plugin-react-hooks'
+import globals from 'globals'
 
 export default [
-  // Global ignores - combined from .eslintignore
+  // Global ignores
   {
     ignores: [
       'node_modules/**',
@@ -33,34 +36,22 @@ export default [
       '.vercel/**',
       '.vscode/**',
       '.idea/**',
+      'fetch-mcp/**',
     ],
   },
 
-  // Next.js plugin configuration
-  nextPlugin,
+  // Base JS config
+  js.configs.recommended,
 
-  // JavaScript files
+  // TypeScript and React files
   {
-    files: ['**/*.js', '**/*.jsx'],
-    languageOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
-        },
-      },
+    files: ['**/*.{js,jsx,ts,tsx}'],
+    plugins: {
+      '@typescript-eslint': tsPlugin,
+      '@next/next': nextPlugin,
+      'react': reactPlugin,
+      'react-hooks': reactHooksPlugin,
     },
-    rules: {
-      'react/react-in-jsx-scope': 'off',
-      'react/prop-types': 'off',
-      'no-console': ['warn', { allow: ['warn', 'error'] }],
-    },
-  },
-
-  // TypeScript files
-  {
-    files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
@@ -69,17 +60,45 @@ export default [
         ecmaFeatures: {
           jsx: true,
         },
-        project: './tsconfig.json',
+      },
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        ...globals.es2021,
+        React: 'readonly',
+        JSX: 'readonly',
+        NodeJS: 'readonly',
+        RequestInit: 'readonly',
       },
     },
-    plugins: {
-      '@typescript-eslint': tsPlugin,
+    settings: {
+      react: {
+        version: 'detect',
+      },
     },
     rules: {
+      // React rules
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
+      'react/jsx-uses-react': 'off',
+      'react/jsx-uses-vars': 'error',
+
+      // React Hooks rules
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+
+      // Next.js rules
+      '@next/next/no-html-link-for-pages': 'error',
+      '@next/next/no-img-element': 'warn',
+      '@next/next/no-sync-scripts': 'error',
+
+      // General rules
       'no-console': ['warn', { allow: ['warn', 'error'] }],
+      'no-unused-vars': 'off',
+
+      // TypeScript rules
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-explicit-any': 'warn',
     },
   },
-];
+]

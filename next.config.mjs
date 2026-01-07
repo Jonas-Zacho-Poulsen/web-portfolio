@@ -1,6 +1,13 @@
+import { dirname } from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Specify workspace root to avoid lockfile detection issues
+  outputFileTracingRoot: __dirname,
   images: {
     remotePatterns: [
       {
@@ -26,10 +33,11 @@ const nextConfig = {
   poweredByHeader: false,
   compress: true,
 
+  // Enable typed routes (moved out of experimental in Next.js 15+)
+  typedRoutes: true,
+
   // Performance optimizations for Next.js 15+
   experimental: {
-    // Optimize CSS for production
-    optimizeCss: process.env.NODE_ENV === 'production',
     // Configure server actions
     serverActions: {
       bodySizeLimit: '2mb',
@@ -40,10 +48,6 @@ const nextConfig = {
       'react-hook-form',
       'zustand',
     ],
-    // Enable modern JavaScript features
-    typedRoutes: true,
-    // PPR is only available in canary versions
-    // ppr: true,
   },
 
   // Configure headers for better caching

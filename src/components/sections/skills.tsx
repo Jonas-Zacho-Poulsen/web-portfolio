@@ -201,7 +201,7 @@ function SkillItem({ skill }: { skill: Skill }) {
 }
 
 // Skill category card with hover effects
-function SkillCategory({
+function SkillCategoryCard({
   category,
   isActive,
   onClick,
@@ -312,7 +312,7 @@ export function Skills() {
         {/* Skill categories */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
           {skills.map((category, index) => (
-            <SkillCategory
+            <SkillCategoryCard
               key={category.category}
               category={category}
               isActive={activeCategory === index}
