@@ -28,16 +28,12 @@ export function About() {
     setIsClient(true)
   }, [])
 
-  const technologies = [
-    ".NET/C#",
-    "Python",
-    "JavaScript",
-    "Java",
-    "SQL",
-    "Node.js",
+  const focusAreas = [
+    ".NET",
+    "APIs",
+    "Integrations",
     "React",
-    "TypeScript",
-    "Next.js",
+    "Platforms",
   ]
 
   return (
@@ -57,15 +53,13 @@ export function About() {
           <motion.div variants={item} className="flex-1 space-y-8 max-w-2xl mx-auto lg:mx-0">
             <div className="space-y-6 text-center lg:text-left">
               <p className="text-lg text-muted-foreground leading-relaxed">
-                I enjoy working on meaningful projects, learning, and collaborating with great
-                people. My goal is to grow, contribute, and create solutions that matter.
+                I build reliable backend and full-stack systems with a strong focus on APIs, integrations, and long-term maintainability.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                With a strong foundation in both frontend and backend development, I specialize in
-                building scalable applications using technologies like{" "}
+                My focus is{" "}
                 {isClient ? (
                   <Typewriter
-                    text={technologies}
+                    text={focusAreas}
                     speed={70}
                     className="text-primary font-medium"
                     waitTime={1500}
@@ -73,9 +67,9 @@ export function About() {
                     cursorChar="_"
                   />
                 ) : (
-                  <span className="text-primary font-medium">{technologies[0]}</span>
-                )}
-                {" "}and various cloud services.
+                  <span className="text-primary font-medium">{focusAreas[0]}</span>
+                )}{" "}
+                with an emphasis on reliability and clean delivery in remote-first teams.
               </p>
             </div>
             
