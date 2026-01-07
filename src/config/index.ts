@@ -16,7 +16,7 @@ export const siteConfig = {
   links: {
     github: 'https://github.com/Jonas-Zacho-Poulsen',
     linkedin: 'https://www.linkedin.com/in/j-poulsen-/',
-    email: 'jonaszachopoulsen@live.dk',
+    email: 'jonaszp97@gmail.com',
     phone: '+45 50 22 73 00',
   },
 }
@@ -38,8 +38,8 @@ export const navigationItems = [
 export const socialLinks = [
   {
     name: 'Email',
-    value: 'jonaszachopoulsen@live.dk',
-    href: 'mailto:jonaszachopoulsen@live.dk',
+    value: 'jonaszp97@gmail.com',
+    href: 'mailto:jonaszp97@gmail.com',
   },
   {
     name: 'Phone',
@@ -78,7 +78,7 @@ export const chatConfig = {
   2. Chat Application (React, OpenAI, WebSocket)`,
 
     contact: `Get in Touch with Jonas:
-  📧 Email: jonaszachopoulsen@live.dk
+  📧 Email: jonaszp97@gmail.com
   📞 Phone: +45 50 22 73 00
   🐙 GitHub: github.com/Jonas-Zacho-Poulsen
 

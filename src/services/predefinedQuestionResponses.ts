@@ -34,7 +34,7 @@ const predefinedQuestions: Record<string, PredefinedResponse> = {
 
   // Contact questions
   'How can I contact him?': {
-    text: 'Get in Touch with Jonas:📧 Email: jonaszachopoulsen@live.dk📞 Phone: +45 50 22 73 00🐙 GitHub: github.com/Jonas-Zacho-Poulsen🔽 Download CV for more details.',
+    text: 'Get in Touch with Jonas:📧 Email: jonaszp97@gmail.com📞 Phone: +45 50 22 73 00🐙 GitHub: github.com/Jonas-Zacho-Poulsen🔽 Download CV for more details.',
     topic: 'contact',
   },
 

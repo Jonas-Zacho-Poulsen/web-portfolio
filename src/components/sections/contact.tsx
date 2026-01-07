@@ -26,9 +26,9 @@ const item = {
 const socials = [
   {
     name: 'Email',
-    value: 'jonaszachopoulsen@live.dk',
+    value: 'jonaszp97@gmail.com',
     icon: EmailIcon,
-    href: 'mailto:jonaszachopoulsen@live.dk',
+    href: 'mailto:jonaszp97@gmail.com',
     ariaLabel: 'Send an email to Jonas',
   },
   {

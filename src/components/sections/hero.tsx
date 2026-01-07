@@ -211,7 +211,7 @@ export function Hero() {
           className="flex gap-8 justify-center pt-4"
         >
           {[
-            { href: 'mailto:jonaszachopoulsen@live.dk', icon: EmailIcon, title: 'Email me' },
+            { href: 'mailto:jonaszp97@gmail.com', icon: EmailIcon, title: 'Email me' },
             { href: 'tel:+45-50-22-73-00', icon: PhoneIcon, title: 'Call me: +45 50 22 73 00' },
             {
               href: 'https://github.com/Jonas-Zacho-Poulsen',

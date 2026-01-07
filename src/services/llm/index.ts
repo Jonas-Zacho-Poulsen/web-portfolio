@@ -21,7 +21,7 @@ const predefinedResponses: Record<string, ResponseType> = {
     topic: 'projects',
   },
   contact: {
-    text: 'You can reach me at jonas.zacho.poulsen@gmail.com or connect with me on LinkedIn. I am always open to new opportunities and collaborations.',
+    text: 'You can reach me at jonaszp97@gmail.com or connect with me on LinkedIn. I am always open to new opportunities and collaborations.',
     topic: 'contact',
   },
   default: {

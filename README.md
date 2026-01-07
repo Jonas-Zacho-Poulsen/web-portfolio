@@ -211,7 +211,7 @@ The portfolio uses a consistent design system to ensure visual coherence:
 
 Feel free to reach out to me through any of these channels:
 
-- **Email**: [jonaszachopoulsen@live.dk](mailto:jonaszachopoulsen@live.dk)
+- **Email**: [jonaszp97@gmail.com](mailto:jonaszp97@gmail.com)
 - **GitHub**: [@Jonas-Zacho-Poulsen](https://github.com/Jonas-Zacho-Poulsen)
 - **LinkedIn**: [j-poulsen-](https://www.linkedin.com/in/j-poulsen-/)
 - **Phone**: +45 50 22 73 00

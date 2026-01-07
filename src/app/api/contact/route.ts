@@ -87,7 +87,7 @@ export async function POST(request: Request) {
         data: {
           id: 'mock-email-id',
           from: 'Portfolio Contact Form <onboarding@resend.dev>',
-          to: 'jonaszachopoulsen@live.dk',
+          to: 'jonaszp97@gmail.com',
           subject: `New Contact Form Submission from ${name}`,
         },
         mock: true,
@@ -97,7 +97,7 @@ export async function POST(request: Request) {
     // If Resend API key is available, send the email
     const { data, error } = await resend!.emails.send({
       from: 'Portfolio Contact Form <onboarding@resend.dev>',
-      to: 'jonaszachopoulsen@live.dk',
+      to: 'jonaszp97@gmail.com',
       subject: `New Contact Form Submission from ${name}`,
       text: `
 Name: ${name}
