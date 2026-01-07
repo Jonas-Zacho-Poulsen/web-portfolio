@@ -8,9 +8,9 @@
  */
 export const siteConfig = {
   name: 'Jonas Zacho Poulsen',
-  title: 'Jonas Zacho Poulsen - Full Stack Developer',
+  title: 'Jonas Zacho Poulsen - Remote Backend & Full-Stack Engineer | C#/.NET, React',
   description:
-    'Portfolio of Jonas Zacho Poulsen, a Full Stack Developer specializing in building and maintaining scalable applications',
+    'Remote Backend Engineer specializing in C#/.NET, React, and scalable integrations. Available for contracts and full-time roles in EU time zones.',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://jonas-poulsen.vercel.app',
   ogImage: '/og-image.jpg',
   links: {

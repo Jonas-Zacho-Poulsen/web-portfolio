@@ -100,17 +100,11 @@ export function Hero() {
   }, [])
 
   const titles = [
-    "Full Stack Sorcerer",
-    "Building Smart Solutions",
-    "Emerging Tech Sage",
-    "API Wizard",
-    "Code Enchanter",
-    //"Digital Transformation Guide",
-    //"Digital Transformation Wizard",
-    //"Dev on Side Quest (Freelancing)",
-    //"Web Performance Alchemist",
-    //"Digital Future Builder",
-    //"Digital Experience Enchanter",
+    "Backend-First Engineer",
+    "APIs & Integrations",
+    "C#/.NET & React",
+    "Reliable Systems",
+    "Remote, By Design",
   ]
 
   return (
@@ -135,6 +129,16 @@ export function Hero() {
           </span>
         </motion.h1>
 
+        {/* Static headline */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="text-xl sm:text-2xl font-medium text-(--color-muted-foreground)"
+        >
+          Remote Full-Stack / Backend Engineer
+        </motion.p>
+
         {/* Animated title cycling */}
         <div className="text-3xl sm:text-4xl md:text-5xl font-bold w-full min-h-[4rem] relative flex items-center justify-center">
           <div className="w-full max-w-[90vw] sm:max-w-[80vw] md:max-w-[70vw] lg:max-w-[60vw] text-center">
@@ -153,7 +157,7 @@ export function Hero() {
           transition={{ duration: 0.5, delay: 1.2 }}
           className="text-xl sm:text-2xl text-(--color-muted-foreground) max-w-2xl mx-auto"
         >
-          Passionate about building elegant solutions to complex problems with modern technologies.
+          I build reliable backend systems and integrations. Ownership-driven, remote-first, EU-based.
         </motion.p>
 
         {/* Call to action buttons with enhanced hover effects */}
@@ -245,6 +249,16 @@ export function Hero() {
             </motion.a>
           ))}
         </motion.div>
+
+        {/* Availability signal */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2.0, duration: 0.5 }}
+          className="text-sm text-(--color-muted-foreground) mt-4"
+        >
+          Open to remote roles and contracts (EU time zones)
+        </motion.p>
       </motion.div>
 
       {/* Scroll indicator */}
