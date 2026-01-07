@@ -18,186 +18,103 @@ interface SkillCategory {
 }
 
 const skillIcons = {
-  // Programming Languages
+  // Backend & Languages
   'C#': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg',
-  Java: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg',
-  JavaScript:
-    'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
   TypeScript:
     'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
   Python: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
-  SQL: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg',
-  HTML5: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg',
-
-  // Frameworks & Libraries
-  React: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
   '.NET': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dotnetcore/dotnetcore-original.svg',
-  'ASP.NET': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dot-net/dot-net-original.svg',
-  'Next.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg',
   'Node.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
-  'Tailwind CSS':
-    'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg',
-  'Framer Motion': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
-
-  // Tools & Platforms
-  Azure: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/azure/azure-original.svg',
-  Git: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/git/git-original.svg',
-  GitLab:
-    'https://raw.githubusercontent.com/devicons/devicon/master/icons/gitlab/gitlab-original.svg',
-  Docker:
-    'https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg',
   PostgreSQL:
     'https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg',
-  Redis: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/redis/redis-original.svg',
-  Linux: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg',
-  'Visual Studio':
-    'https://raw.githubusercontent.com/devicons/devicon/master/icons/visualstudio/visualstudio-plain.svg',
+
+  // Frontend
+  React: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
+  'Next.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg',
+  'Tailwind CSS':
+    'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg',
+
+  // APIs & Cloud
+  Azure: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/azure/azure-original.svg',
+  Docker:
+    'https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg',
+  GraphQL:
+    'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/graphql/graphql-plain.svg',
+
+  // Tools & Workflow
+  Git: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/git/git-original.svg',
+  'GitHub Actions':
+    'https://raw.githubusercontent.com/devicons/devicon/master/icons/github/github-original.svg',
+  Jira: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/jira/jira-original.svg',
   'VS Code':
     'https://raw.githubusercontent.com/devicons/devicon/master/icons/vscode/vscode-original.svg',
-  Vercel:
-    'https://raw.githubusercontent.com/devicons/devicon/master/icons/nextjs/nextjs-original.svg',
-
-  // Project Management & Collaboration
-  Jira: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/jira/jira-original.svg',
-  Confluence:
-    'https://raw.githubusercontent.com/devicons/devicon/master/icons/confluence/confluence-original.svg',
-  Trello: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/trello/trello-plain.svg',
 }
 
 // Skill descriptions for tooltips
-const skillDescriptions = {
-  'C#': 'My primary language for backend development with .NET',
-  JavaScript: 'Used extensively for frontend and Node.js development',
-  TypeScript: 'Preferred for type-safe JavaScript development',
-  Python: 'Used for data processing, automation, and scripting',
+const skillDescriptions: Record<string, string> = {
+  'C#': 'Primary language for backend development with .NET',
+  TypeScript: 'Type-safe JavaScript for frontend and backend',
+  Python: 'Automation, scripting, and data processing',
+  '.NET': 'Framework for scalable backend services and APIs',
+  'Node.js': 'JavaScript runtime for server-side applications',
+  PostgreSQL: 'Relational database for production systems',
   React: 'Library of choice for building interactive UIs',
-  '.NET': 'Framework for building scalable backend services',
   'Next.js': 'React framework for production-grade applications',
-  Docker: 'For containerization and consistent deployment environments',
+  'Tailwind CSS': 'Utility-first CSS for rapid UI development',
+  'REST APIs': 'Design and implementation of RESTful services',
+  GraphQL: 'Query language for flexible API design',
   Azure: 'Cloud platform for hosting and scaling applications',
-  Agile: 'Methodology for iterative and incremental development',
-  'CI/CD': 'Automated testing and deployment pipelines',
+  Docker: 'Containerization for consistent deployments',
+  Git: 'Version control and collaboration',
+  'GitHub Actions': 'CI/CD pipelines and automation',
+  Jira: 'Agile project management and tracking',
+  'VS Code': 'Primary development environment',
 }
 
 const skills: SkillCategory[] = [
   {
-    category: 'Programming Languages',
-    icon: skillIcons['TypeScript'],
-    description: 'Core languages I use to build applications',
+    category: 'Backend & Platforms',
+    icon: skillIcons['.NET'],
+    description: 'Core backend technologies for scalable systems',
     items: [
-      { name: 'C#', icon: skillIcons['C#'], proficiency: 95, description: skillDescriptions['C#'] },
-      {
-        name: 'JavaScript',
-        icon: skillIcons['JavaScript'],
-        proficiency: 90,
-        description: skillDescriptions['JavaScript'],
-      },
-      {
-        name: 'TypeScript',
-        icon: skillIcons['TypeScript'],
-        proficiency: 90,
-        description: skillDescriptions['TypeScript'],
-      },
-      {
-        name: 'Python',
-        icon: skillIcons['Python'],
-        proficiency: 90,
-        description: skillDescriptions['Python'],
-      },
-      { name: 'Java', icon: skillIcons['Java'], proficiency: 85 },
-      { name: 'SQL', icon: skillIcons['SQL'], proficiency: 90 },
-      { name: 'HTML5', icon: skillIcons['HTML5'], proficiency: 90 },
-      {
-        name: 'CSS3',
-        icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original.svg',
-        proficiency: 85,
-      },
+      { name: '.NET', icon: skillIcons['.NET'], proficiency: 85, description: skillDescriptions['.NET'] },
+      { name: 'C#', icon: skillIcons['C#'], proficiency: 85, description: skillDescriptions['C#'] },
+      { name: 'Python', icon: skillIcons['Python'], proficiency: 75, description: skillDescriptions['Python'] },
+      { name: 'Node.js', icon: skillIcons['Node.js'], proficiency: 75, description: skillDescriptions['Node.js'] },
+      { name: 'PostgreSQL', icon: skillIcons['PostgreSQL'], proficiency: 80, description: skillDescriptions['PostgreSQL'] },
     ],
   },
   {
-    category: 'Frameworks & Libraries',
+    category: 'Frontend',
     icon: skillIcons['React'],
-    description: 'Tools that accelerate my development workflow',
+    description: 'Modern frontend frameworks and tooling',
     items: [
-      {
-        name: 'React',
-        icon: skillIcons['React'],
-        proficiency: 90,
-        description: skillDescriptions['React'],
-      },
-      {
-        name: '.NET',
-        icon: skillIcons['.NET'],
-        proficiency: 95,
-        description: skillDescriptions['.NET'],
-      },
-      { name: 'ASP.NET', icon: skillIcons['ASP.NET'], proficiency: 90 },
-      {
-        name: 'Next.js',
-        icon: skillIcons['Next.js'],
-        proficiency: 85,
-        description: skillDescriptions['Next.js'],
-      },
-      { name: 'Node.js', icon: skillIcons['Node.js'], proficiency: 85 },
-      { name: 'Tailwind CSS', icon: skillIcons['Tailwind CSS'], proficiency: 85 },
-      { name: 'Framer Motion', icon: skillIcons['Framer Motion'], proficiency: 80 },
-      {
-        name: 'Express.js',
-        icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original.svg',
-        proficiency: 80,
-      },
+      { name: 'React', icon: skillIcons['React'], proficiency: 80, description: skillDescriptions['React'] },
+      { name: 'Next.js', icon: skillIcons['Next.js'], proficiency: 80, description: skillDescriptions['Next.js'] },
+      { name: 'TypeScript', icon: skillIcons['TypeScript'], proficiency: 80, description: skillDescriptions['TypeScript'] },
+      { name: 'Tailwind CSS', icon: skillIcons['Tailwind CSS'], proficiency: 75, description: skillDescriptions['Tailwind CSS'] },
     ],
   },
   {
-    category: 'Tools & Platforms',
-    icon: skillIcons['Docker'],
-    description: 'Technologies I use for deployment and operations',
+    category: 'APIs & Integrations',
+    icon: skillIcons['Azure'],
+    description: 'Building and connecting services',
     items: [
-      {
-        name: 'Azure',
-        icon: skillIcons['Azure'],
-        proficiency: 90,
-        description: skillDescriptions['Azure'],
-      },
-      { name: 'Git', icon: skillIcons['Git'], proficiency: 95 },
-      {
-        name: 'Docker',
-        icon: skillIcons['Docker'],
-        proficiency: 80,
-        description: skillDescriptions['Docker'],
-      },
-      { name: 'PostgreSQL', icon: skillIcons['PostgreSQL'], proficiency: 85 },
-      { name: 'Jira', icon: skillIcons['Jira'], proficiency: 90 },
-      { name: 'Linux', icon: skillIcons['Linux'], proficiency: 85 },
-      { name: 'Visual Studio', icon: skillIcons['Visual Studio'], proficiency: 90 },
-      { name: 'Vercel', icon: skillIcons['Vercel'], proficiency: 85 },
+      { name: 'REST APIs', icon: skillIcons['Node.js'], proficiency: 85, description: skillDescriptions['REST APIs'] },
+      { name: 'GraphQL', icon: skillIcons['GraphQL'], proficiency: 70, description: skillDescriptions['GraphQL'] },
+      { name: 'Azure', icon: skillIcons['Azure'], proficiency: 75, description: skillDescriptions['Azure'] },
+      { name: 'Docker', icon: skillIcons['Docker'], proficiency: 75, description: skillDescriptions['Docker'] },
     ],
   },
   {
-    category: 'Methodologies & Practices',
-    icon: skillIcons['Jira'],
-    description: 'Approaches I follow for effective development',
+    category: 'Tools & Workflow',
+    icon: skillIcons['Git'],
+    description: 'Development and collaboration tools',
     items: [
-      {
-        name: 'Agile',
-        icon: skillIcons['Jira'],
-        proficiency: 90,
-        description: skillDescriptions['Agile'],
-      },
-      { name: 'Scrum', icon: skillIcons['Jira'], proficiency: 90 },
-      { name: 'Test Automation', icon: skillIcons['Visual Studio'], proficiency: 85 },
-      {
-        name: 'CI/CD',
-        icon: skillIcons['GitLab'],
-        proficiency: 85,
-        description: skillDescriptions['CI/CD'],
-      },
-      { name: 'REST APIs', icon: skillIcons['Node.js'], proficiency: 90 },
-      {
-        name: 'Prompt Engineering',
-        icon: 'https://www.svgrepo.com/show/306500/openai.svg',
-        proficiency: 90,
-      },
+      { name: 'Git', icon: skillIcons['Git'], proficiency: 85, description: skillDescriptions['Git'] },
+      { name: 'GitHub Actions', icon: skillIcons['GitHub Actions'], proficiency: 75, description: skillDescriptions['GitHub Actions'] },
+      { name: 'Jira', icon: skillIcons['Jira'], proficiency: 80, description: skillDescriptions['Jira'] },
+      { name: 'VS Code', icon: skillIcons['VS Code'], proficiency: 85, description: skillDescriptions['VS Code'] },
     ],
   },
 ].map(category => ({
@@ -243,9 +160,8 @@ function SkillItem({ skill }: { skill: Skill }) {
 
   // List of icons that need a light background in dark mode
   const needsLightBg = [
-    'https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original.svg',
-    'https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original.svg',
-    'https://www.svgrepo.com/show/306500/openai.svg',
+    'https://raw.githubusercontent.com/devicons/devicon/master/icons/github/github-original.svg',
+    'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg',
   ]
 
   const needsBackground = needsLightBg.includes(skill.icon)
@@ -389,8 +305,7 @@ export function Skills() {
             Technical Skills
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            My expertise spans across various technologies and methodologies, allowing me to build
-            complete solutions from concept to deployment.
+            Focused on backend/platform development, APIs, integrations, and reliable delivery in remote-first teams.
           </p>
         </motion.div>
 
