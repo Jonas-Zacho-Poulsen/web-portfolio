@@ -2,7 +2,16 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 import React, { useState, useEffect } from 'react'
-import { EmailIcon, PhoneIcon, GithubIcon, LinkedInIcon } from '@/components/icons'
+import {
+  EmailIcon,
+  PhoneIcon,
+  GithubIcon,
+  LinkedInIcon,
+  ClockIcon,
+  CalendarIcon,
+  CheckIcon,
+} from '@/components/icons'
+import { MeshGradient } from '@paper-design/shaders-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -272,6 +281,7 @@ export default function Contact() {
             </p>
             <motion.button
               onClick={toggleCalendly}
+              layoutId="calendly-modal"
               whileHover={{
                 scale: 1.05,
                 boxShadow:
@@ -288,36 +298,112 @@ export default function Contact() {
             <AnimatePresence>
               {isCalendlyOpen && (
                 <div className="fixed inset-0 z-50">
+                  {/* Backdrop */}
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+                    className="fixed inset-0 bg-black/60 backdrop-blur-sm"
                     onClick={toggleCalendly}
                   />
+
+                  {/* Modal Container */}
                   <div className="fixed inset-0 flex items-center justify-center p-4">
                     <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 20 }}
-                      className="relative w-full max-w-4xl bg-white rounded-lg shadow-xl overflow-hidden"
+                      layoutId="calendly-modal"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="relative w-full max-w-6xl rounded-2xl shadow-2xl overflow-hidden"
                       style={{ height: '700px' }}
                       onClick={e => e.stopPropagation()}
                     >
-                      <button
+                      {/* MeshGradient Background */}
+                      <div className="absolute inset-0">
+                        <MeshGradient
+                          colors={['#9333ea', '#3b82f6', '#6366f1', '#8b5cf6']}
+                          speed={0.15}
+                          style={{ width: '100%', height: '100%' }}
+                        />
+                      </div>
+
+                      {/* Close Button */}
+                      <motion.button
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1, transition: { delay: 0.2 } }}
                         onClick={toggleCalendly}
-                        className="absolute top-4 right-4 z-10 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                        className="absolute top-4 right-4 z-20 p-2 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 transition-colors border border-white/20"
                         aria-label="Close"
                       >
-                        <span className="text-2xl text-gray-700">×</span>
-                      </button>
+                        <span className="text-2xl text-white leading-none">×</span>
+                      </motion.button>
 
-                      {/* Calendly container */}
-                      <div
-                        id="calendly-container"
-                        className="w-full h-full bg-white"
-                        style={{ minHeight: '650px' }}
-                      />
+                      {/* Two-Panel Layout */}
+                      <div className="relative z-10 flex flex-col md:flex-row h-full">
+                        {/* Left Panel - Info */}
+                        <motion.div
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0, transition: { delay: 0.1 } }}
+                          className="w-full md:w-[40%] p-6 md:p-8 flex flex-col justify-center bg-white/10 backdrop-blur-md border-r border-white/10"
+                        >
+                          <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                            Let's Build Something Great
+                          </h3>
+                          <p className="text-white/80 mb-6 text-sm md:text-base">
+                            Schedule a call to discuss your project, explore collaboration
+                            opportunities, or just have a chat about technology.
+                          </p>
+
+                          {/* Feature Bullets */}
+                          <div className="space-y-4 mb-6">
+                            <div className="flex items-center gap-3">
+                              <div className="p-2 rounded-lg bg-white/10">
+                                <ClockIcon className="w-5 h-5 text-white" />
+                              </div>
+                              <span className="text-white/90 text-sm md:text-base">
+                                30-minute introductory call
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <div className="p-2 rounded-lg bg-white/10">
+                                <CalendarIcon className="w-5 h-5 text-white" />
+                              </div>
+                              <span className="text-white/90 text-sm md:text-base">
+                                Flexible scheduling options
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <div className="p-2 rounded-lg bg-white/10">
+                                <CheckIcon className="w-5 h-5 text-white" />
+                              </div>
+                              <span className="text-white/90 text-sm md:text-base">
+                                No commitment required
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Quote */}
+                          <div className="hidden md:block mt-auto pt-6 border-t border-white/10">
+                            <p className="text-white/60 text-sm italic">
+                              "Great things happen when passionate people collaborate on meaningful
+                              projects."
+                            </p>
+                          </div>
+                        </motion.div>
+
+                        {/* Right Panel - Calendly */}
+                        <motion.div
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
+                          className="w-full md:w-[60%] h-full bg-white"
+                        >
+                          <div
+                            id="calendly-container"
+                            className="w-full h-full"
+                            style={{ minHeight: '500px' }}
+                          />
+                        </motion.div>
+                      </div>
                     </motion.div>
                   </div>
                 </div>

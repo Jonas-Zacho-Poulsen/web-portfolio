@@ -14,6 +14,9 @@ importers:
       '@octokit/rest':
         specifier: ^22.0.1
         version: 22.0.1
+      '@paper-design/shaders-react':
+        specifier: ^0.0.71
+        version: 0.0.71(@types/react@19.2.7)(react@19.2.3)
       '@vercel/analytics':
         specifier: ^1.6.1
         version: 1.6.1(next@15.5.9(@babel/core@7.28.5)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)
@@ -717,6 +720,18 @@ packages:
 
   '@octokit/types@16.0.0':
     resolution: {integrity: sha512-sKq+9r1Mm4efXW1FCk7hFSeJo4QKreL/tTbR0rz/qx/r1Oa2VV83LTA/H/MuCOX7uCIJmQVRKBcbmWoySjAnSg==}
+
+  '@paper-design/shaders-react@0.0.71':
+    resolution: {integrity: sha512-kTqjIlyZcpkwqJie+3ldEDscTtx1oOi8eRBD5QgWKI21GaNn/SSg26092M5zzqr3e8dVANv0ktS2ICSjbMFKbw==}
+    peerDependencies:
+      '@types/react': ^18 || ^19
+      react: ^18 || ^19
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
+  '@paper-design/shaders@0.0.71':
+    resolution: {integrity: sha512-brCt05YxxyjBrhnE3l1wJJHcFXsM8aE4lmpd9TMQp+p0dMU3F+OWkJZL9m/RC1Tt7om5xr0Wg7d0HYm+b9NYZA==}
 
   '@pkgr/core@0.2.9':
     resolution: {integrity: sha512-QNqXyfVS2wm9hweSYD2O7F0G06uurj9kZ96TRQE5Y9hU7+tgdZwIkbAKc5Ocy1HxEY2kuDQa6cQ1WRs/O5LFKA==}
@@ -3722,6 +3737,15 @@ snapshots:
   '@octokit/types@16.0.0':
     dependencies:
       '@octokit/openapi-types': 27.0.0
+
+  '@paper-design/shaders-react@0.0.71(@types/react@19.2.7)(react@19.2.3)':
+    dependencies:
+      '@paper-design/shaders': 0.0.71
+      react: 19.2.3
+    optionalDependencies:
+      '@types/react': 19.2.7
+
+  '@paper-design/shaders@0.0.71': {}
 
   '@pkgr/core@0.2.9': {}
 
