@@ -12,6 +12,7 @@ import {
   CheckIcon,
 } from '@/components/icons'
 import { MeshGradient } from '@paper-design/shaders-react'
+import { useTheme } from 'next-themes'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -73,17 +74,23 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>
 
-// Calendly types are defined in src/types/global.d.ts
-
 export default function Contact() {
-  const [isCalendlyOpen, setIsCalendlyOpen] = useState(false)
+  const [isCalOpen, setIsCalOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  const { resolvedTheme } = useTheme()
+
+  // Handle hydration mismatch - useTheme returns undefined on server
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const isDark = mounted && resolvedTheme === 'dark'
   // State for form submission and UI feedback
   const [sent, setSent] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null)
   const recaptchaRef = React.useRef<ReCAPTCHA>(null)
   const [showSuccessMessage, setShowSuccessMessage] = useState(false)
-  const [isCalendlyReady, setIsCalendlyReady] = useState(false)
 
   // Form validation with react-hook-form and zod
   const {
@@ -100,80 +107,58 @@ export default function Contact() {
     },
   })
 
-  // Handle Calendly events
+  // Clean up body overflow on unmount
   useEffect(() => {
-    // Add event listener for Calendly events
-    const handleCalendlyEvent = (e: any) => {
-      if (e.data && e.data.event && e.data.event === 'calendly.close') {
-        setIsCalendlyOpen(false)
-        document.body.style.overflow = 'auto'
-      }
-    }
-
-    window.addEventListener('message', handleCalendlyEvent)
-
     return () => {
-      // Clean up on unmount
-      window.removeEventListener('message', handleCalendlyEvent)
-      if (isCalendlyOpen) {
+      if (isCalOpen) {
         document.body.style.overflow = 'auto'
       }
     }
-  }, [isCalendlyOpen])
+  }, [isCalOpen])
 
-  // Set Calendly as ready when component mounts
-  useEffect(() => {
-    // Import the loadCalendlyScript function from our shared component
-    import('@/components/calendly').then(({ loadCalendlyScript }) => {
-      loadCalendlyScript().then(() => {
-        setIsCalendlyReady(true)
-      })
-    })
-  }, [])
-
-  // Simple toggle for Calendly modal
-  const toggleCalendly = () => {
-    const wasOpen = isCalendlyOpen
-    setIsCalendlyOpen(!wasOpen)
+  // Simple toggle for Cal.com modal
+  const toggleCal = () => {
+    const wasOpen = isCalOpen
+    setIsCalOpen(!wasOpen)
     document.body.style.overflow = wasOpen ? 'auto' : 'hidden'
 
     // Force reflow to ensure the previous state is cleaned up
     if (wasOpen) {
-      const container = document.getElementById('calendly-container')
+      const container = document.getElementById('cal-container')
       if (container) {
         container.innerHTML = ''
       }
     }
   }
 
-  // Handle Calendly script loading and initialization
+  // Handle Cal.com iframe initialization
   useEffect(() => {
-    if (!isCalendlyOpen || !isCalendlyReady) return
+    if (!isCalOpen) return
 
     // Clean up any existing iframes first
-    const existingIframe = document.getElementById('calendly-iframe')
+    const existingIframe = document.getElementById('cal-iframe')
     if (existingIframe) {
       existingIframe.remove()
     }
 
-    // Create and append the iframe
+    // Create and append the iframe with theme-aware URL
+    const calTheme = isDark ? 'dark' : 'light'
     const iframe = document.createElement('iframe')
-    iframe.id = 'calendly-iframe'
-    iframe.src =
-      'https://calendly.com/jonaszp97?hide_gdpr_banner=1&background_color=ffffff&text_color=333333&primary_color=6366f1'
+    iframe.id = 'cal-iframe'
+    iframe.src = `https://cal.com/jonas-zacho-uzmcak?embed=true&theme=${calTheme}`
     iframe.width = '100%'
     iframe.height = '100%'
     iframe.title = 'Schedule a Meeting'
     iframe.style.border = 'none'
     iframe.style.display = 'block'
-    iframe.style.background = 'white'
+    iframe.style.background = isDark ? '#1a1a1a' : 'white'
 
-    const calendlyContainer = document.getElementById('calendly-container')
-    if (calendlyContainer) {
+    const calContainer = document.getElementById('cal-container')
+    if (calContainer) {
       // Clear any existing content
-      calendlyContainer.innerHTML = ''
-      calendlyContainer.style.background = 'white'
-      calendlyContainer.appendChild(iframe)
+      calContainer.innerHTML = ''
+      calContainer.style.background = isDark ? '#1a1a1a' : 'white'
+      calContainer.appendChild(iframe)
     }
 
     // Cleanup function
@@ -181,12 +166,12 @@ export default function Contact() {
       if (iframe && iframe.parentNode) {
         iframe.parentNode.removeChild(iframe)
       }
-      const container = document.getElementById('calendly-container')
+      const container = document.getElementById('cal-container')
       if (container) {
         container.innerHTML = ''
       }
     }
-  }, [isCalendlyOpen, isCalendlyReady])
+  }, [isCalOpen, isDark])
 
   // Hide success message after 5 seconds
   useEffect(() => {
@@ -280,8 +265,8 @@ export default function Contact() {
               </span>
             </p>
             <motion.button
-              onClick={toggleCalendly}
-              layoutId="calendly-modal"
+              onClick={toggleCal}
+              layoutId="cal-modal"
               whileHover={{
                 scale: 1.05,
                 boxShadow:
@@ -294,9 +279,9 @@ export default function Contact() {
               Book a Meeting
             </motion.button>
 
-            {/* Calendly Modal */}
+            {/* Cal.com Modal */}
             <AnimatePresence>
-              {isCalendlyOpen && (
+              {isCalOpen && (
                 <div className="fixed inset-0 z-50">
                   {/* Backdrop */}
                   <motion.div
@@ -304,13 +289,13 @@ export default function Contact() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     className="fixed inset-0 bg-black/60 backdrop-blur-sm"
-                    onClick={toggleCalendly}
+                    onClick={toggleCal}
                   />
 
                   {/* Modal Container */}
                   <div className="fixed inset-0 flex items-center justify-center p-4">
                     <motion.div
-                      layoutId="calendly-modal"
+                      layoutId="cal-modal"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
@@ -331,11 +316,15 @@ export default function Contact() {
                       <motion.button
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1, transition: { delay: 0.2 } }}
-                        onClick={toggleCalendly}
-                        className="absolute top-4 right-4 z-20 p-2 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 transition-colors border border-white/20"
+                        onClick={toggleCal}
+                        className={`absolute top-4 right-4 z-20 p-2 rounded-full transition-colors ${
+                          isDark
+                            ? 'bg-gray-700 hover:bg-gray-600 text-white'
+                            : 'bg-gray-200 hover:bg-gray-300 text-gray-800'
+                        }`}
                         aria-label="Close"
                       >
-                        <span className="text-2xl text-white leading-none">×</span>
+                        <span className="text-2xl leading-none">×</span>
                       </motion.button>
 
                       {/* Two-Panel Layout */}
@@ -391,14 +380,14 @@ export default function Contact() {
                           </div>
                         </motion.div>
 
-                        {/* Right Panel - Calendly */}
+                        {/* Right Panel - Cal.com */}
                         <motion.div
                           initial={{ opacity: 0, x: 20 }}
                           animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
-                          className="w-full md:w-[60%] h-full bg-white"
+                          className={`w-full md:w-[60%] h-full ${isDark ? 'bg-[#1a1a1a]' : 'bg-white'}`}
                         >
                           <div
-                            id="calendly-container"
+                            id="cal-container"
                             className="w-full h-full"
                             style={{ minHeight: '500px' }}
                           />
