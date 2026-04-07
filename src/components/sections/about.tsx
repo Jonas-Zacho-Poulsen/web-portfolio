@@ -69,7 +69,7 @@ export function About() {
                 ) : (
                   <span className="text-primary font-medium">{focusAreas[0]}</span>
                 )}{" "}
-                with an emphasis on reliability and clean delivery in remote-first teams.
+                with an emphasis on reliability and clean delivery in collaborative engineering teams.
               </p>
             </div>
             

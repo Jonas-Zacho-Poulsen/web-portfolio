@@ -104,7 +104,7 @@ export function Hero() {
     "APIs & Integrations",
     "C#/.NET & React",
     "Reliable Systems",
-    "Remote, By Design",
+    "Collaborative Teams",
   ]
 
   return (
@@ -136,7 +136,7 @@ export function Hero() {
           transition={{ duration: 0.5, delay: 0.5 }}
           className="text-xl sm:text-2xl font-medium text-(--color-muted-foreground)"
         >
-          Remote Full-Stack / Backend Engineer
+          Full-Stack / Backend Engineer
         </motion.p>
 
         {/* Animated title cycling */}
@@ -157,7 +157,7 @@ export function Hero() {
           transition={{ duration: 0.5, delay: 1.2 }}
           className="text-xl sm:text-2xl text-(--color-muted-foreground) max-w-2xl mx-auto"
         >
-          I build reliable backend systems and integrations. Ownership-driven, remote-first, EU-based.
+          I build reliable backend systems and integrations. Ownership-driven, collaborative, EU-based.
         </motion.p>
 
         {/* Call to action buttons with enhanced hover effects */}
@@ -257,7 +257,7 @@ export function Hero() {
           transition={{ delay: 2.0, duration: 0.5 }}
           className="text-sm text-(--color-muted-foreground) mt-4"
         >
-          Open to remote roles and contracts (EU time zones)
+          Open to onsite, hybrid, and remote roles (EU time zones)
         </motion.p>
       </motion.div>
 

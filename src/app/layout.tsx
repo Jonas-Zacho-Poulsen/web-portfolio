@@ -28,21 +28,21 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: 'Jonas Zacho Poulsen - Remote Backend & Full-Stack Engineer | C#/.NET, React',
+  title: 'Jonas Zacho Poulsen - Backend & Full-Stack Engineer | C#/.NET, React',
   description:
-    'Remote Backend Engineer specializing in C#/.NET, React, and scalable integrations. Available for contracts and full-time roles in EU time zones.',
+    'Backend Engineer specializing in C#/.NET, React, and scalable integrations. Available for contracts and full-time roles in EU time zones.',
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://jonas-poulsen.vercel.app/'),
-  keywords: ['Backend Engineer', 'Full-Stack Developer', 'C#', '.NET', 'React', 'Remote', 'EU', 'Denmark', 'API', 'Integrations'],
+  keywords: ['Backend Engineer', 'Full-Stack Developer', 'C#', '.NET', 'React', 'EU', 'Denmark', 'API', 'Integrations', 'Onsite', 'Hybrid', 'Remote'],
   openGraph: {
-    title: 'Jonas Zacho Poulsen - Remote Backend & Full-Stack Engineer',
-    description: 'Backend Engineer specializing in C#/.NET, React, APIs, and reliable systems. Open to remote roles in EU time zones.',
+    title: 'Jonas Zacho Poulsen - Backend & Full-Stack Engineer',
+    description: 'Backend Engineer specializing in C#/.NET, React, APIs, and reliable systems. Open to onsite, hybrid, and remote roles in EU time zones.',
     images: ['/og-image.jpg'],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Jonas Zacho Poulsen - Remote Backend & Full-Stack Engineer',
-    description: 'Backend Engineer specializing in C#/.NET, React, APIs, and reliable systems. Open to remote roles in EU time zones.',
+    title: 'Jonas Zacho Poulsen - Backend & Full-Stack Engineer',
+    description: 'Backend Engineer specializing in C#/.NET, React, APIs, and reliable systems. Open to onsite, hybrid, and remote roles in EU time zones.',
     images: ['/og-image.jpg'],
   },
   robots: {

@@ -305,7 +305,7 @@ export function Skills() {
             Technical Skills
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Focused on backend/platform development, APIs, integrations, and reliable delivery in remote-first teams.
+            Focused on backend/platform development, APIs, integrations, and reliable delivery in collaborative engineering teams.
           </p>
         </motion.div>
 

@@ -8,9 +8,9 @@
  */
 export const siteConfig = {
   name: 'Jonas Zacho Poulsen',
-  title: 'Jonas Zacho Poulsen - Remote Backend & Full-Stack Engineer | C#/.NET, React',
+  title: 'Jonas Zacho Poulsen - Backend & Full-Stack Engineer | C#/.NET, React',
   description:
-    'Remote Backend Engineer specializing in C#/.NET, React, and scalable integrations. Available for contracts and full-time roles in EU time zones.',
+    'Backend Engineer specializing in C#/.NET, React, and scalable integrations. Available for contracts and full-time roles in EU time zones.',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://jonas-poulsen.vercel.app',
   ogImage: '/og-image.jpg',
   links: {
@@ -64,23 +64,26 @@ export const socialLinks = [
 export const chatConfig = {
   rateLimit: 300, // Reduced rate limit for faster responses
   predefinedResponses: {
-    experience: `Jonas is a Full Stack Developer with experience in building and maintaining scalable applications
-     using .NET, Python, Next.js, TypeScript, and various cloud services.`,
+    experience: `Jonas is a Backend and Full-Stack Engineer with experience building reliable systems across healthcare, enterprise, and AI-driven products. He focuses on APIs, integrations, and technical ownership in collaborative engineering teams. Open to onsite, hybrid, and remote roles in EU time zones.`,
 
     skills: `Jonas' key technical skills include:
+  - Backend: C#/.NET, Python, Node.js, TypeScript, PostgreSQL
   - Frontend: React, Next.js, Tailwind CSS
-  - Backend: .NET, Python, Node.js, TypeScript, PostgreSQL
-  - Cloud & DevOps: Docker, GitHub Actions, Azure
-  - Tools: Git, VS Code, Jira`,
+  - APIs & Cloud: REST APIs, Azure, Docker, CI/CD
+  - Tools: Git, Jira, VS Code, Agile/Scrum`,
 
-    projects: `Some of Jonas' notable projects include:
-  1. Portfolio Website (Next.js 14, TypeScript, Tailwind)
-  2. Chat Application (React, OpenAI, WebSocket)`,
+    projects: `Jonas has worked on:
+  - Multi-tenant AI platform automating ERP workflows (LogicNodes)
+  - Automated clinical data reporting systems (Region Nordjylland)
+  - Repository migrations and process automation (Rohde & Schwarz)
+
+  Check his GitHub for more: github.com/Jonas-Zacho-Poulsen`,
 
     contact: `Get in Touch with Jonas:
   📧 Email: jonaszp97@gmail.com
   📞 Phone: +45 50 22 73 00
   🐙 GitHub: github.com/Jonas-Zacho-Poulsen
+  💼 LinkedIn: linkedin.com/in/j-poulsen-
 
   🔽 Download CV for more details.`,
 
