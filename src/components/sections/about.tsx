@@ -21,7 +21,6 @@ const item = {
 }
 
 export function About() {
-  const [imageError, setImageError] = useState(false)
   const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
@@ -104,27 +103,20 @@ export function About() {
             variants={item}
             className="relative w-full max-w-[220px] sm:max-w-[260px] aspect-square rounded-full overflow-hidden border-4 border-primary/20 shadow-lg mx-auto"
           >
-            {!imageError ? (
-              <Image
-                src="https://i.imgur.com/27rWIav.jpeg"
-                alt="Jonas Zacho Poulsen"
-                width={350}
-                height={350}
-                className="w-full h-full object-cover"
-                priority={true}
-                sizes="(max-width: 640px) 220px, 260px"
-                quality={85}
-                loading="eager"
-                fetchPriority="high"
-                onError={() => setImageError(true)}
-                placeholder="blur"
-                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAhEAACAQIGAwAAAAAAAAAAAAABAgMABAUGERIhMUFRcf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AmzHMVs7vT5beW3EsSsVI3KCR7iqNAooP/9k="
-              />
-            ) : (
-              <div className="flex items-center justify-center w-full h-full bg-secondary">
-                <span className="text-6xl">👨‍💻</span>
-              </div>
-            )}
+            <Image
+              src="/profile.jpeg"
+              alt="Jonas Zacho Poulsen"
+              width={350}
+              height={350}
+              className="w-full h-full object-cover"
+              priority={true}
+              sizes="(max-width: 640px) 220px, 260px"
+              quality={85}
+              loading="eager"
+              fetchPriority="high"
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAhEAACAQIGAwAAAAAAAAAAAAABAgMABAUGERIhMUFRcf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AmzHMVs7vT5beW3EsSsVI3KCR7iqNAooP/9k="
+            />
           </motion.div>
         </div>
       </motion.div>

@@ -17,38 +17,11 @@ interface SkillCategory {
   items: Skill[]
 }
 
-const skillIcons = {
-  // Backend & Languages
-  'C#': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg',
-  TypeScript:
-    'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
-  Python: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
-  '.NET': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dotnetcore/dotnetcore-original.svg',
-  'Node.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
-  PostgreSQL:
-    'https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg',
+// Import centralized tech stack icons
+import { techStackIcons } from '@/config'
 
-  // Frontend
-  React: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
-  'Next.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg',
-  'Tailwind CSS':
-    'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg',
-
-  // APIs & Cloud
-  Azure: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/azure/azure-original.svg',
-  Docker:
-    'https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg',
-  GraphQL:
-    'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/graphql/graphql-plain.svg',
-
-  // Tools & Workflow
-  Git: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/git/git-original.svg',
-  'GitHub Actions':
-    'https://raw.githubusercontent.com/devicons/devicon/master/icons/github/github-original.svg',
-  Jira: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/jira/jira-original.svg',
-  'VS Code':
-    'https://raw.githubusercontent.com/devicons/devicon/master/icons/vscode/vscode-original.svg',
-}
+// Use imported icons as skillIcons for backwards compatibility
+const skillIcons = techStackIcons
 
 // Skill descriptions for tooltips
 const skillDescriptions: Record<string, string> = {

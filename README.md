@@ -1,8 +1,8 @@
 # Personal Portfolio Website
 
-[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC)](https://tailwindcss.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38B2AC)](https://tailwindcss.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black)](https://web-portfolio-niglouvxv-jonas-zacho-poulsens-projects.vercel.app)
 
@@ -10,7 +10,7 @@ A modern, responsive portfolio website showcasing my projects and skills. Built 
 
 ## 🌟 Features
 
-- ⚡ **Next.js 14** with App Router and Server Components
+- ⚡ **Next.js 15** with App Router and Server Components
 - 🎨 **Modern Design**
   - Responsive layout
   - Dark/Light mode with system preference sync
@@ -33,9 +33,9 @@ A modern, responsive portfolio website showcasing my projects and skills. Built 
 
 ## 🛠️ Tech Stack
 
-- **Framework**: Next.js 14
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
+- **Framework**: Next.js 15
+- **Language**: TypeScript 5.3
+- **Styling**: Tailwind CSS 4
 - **Animation**: Framer Motion
 - **State Management**: React Hooks
 - **Version Control**: Git
@@ -142,17 +142,11 @@ The application follows a clean, modular architecture with clear separation of c
 - **Pull Requests**: Code review process through pull requests
 - **Conventional Commits**: Structured commit messages for better readability
 
-### Testing (Planned)
+### CI/CD
 
-- **Jest**: Unit testing framework
-- **React Testing Library**: Component testing
-- **Cypress**: End-to-end testing
-
-### CI/CD (Planned)
-
-- **GitHub Actions**: Automated testing and linting
-- **Vercel Integration**: Automatic deployments
-- **Preview Deployments**: Preview environments for pull requests
+- **Vercel Integration**: Automatic deployments on push to main
+- **Preview Deployments**: Automatic preview environments for pull requests
+- **Dependency Updates**: Automated dependency management with Dependabot
 
 ## 📱 Responsive Design
 

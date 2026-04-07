@@ -3,14 +3,7 @@
 import { motion, useScroll, AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { ThemeSwitcher } from './theme-switcher'
-
-const navItems = [
-  { name: 'Home', href: '#home' },
-  { name: 'About', href: '#about' },
-  { name: 'Skills', href: '#skills' },
-  { name: 'Projects', href: '#projects' },
-  { name: 'Contact', href: '#contact' },
-]
+import { navigationItems } from '@/config'
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -74,7 +67,7 @@ export function Navigation() {
 
           <div className="hidden sm:block">
             <div className="flex items-center space-x-4">
-              {navItems.map(item => (
+              {navigationItems.map(item => (
                 <motion.a
                   key={item.name}
                   href={item.href}
@@ -130,7 +123,7 @@ export function Navigation() {
               className="sm:hidden"
             >
               <div className="px-2 pt-2 pb-3 space-y-1">
-                {navItems.map(item => (
+                {navigationItems.map(item => (
                   <motion.a
                     key={item.name}
                     href={item.href}

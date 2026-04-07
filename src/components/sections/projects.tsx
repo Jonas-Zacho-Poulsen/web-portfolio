@@ -42,20 +42,8 @@ const item = {
   show: { opacity: 1, y: 0 },
 }
 
-// Tech stack icons mapping
-const techStackIcons = {
-  'next.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg',
-  typescript:
-    'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
-  react: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
-  tailwindcss:
-    'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg',
-  nodejs: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
-  postgresql:
-    'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg',
-  docker: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg',
-  aws: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg',
-}
+// Import centralized tech stack icons
+import { techStackIcons } from '@/config'
 
 function ProjectPreview({
   title,
@@ -408,15 +396,23 @@ function ProjectCard({ project }: { project: Repository }) {
 export function Projects() {
   const [projects, setProjects] = useState<Repository[]>(fallbackProjects)
   const [loading, setLoading] = useState(true)
+  const [isUsingFallback, setIsUsingFallback] = useState(false)
 
   useEffect(() => {
     async function fetchProjects() {
       try {
         const response = await fetch(
-          'https://api.github.com/users/Jonas-Zacho-Poulsen/repos?sort=stars&per_page=6'
+          'https://api.github.com/users/Jonas-Zacho-Poulsen/repos?sort=stars&per_page=6',
+          {
+            headers: {
+              'Accept': 'application/vnd.github.v3+json'
+            },
+            // Add timeout
+            signal: AbortSignal.timeout(10000)
+          }
         )
         if (!response.ok) {
-          throw new Error('Failed to fetch projects')
+          throw new Error(`GitHub API responded with status: ${response.status}`)
         }
         const data = await response.json()
         if (Array.isArray(data) && data.length > 0) {
@@ -442,10 +438,14 @@ export function Projects() {
                 }
           })
           setProjects(enhancedProjects)
+          setIsUsingFallback(false)
+        } else {
+          setIsUsingFallback(true)
         }
       } catch (error) {
-        console.error('Error fetching projects:', error)
-        // Don't set error state, just use fallback projects
+        console.error('Error fetching GitHub projects:', error)
+        setIsUsingFallback(true)
+        // Use fallback projects
       } finally {
         setLoading(false)
       }
@@ -492,6 +492,20 @@ export function Projects() {
             A selection of my recent work showcasing my skills and experience in building web
             applications.
           </p>
+          {isUsingFallback && (
+            <p className="text-sm text-muted-foreground/70 mt-3 italic">
+              Showing featured projects. Visit{' '}
+              <a
+                href="https://github.com/Jonas-Zacho-Poulsen"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                GitHub
+              </a>{' '}
+              for complete portfolio.
+            </p>
+          )}
         </motion.div>
 
         {/* Projects grid with staggered animation */}

@@ -123,23 +123,49 @@ export const chatConfig = {
 
 /**
  * Tech stack icons mapping
+ * Centralized icon definitions used across the site
  */
-export const techStackIcons = {
-  'next.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg',
-  typescript:
-    'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
-  react: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
-  tailwindcss:
-    'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg',
-  nodejs: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
-  postgresql:
-    'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg',
-  docker: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg',
+export const techStackIcons: Record<string, string> = {
+  // Languages
   'c#': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg',
+  'C#': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg',
+  typescript: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
+  TypeScript: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
+  javascript: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
   python: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
-  javascript:
-    'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
+  Python: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
+
+  // Frameworks
+  '.NET': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dotnetcore/dotnetcore-original.svg',
   dotnet: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dotnetcore/dotnetcore-original.svg',
-  azure: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg',
-  git: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg',
+  'Node.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
+  nodejs: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
+  react: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
+  React: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
+  'next.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg',
+  'Next.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg',
+  'tailwindcss': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg',
+  'Tailwind CSS': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg',
+
+  // Databases
+  postgresql: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg',
+  PostgreSQL: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg',
+
+  // Cloud & DevOps
+  azure: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/azure/azure-original.svg',
+  Azure: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/azure/azure-original.svg',
+  docker: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg',
+  Docker: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg',
+  aws: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg',
+
+  // APIs & Tools
+  GraphQL: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/graphql/graphql-plain.svg',
+  'REST APIs': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
+
+  // Version Control & Tools
+  git: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/git/git-original.svg',
+  Git: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/git/git-original.svg',
+  'GitHub Actions': 'https://raw.githubusercontent.com/devicons/devicon/master/icons/github/github-original.svg',
+  Jira: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/jira/jira-original.svg',
+  'VS Code': 'https://raw.githubusercontent.com/devicons/devicon/master/icons/vscode/vscode-original.svg',
 }

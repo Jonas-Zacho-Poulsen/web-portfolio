@@ -126,7 +126,7 @@ export default function Contact() {
     if (wasOpen) {
       const container = document.getElementById('cal-container')
       if (container) {
-        container.innerHTML = ''
+        container.textContent = ''
       }
     }
   }
@@ -152,6 +152,32 @@ export default function Contact() {
     iframe.style.border = 'none'
     iframe.style.display = 'block'
     iframe.style.background = isDark ? '#1a1a1a' : 'white'
+    iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts allow-forms allow-popups')
+
+    // Add error handling for iframe loading
+    iframe.onerror = () => {
+      console.error('Failed to load Cal.com iframe')
+      const calContainer = document.getElementById('cal-container')
+      if (calContainer) {
+        calContainer.innerHTML = `
+          <div style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 2rem; text-align: center;">
+            <div>
+              <p style="color: ${isDark ? '#fff' : '#000'}; font-size: 1.125rem; margin-bottom: 1rem;">
+                Unable to load calendar. Please try again later.
+              </p>
+              <a
+                href="https://cal.com/jonas-zacho-uzmcak"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="color: #19C37D; text-decoration: underline;"
+              >
+                Open calendar in new tab
+              </a>
+            </div>
+          </div>
+        `
+      }
+    }
 
     const calContainer = document.getElementById('cal-container')
     if (calContainer) {
@@ -168,7 +194,7 @@ export default function Contact() {
       }
       const container = document.getElementById('cal-container')
       if (container) {
-        container.innerHTML = ''
+        container.textContent = ''
       }
     }
   }, [isCalOpen, isDark])
@@ -299,8 +325,7 @@ export default function Contact() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="relative w-full max-w-6xl rounded-2xl shadow-2xl overflow-hidden"
-                      style={{ height: '700px' }}
+                      className="relative w-full max-w-6xl rounded-2xl shadow-2xl overflow-hidden h-[500px] sm:h-[600px] md:h-[700px]"
                       onClick={e => e.stopPropagation()}
                     >
                       {/* MeshGradient Background */}
