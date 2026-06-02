@@ -108,15 +108,15 @@ export function Hero() {
   ]
 
   return (
-    <section
-      ref={ref}
-      className="relative min-h-[80vh] flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 overflow-hidden w-full pt-0 mt-0"
+<section
+       ref={ref}
+       className="relative min-h-[80vh] flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 overflow-hidden w-full pt-16 pb-10"
     >
       {/* Subtle background decoration */}
       <HeroBackground />
 
       {/* Main content with parallax effect */}
-      <motion.div style={{ y, opacity }} className="relative z-10 text-center space-y-4 mx-auto w-full max-w-4xl -mt-10">
+       <motion.div style={{ y, opacity }} className="relative z-10 text-center space-y-4 mx-auto w-full max-w-4xl">
         {/* Animated name with gradient effect */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
@@ -261,13 +261,13 @@ export function Hero() {
         </motion.p>
       </motion.div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2.2, duration: 1 }}
-        className="absolute bottom-4 left-1/2 transform -translate-x-1/2"
-      >
+        {/* Scroll indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2.2, duration: 1 }}
+          className="absolute bottom-0 left-1/2 transform -translate-x-1/2"
+        >
         <motion.div
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 1.5, repeat: Infinity, repeatType: 'loop' }}
