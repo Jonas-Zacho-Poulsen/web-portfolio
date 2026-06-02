@@ -12,7 +12,8 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background flex flex-col relative">
       <Navigation />
-      <main className="flex-grow pt-8 w-full relative">
+      {/* Increase top padding to match fixed navigation height (h-16 = 64px) to avoid overlap on mobile */}
+      <main className="flex-grow pt-16 w-full relative">
         <div className="space-y-6 py-2 w-full relative">
           <section id="home" className="scroll-mt-20 min-h-[80vh] flex items-center justify-center w-full relative overflow-hidden">
             <Hero />
