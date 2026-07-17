@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef, useEffect, useState } from 'react'
 import { EmailIcon, PhoneIcon, GithubIcon, LinkedInIcon } from '@/components/icons'
 import { AnimatedTextCycle } from '@/components/ui/animated-text-cycle'
+import { DownloadCVButton } from '@/components/ui/download-cv-button'
 
 // Background decoration for hero section
 const HeroBackground = () => {
@@ -182,20 +183,7 @@ export function Hero() {
           >
             View Projects
           </motion.a>
-          <motion.a
-            href="/Jonas_Poulsen_Software_Resume.pdf"
-            whileHover={{
-              scale: 1.05,
-              boxShadow: '0 10px 25px -5px rgba(var(--primary-rgb), 0.2)',
-            }}
-            whileTap={{ scale: 0.95 }}
-            className="px-8 py-3 border border-(--color-primary) text-(--color-primary) rounded-sm font-medium transition-all"
-            download
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Download CV/Resume
-          </motion.a>
+          <DownloadCVButton variant="outline" />
         </motion.div>
 
         {/* Social links with staggered animation */}

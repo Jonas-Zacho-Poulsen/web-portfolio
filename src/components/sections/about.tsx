@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { Typewriter } from '@/components/ui/typewriter'
+import { DownloadCVButton } from '@/components/ui/download-cv-button'
 
 const container = {
   hidden: { opacity: 0 },
@@ -73,17 +74,7 @@ export function About() {
             </div>
             
             <div className="flex flex-wrap justify-center lg:justify-start gap-4 pt-2">
-              <motion.a
-                href="/Jonas_Poulsen_Software_Resume.pdf"
-                download
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-6 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium transition-colors hover:bg-primary/90"
-              >
-                Download CV/Resume
-              </motion.a>
+              <DownloadCVButton variant="primary" className="px-6 py-2.5 text-sm rounded-lg" />
               <motion.a
                 href="#contact"
                 whileHover={{ scale: 1.05 }}
