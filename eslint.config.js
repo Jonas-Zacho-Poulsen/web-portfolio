@@ -40,6 +40,16 @@ export default [
     ],
   },
 
+  // Test files
+  {
+    files: ['**/*.test.{js,jsx,ts,tsx}', '**/*.spec.{js,jsx,ts,tsx}', '**/__tests__/**'],
+    languageOptions: {
+      globals: {
+        ...globals.jest,
+      },
+    },
+  },
+
   // Base JS config
   js.configs.recommended,
 

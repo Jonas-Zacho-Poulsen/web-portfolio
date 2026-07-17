@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, AnimatePresence, useDragControls } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useChatStore } from '@/stores/chatStore'
 import { ChatHeader } from './ChatHeader'
@@ -8,6 +8,7 @@ import { ChatMessage } from './ChatMessage'
 import { ChatInput } from './ChatInput'
 import { SuggestedQuestions } from './SuggestedQuestions'
 import { PredefinedPrompts } from './PredefinedPrompts'
+import { SuggestedNextPrompts } from './SuggestedNextPrompts'
 
 export const ChatContainer = () => {
   const {
@@ -24,31 +25,40 @@ export const ChatContainer = () => {
   } = useChatStore()
 
   const [isResizing, setIsResizing] = useState(false)
-  // State for tracking resize operations
-  const [resizeStart, setResizeStart] = useState({ x: 0, y: 0, width: 0, height: 0 })
+  const [isDragging, setIsDragging] = useState(false)
+
+  // Refs for resize/drag state to avoid stale closures in window listeners
+  const resizeRef = useRef({
+    startX: 0,
+    startY: 0,
+    startWidth: 0,
+    startHeight: 0,
+    startChatX: 0,
+    startChatY: 0,
+    direction: 'se',
+  })
+
+  const dragRef = useRef({
+    startX: 0,
+    startY: 0,
+    startChatX: 0,
+    startChatY: 0,
+  })
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const dragControls = useDragControls()
   const containerRef = useRef<HTMLDivElement>(null)
 
   const positionChatInViewport = useCallback(() => {
-    // Simplified positioning - always start in bottom right corner
-    // This matches user preference from memories
-    const viewport = {
-      width: window.innerWidth,
-      height: window.innerHeight,
-    }
-
-    // Default to bottom right corner with fixed padding
     const padding = 20
-    const newX = viewport.width - chatSize.width - padding
-    const newY = viewport.height - chatSize.height - padding
-
-    // Only update if position has changed
-    if (newX !== chatPosition.x || newY !== chatPosition.y) {
+    const state = useChatStore.getState()
+    const maxX = window.innerWidth - state.chatSize.width - padding
+    const maxY = window.innerHeight - state.chatSize.height - padding
+    const newX = Math.max(0, Math.min(state.chatPosition.x, maxX))
+    const newY = Math.max(0, Math.min(state.chatPosition.y, maxY))
+    if (newX !== state.chatPosition.x || newY !== state.chatPosition.y) {
       setChatPosition({ x: newX, y: newY })
     }
-  }, [chatPosition.x, chatPosition.y, chatSize.width, chatSize.height])
+  }, [setChatPosition])
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
@@ -57,201 +67,144 @@ export const ChatContainer = () => {
     }
   }, [messages])
 
-  // Position chat in viewport when opened
+  // Position chat in viewport when opened or window resizes
   useEffect(() => {
-    if (isOpen) {
-      positionChatInViewport()
-    }
+    if (!isOpen) return
+
+    positionChatInViewport()
+
+    const handleViewportChange = () => positionChatInViewport()
+    window.addEventListener('resize', handleViewportChange)
+    return () => window.removeEventListener('resize', handleViewportChange)
   }, [isOpen, positionChatInViewport])
 
-  // Handle viewport changes
-  useEffect(() => {
-    let ticking = false
-
-    const handleViewportChange = () => {
-      if (isOpen) {
-        positionChatInViewport()
-      }
-    }
-
-    const handleScroll = () => {
-      if (!ticking && isOpen) {
-        window.requestAnimationFrame(() => {
-          // Calculate position relative to the viewport
-          const viewport = {
-            width: window.innerWidth,
-            height: window.innerHeight,
-          }
-          const padding = 20
-          const newX = viewport.width - chatSize.width - padding
-          const newY = viewport.height - chatSize.height - padding
-
-          setChatPosition({ x: newX, y: newY })
-          ticking = false
-        })
-        ticking = true
-      }
-    }
-
-    window.addEventListener('resize', handleViewportChange)
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => {
-      window.removeEventListener('resize', handleViewportChange)
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [isOpen, chatSize, positionChatInViewport])
-
-  // Resize handlers for all corners
+  // ─── Resize ───────────────────────────────────────────────────────────
   const startResize = (e: React.PointerEvent) => {
     e.preventDefault()
     e.stopPropagation()
 
-    // Don't start resizing if clicking on close button or its children
     const target = e.target as HTMLElement
-    if (target.closest('button[title="Close chat"]')) {
-      return
+    if (target.closest('button[title="Close chat"]')) return
+
+    const direction = (e.currentTarget as HTMLElement).dataset.direction || 'se'
+
+    resizeRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      startWidth: chatSize.width,
+      startHeight: chatSize.height,
+      startChatX: chatPosition.x,
+      startChatY: chatPosition.y,
+      direction,
     }
-
-    // Capture the pointer to ensure all pointer events go to this element
-    ;(e.target as Element).setPointerCapture(e.pointerId)
-
-    // Determine which corner is being resized based on the target's position
-    const targetElement = e.currentTarget as HTMLElement
-    const isTop = targetElement.classList.contains('top') || targetElement.style.top === '0px'
-    const isLeft = targetElement.classList.contains('left') || targetElement.style.left === '0px'
-    const isBottom =
-      targetElement.classList.contains('bottom') || targetElement.style.bottom === '0px'
-    const isRight = targetElement.classList.contains('right') || targetElement.style.right === '0px'
-
-    let direction = ''
-    if (isTop) direction += 'n'
-    if (isBottom) direction += 's'
-    if (isLeft) direction += 'w'
-    if (isRight) direction += 'e'
-
-    // If no direction is determined from classes, infer from position
-    if (!direction) {
-      const rect = targetElement.getBoundingClientRect()
-      if (rect.top === 0) direction += 'n'
-      if (rect.bottom === window.innerHeight) direction += 's'
-      if (rect.left === 0) direction += 'w'
-      if (rect.right === window.innerWidth) direction += 'e'
-    }
-
-    // Default to southeast if still no direction
-    if (!direction) direction = 'se'
-
-    // Store the direction on the element
-    targetElement.dataset.direction = direction
 
     setIsResizing(true)
-    setResizeStart({
-      x: e.clientX,
-      y: e.clientY,
-      width: chatSize.width,
-      height: chatSize.height,
-    })
   }
 
-  const handleResize = (e: React.PointerEvent) => {
+  useEffect(() => {
     if (!isResizing) return
 
-    const targetElement = e.currentTarget as HTMLElement
-    const direction = targetElement.dataset.direction || 'se'
+    const handlePointerMove = (e: PointerEvent) => {
+      const r = resizeRef.current
+      const deltaX = e.clientX - r.startX
+      const deltaY = e.clientY - r.startY
 
-    const deltaX = e.clientX - resizeStart.x
-    const deltaY = e.clientY - resizeStart.y
+      const minWidth = 300
+      const maxWidth = Math.min(800, window.innerWidth - 40)
+      const minHeight = 350
+      const maxHeight = Math.min(800, window.innerHeight - 40)
 
-    let newWidth = chatSize.width
-    let newHeight = chatSize.height
-    let newX = chatPosition.x
-    let newY = chatPosition.y
+      let newWidth = r.startWidth
+      let newHeight = r.startHeight
+      let newX = r.startChatX
+      let newY = r.startChatY
 
-    // Min and max dimensions - respect viewport size
-    const minWidth = 300
-    const maxWidth = Math.min(800, window.innerWidth - 40)
-    const minHeight = 350
-    const maxHeight = Math.min(800, window.innerHeight - 40)
+      // East: left edge fixed, right edge follows cursor
+      if (r.direction.includes('e')) {
+        newWidth = Math.max(minWidth, Math.min(maxWidth, r.startWidth + deltaX))
+      }
+      // West: right edge fixed, left edge follows cursor
+      if (r.direction.includes('w')) {
+        const proposedWidth = r.startWidth - deltaX
+        newWidth = Math.max(minWidth, Math.min(maxWidth, proposedWidth))
+        newX = r.startChatX + r.startWidth - newWidth
+      }
+      // South: top edge fixed, bottom edge follows cursor
+      if (r.direction.includes('s')) {
+        newHeight = Math.max(minHeight, Math.min(maxHeight, r.startHeight + deltaY))
+      }
+      // North: bottom edge fixed, top edge follows cursor
+      if (r.direction.includes('n')) {
+        const proposedHeight = r.startHeight - deltaY
+        newHeight = Math.max(minHeight, Math.min(maxHeight, proposedHeight))
+        newY = r.startChatY + r.startHeight - newHeight
+      }
 
-    // Handle width changes based on direction
-    if (direction.includes('e')) {
-      // East/right edge
-      newWidth = Math.max(minWidth, Math.min(maxWidth, resizeStart.width + deltaX))
-    } else if (direction.includes('w')) {
-      // West/left edge
-      newWidth = Math.max(minWidth, Math.min(maxWidth, resizeStart.width - deltaX))
-      newX = chatPosition.x + (resizeStart.width - newWidth)
+      // Clamp to viewport
+      newX = Math.max(0, Math.min(newX, window.innerWidth - newWidth))
+      newY = Math.max(0, Math.min(newY, window.innerHeight - newHeight))
+
+      setChatSize({ width: newWidth, height: newHeight })
+      setChatPosition({ x: newX, y: newY })
     }
 
-    // Handle height changes based on direction
-    if (direction.includes('s')) {
-      // South/bottom edge
-      newHeight = Math.max(minHeight, Math.min(maxHeight, resizeStart.height + deltaY))
-    } else if (direction.includes('n')) {
-      // North/top edge
-      newHeight = Math.max(minHeight, Math.min(maxHeight, resizeStart.height - deltaY))
-      newY = chatPosition.y + (resizeStart.height - newHeight)
+    const handlePointerUp = () => setIsResizing(false)
+
+    window.addEventListener('pointermove', handlePointerMove)
+    window.addEventListener('pointerup', handlePointerUp)
+    return () => {
+      window.removeEventListener('pointermove', handlePointerMove)
+      window.removeEventListener('pointerup', handlePointerUp)
     }
+  }, [isResizing, setChatSize, setChatPosition])
 
-    // Ensure chat stays within viewport bounds
-    if (newX < 0) newX = 0
-    if (newY < 0) newY = 0
-    if (newX + newWidth > window.innerWidth) newX = window.innerWidth - newWidth
-    if (newY + newHeight > window.innerHeight) newY = window.innerHeight - newHeight
-
-    setChatSize({ width: newWidth, height: newHeight })
-    setChatPosition({ x: newX, y: newY })
-  }
-
-  const stopResize = (e: React.PointerEvent) => {
-    if (!isResizing) return
-
-    // Release the pointer capture
-    ;(e.target as Element).releasePointerCapture(e.pointerId)
-
-    // Clean up the direction data attribute
-    const targetElement = e.currentTarget as HTMLElement
-    if (targetElement.dataset.direction) {
-      delete targetElement.dataset.direction
-    }
-
-    setIsResizing(false)
-  }
-
-  // Drag handlers
+  // ─── Drag ─────────────────────────────────────────────────────────────
   const startDrag = (e: React.PointerEvent) => {
     if (isResizing) return
+    // Don't start drag if clicking on a button or interactive element
+    const target = e.target as HTMLElement
+    if (target.closest('button')) return
     e.preventDefault()
-    // Start the drag operation using Framer Motion's drag controls
-    dragControls.start(e)
+
+    dragRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      startChatX: chatPosition.x,
+      startChatY: chatPosition.y,
+    }
+
+    setIsDragging(true)
   }
 
-  const onDragEnd = (info: any) => {
-    if (isResizing) return
+  useEffect(() => {
+    if (!isDragging) return
 
-    // Check if info and info.offset exist before accessing properties
-    if (info && info.offset) {
+    const handlePointerMove = (e: PointerEvent) => {
+      const d = dragRef.current
       const newX = Math.max(
         0,
-        Math.min(window.innerWidth - chatSize.width, chatPosition.x + info.offset.x)
+        Math.min(window.innerWidth - chatSize.width, d.startChatX + (e.clientX - d.startX))
       )
       const newY = Math.max(
         0,
-        Math.min(window.innerHeight - chatSize.height, chatPosition.y + info.offset.y)
+        Math.min(window.innerHeight - chatSize.height, d.startChatY + (e.clientY - d.startY))
       )
       setChatPosition({ x: newX, y: newY })
     }
-  }
 
-  // Close chat
-  const handleClose = () => {
-    setIsOpen(false)
-  }
+    const handlePointerUp = () => setIsDragging(false)
 
-  // Clear messages
-  const handleClear = () => {
-    clearMessages()
-  }
+    window.addEventListener('pointermove', handlePointerMove)
+    window.addEventListener('pointerup', handlePointerUp)
+    return () => {
+      window.removeEventListener('pointermove', handlePointerMove)
+      window.removeEventListener('pointerup', handlePointerUp)
+    }
+  }, [isDragging, chatSize.width, chatSize.height, setChatPosition])
+
+  // Close / Clear
+  const handleClose = () => setIsOpen(false)
+  const handleClear = () => clearMessages()
 
   if (!isOpen) return null
 
@@ -259,38 +212,28 @@ export const ChatContainer = () => {
     <AnimatePresence>
       <motion.div
         ref={containerRef}
-        className="bg-[var(--color-card)] border border-gray-200 dark:border-gray-700 rounded-lg shadow-2xl overflow-hidden pointer-events-auto relative flex flex-col fixed z-50"
+        className="bg-[var(--color-card)] border border-gray-200 dark:border-gray-700 rounded-lg shadow-2xl overflow-hidden pointer-events-auto relative flex flex-col"
         style={{
+          position: 'fixed',
+          left: chatPosition.x,
+          top: chatPosition.y,
           width: chatSize.width,
           height: chatSize.height,
-          position: 'fixed',
-          right: '20px',
-          bottom: '20px',
-          minWidth: '300px',
-          minHeight: '400px',
+          minWidth: 300,
+          minHeight: 400,
           maxWidth: '90vw',
           maxHeight: '90vh',
-          transform: `translate(${chatPosition.x}px, ${chatPosition.y}px)`,
+          zIndex: 50,
         }}
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.8 }}
         transition={{ duration: 0.2 }}
-        drag={!isResizing}
-        dragControls={dragControls}
-        dragMomentum={false}
-        dragElastic={0}
-        onDragEnd={onDragEnd}
       >
-        {/* Chat Header */}
+        {/* Chat Header — drag handle */}
         <div
           className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-2 rounded-t-lg cursor-move select-none"
           onPointerDown={startDrag}
-          onTouchStart={e => {
-            if (isResizing) return
-            e.preventDefault()
-            // Touch events are handled by the drag functionality
-          }}
         >
           <ChatHeader onClose={handleClose} onClear={handleClear} />
         </div>
@@ -338,6 +281,8 @@ export const ChatContainer = () => {
               </div>
             )}
 
+            {messages.length > 0 && <SuggestedNextPrompts />}
+
             <div ref={messagesEndRef} />
           </div>
 
@@ -352,9 +297,6 @@ export const ChatContainer = () => {
         <div
           className="absolute bottom-0 right-0 w-6 h-6 cursor-se-resize z-10"
           onPointerDown={startResize}
-          onPointerMove={handleResize}
-          onPointerUp={stopResize}
-          onPointerCancel={stopResize}
           style={{ touchAction: 'none' }}
           data-direction="se"
         >
@@ -373,9 +315,6 @@ export const ChatContainer = () => {
         <div
           className="absolute bottom-0 left-0 w-6 h-6 cursor-sw-resize z-10"
           onPointerDown={startResize}
-          onPointerMove={handleResize}
-          onPointerUp={stopResize}
-          onPointerCancel={stopResize}
           style={{ touchAction: 'none' }}
           data-direction="sw"
         >
@@ -397,9 +336,6 @@ export const ChatContainer = () => {
         <div
           className="absolute top-0 right-0 w-6 h-6 cursor-ne-resize z-10"
           onPointerDown={startResize}
-          onPointerMove={handleResize}
-          onPointerUp={stopResize}
-          onPointerCancel={stopResize}
           style={{ touchAction: 'none' }}
           data-direction="ne"
         >
@@ -418,9 +354,6 @@ export const ChatContainer = () => {
         <div
           className="absolute top-0 left-0 w-6 h-6 cursor-nw-resize z-10"
           onPointerDown={startResize}
-          onPointerMove={handleResize}
-          onPointerUp={stopResize}
-          onPointerCancel={stopResize}
           style={{ touchAction: 'none' }}
           data-direction="nw"
         >

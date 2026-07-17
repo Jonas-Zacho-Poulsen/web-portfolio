@@ -40,3 +40,4 @@ next-env.d.ts
 temp_repo/
 fetch-mcp/
 /memory-bank
+*.png
