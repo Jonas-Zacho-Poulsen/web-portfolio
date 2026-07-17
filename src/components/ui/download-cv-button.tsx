@@ -28,8 +28,8 @@ export function DownloadCVButton({ variant = 'outline', className = '' }: Downlo
     : 'border border-(--color-primary) text-(--color-primary) hover:bg-(--color-primary)/10'
 
   const downloadOptions = [
-    { label: 'Download CV (Dansk)', href: '/CV_Jonas_Poulsen_Danish.pdf' },
-    { label: 'Download Resume (English)', href: '/Jonas_Poulsen_Resume_English.pdf' },
+    { label: '\u{1F1E9}\u{1F1F0} Download Danish CV/Resume', href: '/CV_Jonas_Poulsen_Danish.pdf' },
+    { label: '\u{1F1EC}\u{1F1E7} Download English CV/Resume', href: '/Jonas_Poulsen_Resume_English.pdf' },
   ]
 
   return (
