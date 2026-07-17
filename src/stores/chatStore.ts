@@ -1,4 +1,4 @@
-import { create } from 'zustand'
+import { createWithEqualityFn } from 'zustand/traditional'
 import type { ChatMessage } from '@/types'
 
 interface ChatState {
@@ -20,7 +20,7 @@ interface ChatState {
   setChatPosition: (position: { x: number; y: number }) => void
 }
 
-export const useChatStore = create<ChatState>((set, get) => ({
+export const useChatStore = createWithEqualityFn<ChatState>((set, get) => ({
   messages: [],
   isOpen: false,
   isLoading: false,
@@ -107,4 +107,4 @@ export const useChatStore = create<ChatState>((set, get) => ({
   clearMessages: () => set({ messages: [] }),
   setChatSize: chatSize => set({ chatSize }),
   setChatPosition: chatPosition => set({ chatPosition }),
-}))
+}), Object.is)
