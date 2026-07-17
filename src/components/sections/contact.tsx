@@ -216,9 +216,13 @@ export default function Contact() {
     setSent(false)
 
     try {
+      // Skip reCAPTCHA entirely if keys aren't properly configured (matches server behavior)
+      const hasValidSiteKey =
+        process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY &&
+        process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY !== 'your_recaptcha_site_key'
+
       // Verify reCAPTCHA if we're not in development mode
-      if (process.env.NODE_ENV !== 'development' && !recaptchaToken) {
-        // Execute reCAPTCHA verification
+      if (hasValidSiteKey && process.env.NODE_ENV !== 'development' && !recaptchaToken) {
         const token = await recaptchaRef.current?.executeAsync()
         if (token) {
           setRecaptchaToken(token)
