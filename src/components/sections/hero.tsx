@@ -6,74 +6,6 @@ import { EmailIcon, PhoneIcon, GithubIcon, LinkedInIcon } from '@/components/ico
 import { AnimatedTextCycle } from '@/components/ui/animated-text-cycle'
 import { DownloadCVButton } from '@/components/ui/download-cv-button'
 
-// Background decoration for hero section
-const HeroBackground = () => {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* Subtle gradient orbs */}
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-primary/5 blur-3xl"></div>
-      <div className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full bg-accent/5 blur-3xl"></div>
-
-      {/* Animated lines */}
-      <svg className="absolute inset-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="heroGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="var(--primary-color)" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="var(--accent-color)" stopOpacity="0.3" />
-          </linearGradient>
-          <style>
-            {`
-              :root {
-                --primary-color: hsl(142, 76%, 36%);
-                --accent-color: hsl(271, 91%, 65%);
-              }
-              @keyframes dash {
-                to {
-                  stroke-dashoffset: 1000;
-                }
-              }
-              .animated-line {
-                stroke-dasharray: 5;
-                animation: dash 30s linear infinite;
-              }
-            `}
-          </style>
-        </defs>
-
-        <line
-          className="animated-line"
-          x1="0"
-          y1="20%"
-          x2="100%"
-          y2="80%"
-          stroke="url(#heroGradient)"
-          strokeWidth="1"
-        />
-        <line
-          className="animated-line"
-          x1="20%"
-          y1="0"
-          x2="80%"
-          y2="100%"
-          stroke="url(#heroGradient)"
-          strokeWidth="1"
-          style={{ animationDelay: '-5s' }}
-        />
-        <line
-          className="animated-line"
-          x1="80%"
-          y1="0"
-          x2="20%"
-          y2="100%"
-          stroke="url(#heroGradient)"
-          strokeWidth="1"
-          style={{ animationDelay: '-10s' }}
-        />
-      </svg>
-    </div>
-  )
-}
-
 export function Hero() {
   const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
@@ -113,8 +45,7 @@ export function Hero() {
        ref={ref}
        className="relative min-h-[80vh] flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 overflow-hidden w-full pt-16 pb-10"
     >
-      {/* Subtle background decoration */}
-      <HeroBackground />
+
 
       {/* Main content with parallax effect */}
        <motion.div style={{ y, opacity }} className="relative z-10 text-center space-y-4 mx-auto w-full max-w-4xl">
@@ -254,7 +185,7 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2.2, duration: 1 }}
-          className="absolute bottom-0 left-1/2 transform -translate-x-1/2"
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
         >
         <motion.div
           animate={{ y: [0, 10, 0] }}
