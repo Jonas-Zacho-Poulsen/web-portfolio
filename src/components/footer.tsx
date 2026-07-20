@@ -1,8 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
 import { EmailIcon, PhoneIcon, GithubIcon, LinkedInIcon } from '@/components/icons'
-import { socialLinks } from '@/config'
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
@@ -12,9 +10,9 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* About */}
-          <div className="space-y-3">
+          <div className="flex flex-col items-center text-center space-y-2">
             <h3 className="text-lg font-semibold text-foreground">Jonas Zacho Poulsen</h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground max-w-xs">
               Backend & Full-Stack Engineer specializing in C#/.NET, React, and scalable integrations.
             </p>
             <p className="text-xs text-muted-foreground">
@@ -23,9 +21,9 @@ export function Footer() {
           </div>
 
           {/* Quick Links */}
-          <div className="space-y-3">
+          <div className="flex flex-col items-center text-center space-y-2">
             <h3 className="text-lg font-semibold text-foreground">Quick Links</h3>
-            <nav className="flex flex-col space-y-2">
+            <nav className="flex flex-col items-center space-y-2">
               {['Home', 'About', 'Skills', 'Projects', 'Contact'].map((item) => (
                 <a
                   key={item}
@@ -44,9 +42,9 @@ export function Footer() {
           </div>
 
           {/* Contact */}
-          <div className="space-y-3">
+          <div className="flex flex-col items-center text-center space-y-2">
             <h3 className="text-lg font-semibold text-foreground">Connect</h3>
-            <div className="flex flex-col space-y-3">
+            <div className="flex flex-col items-center space-y-2">
               {[
                 { href: 'mailto:jonaszp97@gmail.com', icon: EmailIcon, label: 'jonaszp97@gmail.com' },
                 { href: 'tel:+4550227300', icon: PhoneIcon, label: '+45 50 22 73 00' },

@@ -5,6 +5,7 @@ interface ChatState {
   messages: ChatMessage[]
   isOpen: boolean
   isLoading: boolean
+  hasUnread: boolean
   error: string | null
   chatSize: { width: number; height: number }
   chatPosition: { x: number; y: number }
@@ -24,8 +25,9 @@ export const useChatStore = createWithEqualityFn<ChatState>((set, get) => ({
   messages: [],
   isOpen: false,
   isLoading: false,
+  hasUnread: false,
   error: null,
-  chatSize: { width: 350, height: 400 },
+  chatSize: { width: 400, height: 550 },
   chatPosition: {
     x: typeof window !== 'undefined' ? window.innerWidth - 370 : 20,
     y: typeof window !== 'undefined' ? window.innerHeight - 420 : 20,
@@ -40,6 +42,7 @@ export const useChatStore = createWithEqualityFn<ChatState>((set, get) => ({
 
     set(state => ({
       messages: [...state.messages, newMessage],
+      hasUnread: !state.isOpen,
     }))
   },
 
@@ -101,7 +104,7 @@ export const useChatStore = createWithEqualityFn<ChatState>((set, get) => ({
     }
   },
 
-  setIsOpen: isOpen => set({ isOpen }),
+  setIsOpen: isOpen => set({ isOpen, ...(isOpen ? { hasUnread: false } : {}) }),
   setIsLoading: isLoading => set({ isLoading }),
   setError: error => set({ error }),
   clearMessages: () => set({ messages: [] }),

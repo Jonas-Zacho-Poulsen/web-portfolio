@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { useChatStore } from '@/stores/chatStore'
 
 export const ChatToggle = () => {
-  const { isOpen, setIsOpen, chatPosition, chatSize } = useChatStore()
+  const { isOpen, setIsOpen, chatPosition, chatSize, hasUnread } = useChatStore()
 
   const toggleChat = () => {
     setIsOpen(!isOpen)
@@ -49,18 +49,19 @@ export const ChatToggle = () => {
           />
         </svg>
 
-        {/* Notification dot */}
-        <motion.div
-          className="absolute -top-1 -right-1 w-3 h-3 bg-(--color-red-500) rounded-full"
-          animate={{
-            scale: [1, 1.2, 1],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-        />
+        {hasUnread && (
+          <motion.div
+            className="absolute -top-1 -right-1 w-3 h-3 bg-(--color-red-500) rounded-full"
+            animate={{
+              scale: [1, 1.2, 1],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
+          />
+        )}
       </div>
     </motion.button>
   )
