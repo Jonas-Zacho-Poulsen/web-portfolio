@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react'
 
 export function ThemeSwitcher({ className = '' }: { className?: string }) {
   const [mounted, setMounted] = useState(false)
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme, resolvedTheme } = useTheme()
 
   useEffect(() => {
     setMounted(true)
@@ -20,13 +20,13 @@ export function ThemeSwitcher({ className = '' }: { className?: string }) {
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       onClick={() => {
-        setTheme(theme === 'dark' ? 'light' : 'dark');
-        console.log("Theme toggled to:", theme === 'dark' ? 'light' : 'dark');
+        setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
+        console.log("Theme toggled to:", resolvedTheme === 'dark' ? 'light' : 'dark');
       }}
       className={`p-2 rounded-md hover:bg-primary/10 transition-colors ${className}`}
       aria-label="Toggle theme"
     >
-      {theme === 'dark' ? (
+      {resolvedTheme === 'dark' ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="18"
