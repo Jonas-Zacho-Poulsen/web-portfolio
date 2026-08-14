@@ -42,8 +42,8 @@ const item = {
   show: { opacity: 1, y: 0 },
 }
 
-// Import centralized tech stack icons
-import { techStackIcons } from '@/config'
+// Import centralized fallback data and tech stack icons
+import { fallbackProjects } from '@/services/fallback-data'
 
 function ProjectPreview({
   title,
@@ -66,7 +66,7 @@ function ProjectPreview({
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             priority={false} // Only prioritize above-the-fold images
             loading="lazy" // Lazy load project images
-            quality={80} // Reduced quality for better performance
+            quality={85} // Reduced quality for better performance
             placeholder="blur"
             blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAhEAACAQIGAwAAAAAAAAAAAAABAgMABAUGERIhMUFRcf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AmzHMVs7vT5beW3EsSsVI3KCR7iqNAooP/9k="
           />
@@ -104,82 +104,6 @@ function ProjectPreview({
     </div>
   )
 }
-
-// Updated fallback projects with more details
-const fallbackProjects: Repository[] = [
-  {
-    id: 1,
-    name: 'Portfolio Website',
-    description:
-      'Personal portfolio built with Next.js 14, TypeScript, and Tailwind CSS. Features dark mode, animations, and responsive design.',
-    html_url: 'https://github.com/Jonas-Zacho-Poulsen/portfolio',
-    topics: ['next.js', 'typescript', 'tailwindcss', 'framer-motion'],
-    stargazers_count: 0,
-    language: 'TypeScript',
-    screenshots: ['/portfolio-screenshot.png'],
-    demo_url: 'https://cursor-portfolio-9xtp49961-jonas-zacho-poulsens-projects.vercel.app',
-    status: 'completed',
-    tech_stack: [
-      { name: 'Next.js', icon: techStackIcons['next.js'] },
-      { name: 'TypeScript', icon: techStackIcons.typescript },
-      { name: 'Tailwind CSS', icon: techStackIcons.tailwindcss },
-      { name: 'React', icon: techStackIcons.react },
-    ],
-    github_stats: {
-      forks: 0,
-      issues: 0,
-      watchers: 0,
-    },
-  },
-  {
-    id: 2,
-    name: 'AI Chat Application',
-    description:
-      "Real-time chat application with AI integration using OpenAI's GPT models and WebSocket for live updates.",
-    html_url: 'https://github.com/Jonas-Zacho-Poulsen/ai-chat',
-    topics: ['react', 'openai', 'websocket', 'typescript'],
-    stargazers_count: 0,
-    language: 'TypeScript',
-    screenshots: [],
-    demo_url: 'https://ai-chat.jonas-zacho.com',
-    status: 'in-progress',
-    tech_stack: [
-      { name: 'React', icon: techStackIcons.react },
-      { name: 'TypeScript', icon: techStackIcons.typescript },
-      { name: 'Node.js', icon: techStackIcons.nodejs },
-      { name: 'WebSocket', icon: '' },
-    ],
-    github_stats: {
-      forks: 0,
-      issues: 0,
-      watchers: 0,
-    },
-  },
-  {
-    id: 3,
-    name: 'E-commerce Platform',
-    description:
-      'Full-stack e-commerce solution with Next.js, tRPC, and Prisma. Features cart management and Stripe integration.',
-    html_url: 'https://github.com/Jonas-Zacho-Poulsen/ecommerce',
-    topics: ['next.js', 'trpc', 'prisma', 'stripe'],
-    stargazers_count: 0,
-    language: 'TypeScript',
-    screenshots: [],
-    demo_url: 'https://shop.jonas-zacho.com',
-    status: 'completed',
-    tech_stack: [
-      { name: 'Next.js', icon: techStackIcons['next.js'] },
-      { name: 'TypeScript', icon: techStackIcons.typescript },
-      { name: 'PostgreSQL', icon: techStackIcons.postgresql },
-      { name: 'Docker', icon: techStackIcons.docker },
-    ],
-    github_stats: {
-      forks: 0,
-      issues: 0,
-      watchers: 0,
-    },
-  },
-]
 
 function ProjectCard({ project }: { project: Repository }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
@@ -401,18 +325,12 @@ export function Projects() {
   useEffect(() => {
     async function fetchProjects() {
       try {
-        const response = await fetch(
-          'https://api.github.com/users/Jonas-Zacho-Poulsen/repos?sort=stars&per_page=6',
-          {
-            headers: {
-              'Accept': 'application/vnd.github.v3+json'
-            },
-            // Add timeout
-            signal: AbortSignal.timeout(10000)
-          }
-        )
+        const response = await fetch('/api/projects', {
+          signal: AbortSignal.timeout(10000)
+        })
         if (!response.ok) {
-          throw new Error(`GitHub API responded with status: ${response.status}`)
+          setIsUsingFallback(true)
+          return
         }
         const data = await response.json()
         if (Array.isArray(data) && data.length > 0) {
@@ -443,7 +361,7 @@ export function Projects() {
           setIsUsingFallback(true)
         }
       } catch (error) {
-        console.error('Error fetching GitHub projects:', error)
+        console.warn('Unable to fetch live GitHub projects, using fallback data:', error)
         setIsUsingFallback(true)
         // Use fallback projects
       } finally {

@@ -28,7 +28,7 @@ export const navigationItems = [
   { name: 'Home', href: '#home' },
   { name: 'About', href: '#about' },
   { name: 'Skills', href: '#skills' },
-  { name: 'Projects', href: '#projects' },
+  // { name: 'Projects', href: '#projects' }, // Commented out until more public repos exist
   { name: 'Contact', href: '#contact' },
 ]
 

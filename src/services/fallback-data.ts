@@ -33,51 +33,6 @@ export const fallbackProjects: Repository[] = [
       watchers: 0,
     },
   },
-  {
-    id: 2,
-    name: 'Backend API Projects',
-    description:
-      'Collection of backend services and API integrations built with C#/.NET. Includes REST API design patterns, authentication flows, and database integrations representing work in healthcare and enterprise systems.',
-    html_url: 'https://github.com/Jonas-Zacho-Poulsen',
-    topics: ['csharp', 'dotnet', 'rest-api', 'postgresql', 'azure'],
-    stargazers_count: 0,
-    language: 'C#',
-    screenshots: [],
-    status: 'completed',
-    tech_stack: [
-      { name: 'C#', icon: techStackIcons['C#'] },
-      { name: '.NET', icon: techStackIcons['.NET'] },
-      { name: 'PostgreSQL', icon: techStackIcons.postgresql },
-      { name: 'Azure', icon: techStackIcons.azure },
-    ],
-    github_stats: {
-      forks: 0,
-      issues: 0,
-      watchers: 0,
-    },
-  },
-  {
-    id: 3,
-    name: 'Automation & Tooling',
-    description:
-      'Python scripts and automation tools for workflow optimization, data processing, and DevOps tasks. Demonstrates scripting capabilities and process automation experience from enterprise environments.',
-    html_url: 'https://github.com/Jonas-Zacho-Poulsen',
-    topics: ['python', 'automation', 'scripting', 'devops', 'ci-cd'],
-    stargazers_count: 0,
-    language: 'Python',
-    screenshots: [],
-    status: 'completed',
-    tech_stack: [
-      { name: 'Python', icon: techStackIcons.python },
-      { name: 'Docker', icon: techStackIcons.docker },
-      { name: 'Git', icon: techStackIcons.git },
-    ],
-    github_stats: {
-      forks: 0,
-      issues: 0,
-      watchers: 0,
-    },
-  },
 ]
 
 /**

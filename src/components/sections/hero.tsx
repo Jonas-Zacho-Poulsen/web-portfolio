@@ -13,7 +13,8 @@ export function Hero() {
     offset: ['start start', 'end start'],
   })
 
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '40%'])
+  // Content drifts up as you scroll (away from the scroll indicator, so they can never overlap)
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '-40%'])
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
 
   // Animated gradient background for text
@@ -48,7 +49,7 @@ export function Hero() {
 
 
       {/* Main content with parallax effect */}
-       <motion.div style={{ y, opacity }} className="relative z-10 text-center space-y-4 mx-auto w-full max-w-4xl">
+       <motion.div style={{ y, opacity }} className="relative z-10 flex-1 flex flex-col justify-center text-center space-y-4 mx-auto w-full max-w-4xl">
         {/* Animated name with gradient effect */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
@@ -99,6 +100,7 @@ export function Hero() {
           transition={{ duration: 0.5, delay: 1.5 }}
           className="flex flex-wrap gap-4 justify-center pt-2"
         >
+          {/* "View Projects" button commented out until more public repos exist
           <motion.a
             href="#projects"
             whileHover={{
@@ -114,6 +116,7 @@ export function Hero() {
           >
             View Projects
           </motion.a>
+          */}
           <DownloadCVButton variant="outline" />
         </motion.div>
 
@@ -180,12 +183,12 @@ export function Hero() {
         </motion.p>
       </motion.div>
 
-        {/* Scroll indicator */}
+        {/* Scroll indicator - in normal flow so it can never overlap content */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2.2, duration: 1 }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+          className="flex justify-center shrink-0"
         >
         <motion.div
           animate={{ y: [0, 10, 0] }}

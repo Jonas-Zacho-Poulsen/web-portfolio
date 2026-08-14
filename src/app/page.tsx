@@ -1,7 +1,7 @@
 import { Hero } from '@/components/sections/hero'
 import { About } from '@/components/sections/about'
 import { Skills } from '@/components/sections/skills'
-import { Projects } from '@/components/sections/projects'
+// import { Projects } from '@/components/sections/projects' // Commented out until more public repos exist
 import Contact from '@/components/sections/contact'
 import { Chat } from '@/components/chat'
 import { Navigation } from '@/components/navigation'
@@ -23,9 +23,11 @@ export default function Home() {
           <section id="skills" className="scroll-mt-20 min-h-[90vh] flex items-center justify-center w-full relative overflow-hidden">
             <Skills />
           </section>
+          {/* Featured Projects section commented out until more public repos exist
           <section id="projects" className="scroll-mt-20 min-h-[90vh] flex items-center justify-center w-full relative overflow-hidden">
             <Projects />
           </section>
+          */}
           <section id="contact" className="scroll-mt-20 min-h-screen flex items-center justify-center w-full relative overflow-hidden">
             <Contact />
           </section>
